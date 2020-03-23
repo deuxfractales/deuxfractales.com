@@ -11,7 +11,7 @@
                 <div id="w-node-7b98ada7c7b9-edd6561d" class="p5waveform">Waveform</div>
                 <div id="w-node-8a1d5bef07c2-edd6561d" class="buyprice">BUY $150</div>
                 <!--Need to change buyText to playButton, it's already changed in webflow but needs to be changed here during the next css import-->
-                <button id="w-node-1f91bc0acfe7-edd6561d" v-on:click="playSong" class="buytext" v-bind:id="fb1">{{ fb1 }}</button>
+                <button id="w-node-1f91bc0acfe7-edd6561d" v-on:click="playSong" class="buytext" ></button>
             </div>
         </div>
     </div>
