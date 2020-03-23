@@ -1,0 +1,51 @@
+{
+  "name": "v1.0.0",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "wfe": "concurrently \" npm run start \" \"cd ../late-mirror/0.0.0 && npm run serve\"",
+    "test": "tap test/**/*.test.js",
+    "start": "fastify start -l info app.js",
+    "dev": "fastify start -l info app.js -w -p 3001"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@azure/identity": "^1.0.2",
+    "@azure/storage-blob": "^12.0.1",
+    "@sendgrid/mail": "^6.4.0",
+    "concurrently": "^5.0.2",
+    "dotenv": "^8.2.0",
+    "fastify": "^2.0.0",
+    "fastify-autoload": "^1.0.0",
+    "fastify-cli": "^1.3.0",
+    "fastify-cors": "^3.0.0",
+    "fastify-multipart": "^1.0.3",
+    "fastify-plugin": "^1.5.0",
+    "fastify-redis": "^3.1.1",
+    "fastify-static": "^2.5.1",
+    "fastify-websocket": "^1.1.0",
+    "fs": "0.0.1-security",
+    "howler": "^2.1.3",
+    "mysql": "^2.17.1",
+    "mysql2": "^2.1.0",
+    "path": "^0.12.7",
+    "pump": "^3.0.0",
+    "shortid": "^2.2.15",
+    "socket.io": "^2.3.0",
+    "stream": "0.0.2",
+    "websocket-stream": "^5.5.0",
+    "websockets-streaming-audio": "^2.0.8"
+  },
+  "devDependencies": {
+    "eslint": "^6.1.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.19.1",
+    "tap": "^12.5.3"
+  }
+}

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+    <data-source source="LOCAL" name="sub-db1" uuid="7a3a6fdf-e28d-47ee-a356-cc394f0cc53a">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://db-mysql-tor1-97597-do-user-7211070-0.a.db.ondigitalocean.com:25060/defaultdb</jdbc-url>
+    </data-source>
+  </component>
+</project>

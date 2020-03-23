@@ -70,7 +70,7 @@ wss.on('connection', (ws) => {
     //connection is up, let's add a simple simple event
     ws.on('message', (message) => {
         if (message == "getpoints") {
-          ws.send(JSON.stringify(drawings.og(2, 9)));
+          ws.send(JSON.stringify(drawings.og(12, 9)));
         }
     });
 });
