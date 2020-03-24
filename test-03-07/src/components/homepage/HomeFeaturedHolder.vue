@@ -1,5 +1,15 @@
 <template>
     <div id="w-node-3c6e0d08d641-edd6561d" class="featured-holder">
+      <av-bars
+        caps-color="#FFF"
+        :bar-color="['#f00', '#ff0', '#0f0']"
+        canv-fill-color="#000"
+        :caps-height="2"
+        audio-src="/test1.wav"
+        cors-anonym="true"
+        :audio-controls="false"
+      ></av-bars>
+
         <div ref="p5" class="beatcontainer">
             <vue-p5 class="p5" @setup="setup"></vue-p5>
             <div class="beatinfo">
@@ -19,6 +29,7 @@
 
 <script>
     import VueP5 from 'vue-p5'
+
     export default {
         name: "HomeFeaturedHolder",
         data: function () {
