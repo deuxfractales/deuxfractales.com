@@ -1,0 +1,20 @@
+{
+  "name": "deuxfractales.com",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "vue-audio-visual": "^2.0.0",
+    "vue-template-loader": "^1.1.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://stockedupbeats@dev.azure.com/stockedupbeats/sub-vue/_git/sub-vue-tester"
+  },
+  "author": "",
+  "license": "ISC"
+}

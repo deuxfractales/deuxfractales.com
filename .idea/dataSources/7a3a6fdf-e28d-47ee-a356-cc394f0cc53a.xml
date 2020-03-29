@@ -954,6 +954,7 @@
       <Position>10</Position>
       <DataType>int|0s</DataType>
       <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
     <index id="298" parent="287" name="trakz_bid_uindex">

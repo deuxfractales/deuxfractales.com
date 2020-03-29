@@ -7,11 +7,11 @@ module.exports = function (fastify, opts, next) {
   // Place here your custom code!
 
   // "FASTIFY-REDIS" IMPORT, CONFIG AND REGISTER
-  fastify.register(require('fastify-redis'), {
+/*  fastify.register(require('fastify-redis'), {
     // TODO: Check redis IP
     host: process.env.REDIS_HOST,
     password: process.env.REDIS_PASS,
-  });
+  });*/
 
 
   // "FASTIFY-CORS" IMPORT AND REGISTER

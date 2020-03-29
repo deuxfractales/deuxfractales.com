@@ -16,7 +16,17 @@ app.use(express.static('public'))
 const PI = 3.14159265
 
 const drawings = {
-  og: function(n, d) {
+    maurerRose: function(n, d){
+        for (let theta = 0; theta <= 360 /* we're working with degrees, remember? */; theta++){
+            let k = theta * d * Math.PI / 180;
+            let r = 300 * Math.sin(n * k);
+            let x = -r * Math.cos(k);
+            let y = -r * Math.sin(k);
+            ctx.lineTo(x, y);
+            ctx.moveTo(x, y);
+        }
+    },
+  roseCurve: function(n, d) {
     var k = n / d
 
     const points = [];
@@ -70,7 +80,7 @@ wss.on('connection', (ws) => {
     //connection is up, let's add a simple simple event
     ws.on('message', (message) => {
         if (message == "getpoints") {
-          ws.send(JSON.stringify(drawings.og(12, 9)));
+          ws.send(JSON.stringify(drawings.roseCurve(12, 9)));
         }
     });
 });
