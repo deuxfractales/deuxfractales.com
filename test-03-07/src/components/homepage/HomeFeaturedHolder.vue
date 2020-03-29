@@ -1,5 +1,13 @@
 <template>
     <div id="w-node-3c6e0d08d641-edd6561d" class="featured-holder">
+
+        <audio
+        ref="mediaPlayer"
+        crossorigin="anonymous"
+        :src="audioSource">
+            Your browser does not support the
+            <code>audio</code> element.
+        </audio>
         <div ref="p5" class="beatcontainer">
             <vue-p5 class="p5" @setup="setup"></vue-p5>
             <div class="beatinfo">
@@ -31,15 +39,14 @@
         components: {
           "vue-p5": VueP5
         },
+        data: function() {
+          return {
+            audioSource: undefined,
+            audioState: false
+          }
+        },
         mounted() {
-            axios
-            .get('http://localhost:3001/beats/test1')
-            .then(data => data.query.arrayBuffer)
-            .then(arrayBuffer => ctx.decodeAudioData(arrayBuffer))
-            .then(decodedAudio => {
-                audio = decodedAudio
-            })
-
+          this.audioSource = 'http://localhost:3001/beats/test1'
         },
         methods:{
             getFFT: function() {
@@ -50,10 +57,20 @@
                 analyzer.getByteTimeDomainData(dataArray);
             },
             playback: function() {
-                const playSound = ctx.createBufferSource()
-                playSound.buffer = audio
-                playSound.connect(ctx.destination)
-                playSound.start(ctx.currentTime)
+                const mediaPlayer = this.$refs.mediaPlayer;
+
+                if (this.audioState)
+                  mediaPlayer.play()
+                else
+                  mediaPlayer.pause()
+
+                this.audioState = !this.audioState;
+
+                const source = ctx.createMediaElementSource(mediaPlayer);
+
+                var gainNode = ctx.createGain();
+                source.connect(gainNode);
+                gainNode.connect(ctx.destination);
             },
             playPause: function (event){
                 if (event){

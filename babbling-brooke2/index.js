@@ -11,7 +11,7 @@ fastify.register(require('fastify-cors'), {
 
 // Register routes
 fastify.register(require('./startPage'))
-fastify.register(require('./dbActions'))
+//fastify.register(require('./dbActions'))
 fastify.register(require('./audioStream'))
 
 const start = async () => {
@@ -24,4 +24,5 @@ const start = async () => {
         console.log(err)
     }
 }
+
 start()
