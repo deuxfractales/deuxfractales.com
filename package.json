@@ -4,12 +4,22 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "concurrently": "^5.1.0",
     "vue-audio-visual": "^2.0.0",
     "vue-template-loader": "^1.1.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.1.0",
+    "eslint-config-node": "^4.0.0",
+    "eslint-config-prettier": "^6.10.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^3.1.2",
+    "prettier": "^2.0.2"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "concurrently \"cd babbling-brooke2 && npm run dev\" \"cd p5 && npm run start\" \"cd test-03-07 && npm run serve \" "
   },
   "repository": {
     "type": "git",

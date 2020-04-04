@@ -1,13 +1,11 @@
 <template>
-    <div class="w-layout-grid featured3-holder"></div>
+  <div class="w-layout-grid featured3-holder"></div>
 </template>
 
 <script>
-    export default {
-        name: "HomeFeaturedHolder3"
-    }
+export default {
+  name: 'HomeFeaturedHolder3',
+};
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
