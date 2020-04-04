@@ -80,8 +80,13 @@ const drawings = {
 wss.on('connection', (ws) => {
   //connection is up, let's add a simple simple event
   ws.on('message', (message) => {
-    if (message == 'getpoints') {
-      ws.send(JSON.stringify(drawings.roseCurve(12, 9)));
+    const messageParsed = JSON.parse(message)
+    console.log(messageParsed)
+    if (messageParsed.type == 'getpoints') {
+      ws.send(JSON.stringify({
+        points: drawings.roseCurve(12, 9),
+        id: messageParsed.id
+      }));
     }
   });
 });

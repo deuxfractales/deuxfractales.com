@@ -18,17 +18,20 @@ const state = {
     },
   ],
 };
+
 const getters = {
   allProducts: (state) => state.products,
   featuredProducts: (state) => {
     return state.products.filter((product) => product.featuredSlot1);
   },
 };
+
 const actions = {
   async fetchProducts({ commit }) {
     const response = await axios.get('http://localhost:3001/db/all');
   },
 };
+
 const mutations = {};
 
 export default {
