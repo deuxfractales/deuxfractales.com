@@ -1,4 +1,11 @@
 const ctx = new AudioContext();
+
+let gainNode = ctx.createGain();
+let analyzerNode = ctx.createAnalyser();
+analyzerNode.fftSize = 256;
+let bufferLength = analyzerNode.frequencyBinCount;
+let dataArray = new Uint8Array(bufferLength);
+
 let audio;
 
 export default {
@@ -10,31 +17,32 @@ export default {
   },
   created: function () {
     const mediaPlayer = this.$refs.mediaPlayer;
-
+    console.log(mediaPlayer);
     let source = ctx.createMediaElementSource(mediaPlayer);
-    let analyzerNode = ctx.createAnalyser();
-    let gainNode = ctx.createGain();
 
     source.connect(analyzerNode);
     analyzerNode.connect(gainNode);
     gainNode.connect(ctx.destination);
 
-    analyzerNode.fftSize = 256;
-    let bufferLength = analyzerNode.frequencyBinCount;
-    let dataArray = new Uint8Array(bufferLength);
-    analyzerNode.getByteFrequencyData(dataArray);
-
-    for (let i = 0; i < bufferLength; i++) {
-      let barHeight = dataArray[i];
-      console.log(barHeight);
-    }
+    // for (let i = 0; i < bufferLength; i++) {
+    //   let barHeight = dataArray[i];
+    //   console.log(barHeight);
+    // }
   },
   methods: {
     playback: function (elementRef) {
       const mediaPlayer = this.$refs.mediaPlayer;
-      if (this.audioState) mediaPlayer.pause();
-      else {
+      if (this.audioState) {
+        mediaPlayer.pause();
+        fftDataStop();
+      } else {
+        setInterval(getFftData, 300);
+        console.log(getFftData);
         mediaPlayer.play();
+      }
+
+      function fftDataStop() {
+        clearInterval(fftData);
       }
 
       this.audioState = !this.audioState;
@@ -43,6 +51,10 @@ export default {
       if (event) {
         this.playback(event.target.getAttribute('tag'));
       }
+    },
+    getFftData: function () {
+      analyzerNode.getByteFrequencyData(dataArray);
+      console.log(dataArray);
     },
   },
 };

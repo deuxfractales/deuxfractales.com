@@ -1,38 +1,35 @@
+import axios from 'axios';
+
 const state = {
-  products: [
-    {
-      id: 1,
-      title: 'product1',
-      genre: 'pop',
-      artist: 'the wknd',
-      featuredSlot1: true,
-      url: 'http://localhost:3001/beats/test1',
-    },
-    {
-      id: 2,
-      title: 'product2',
-      genre: 'hip hop',
-      artist: 'drake',
-      featuredSlot1: true,
-      url: 'http://localhost:3001/beats/test2',
-    },
-  ],
+  products: [],
+  featuredProducts: [],
 };
 
 const getters = {
   allProducts: (state) => state.products,
-  featuredProducts: (state) => {
-    return state.products.filter((product) => product.featuredSlot1);
-  },
+  // featuredProducts: (state) => (f) => {
+  //   return state.featuredProducts.filter(
+  //     (product) => product.featuredSlot1 === f
+  //   );
+  // },
+  featuredProducts: (state) => state.featuredProducts,
 };
 
 const actions = {
-  async fetchProducts({ commit }) {
+  async fetchAll({ commit }) {
     const response = await axios.get('http://localhost:3001/db/all');
+    commit('setAll', response.data);
+  },
+  async fetchFeatured({ commit }) {
+    const response = await axios.get('http://localhost:3001/db/f1');
+    commit('setFeatured', response.data);
   },
 };
 
-const mutations = {};
+const mutations = {
+  setAll: (state, products) => (state.products = products),
+  setFeatured: (state, products) => (state.featuredProducts = products),
+};
 
 export default {
   state,

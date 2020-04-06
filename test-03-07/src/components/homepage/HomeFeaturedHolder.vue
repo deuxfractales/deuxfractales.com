@@ -2,7 +2,7 @@
   <div id="w-node-3c6e0d08d641-edd6561d" class="featured-holder">
     <HomeMusicWidget
       v-for="product in featuredProducts"
-      v-if="product.featuredSlot1 === true"
+      v-if="product.featuredSlot1 === 1"
       :key="product.id"
       :ref="product.id"
       class="beatcontainer"
@@ -18,42 +18,38 @@ import HomeMusicWidget from './HomeMusicWidget.vue';
 export default {
   name: 'HomeFeaturedHolder',
   components: {
-    'HomeMusicWidget': HomeMusicWidget
+    HomeMusicWidget: HomeMusicWidget,
   },
   mixins: [vuex],
-  created: async function() {
+  created: async function () {
     while (this.$socket.readyState != 1) {
       console.log('Waiting');
       await new Promise((r) => setTimeout(r, 10));
     }
 
-    const refs = this.$refs
+    const refs = this.$refs;
 
     this.$socket.onmessage = function (res) {
       const jsonData = JSON.parse(res.data);
       const points = jsonData.points;
-      const drawTo = jsonData.id
+      const drawTo = jsonData.id;
 
-      const sketch = refs[drawTo][0].p5
+      const sketch = refs[drawTo][0].p5;
 
       sketch.background(220);
       sketch.translate(sketch.width / 2, sketch.height / 2);
 
-      sketch.beginShape();
       sketch.noFill();
       sketch.stroke(255);
       sketch.strokeWeight(1);
       sketch.beginShape();
-
       sketch.vertex(points[points.length - 1].x, points[points.length - 1].y);
-
       points.forEach((point) => {
         sketch.vertex(point.x, point.y);
       });
-
       sketch.endShape(close);
     };
-  }
+  },
 };
 </script>
 
