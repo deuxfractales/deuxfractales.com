@@ -34,20 +34,7 @@ export default {
       const points = jsonData.points;
       const drawTo = jsonData.id;
 
-      const sketch = refs[drawTo][0].p5;
-
-      sketch.background(220);
-      sketch.translate(sketch.width / 2, sketch.height / 2);
-
-      sketch.noFill();
-      sketch.stroke(255);
-      sketch.strokeWeight(1);
-      sketch.beginShape();
-      sketch.vertex(points[points.length - 1].x, points[points.length - 1].y);
-      points.forEach((point) => {
-        sketch.vertex(point.x, point.y);
-      });
-      sketch.endShape(close);
+      refs[drawTo][0].setPoints(points)
     };
   },
 };

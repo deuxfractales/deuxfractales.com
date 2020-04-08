@@ -1,4 +1,4 @@
-const ctx = new AudioContext();
+const ctx = new (window.AudioContext || window.webkitAudioContext)();
 
 let gainNode = ctx.createGain();
 let analyzerNode = ctx.createAnalyser();
@@ -13,12 +13,15 @@ export default {
     return {
       audioSource: undefined,
       audioState: false,
+      fftInterval: undefined
     };
   },
-  created: function () {
+  mounted: function () {
     const mediaPlayer = this.$refs.mediaPlayer;
-    console.log(mediaPlayer);
+
     let source = ctx.createMediaElementSource(mediaPlayer);
+
+    console.log(source)
 
     source.connect(analyzerNode);
     analyzerNode.connect(gainNode);
@@ -32,17 +35,18 @@ export default {
   methods: {
     playback: function (elementRef) {
       const mediaPlayer = this.$refs.mediaPlayer;
+
       if (this.audioState) {
         mediaPlayer.pause();
         fftDataStop();
       } else {
-        setInterval(this.getFftData, 300);
-        console.log(this.getFftData);
+        this.fftInterval = setInterval(this.getFftData, 10);
         mediaPlayer.play();
       }
 
+      const interval = this.fftInterval
       function fftDataStop() {
-        clearInterval(this.getFftData);
+        clearInterval(interval);
       }
 
       this.audioState = !this.audioState;
@@ -54,7 +58,11 @@ export default {
     },
     getFftData: function () {
       analyzerNode.getByteFrequencyData(dataArray);
-      console.log(dataArray);
+      const colorFrom = dataArray[7]
+
+      console.log(colorFrom)
+
+      this.drawPoints(colorFrom,0,0)
     },
   },
 };

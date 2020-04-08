@@ -47,9 +47,34 @@ export default {
   data: function () {
     return {
       p5: undefined,
+      points: undefined
     };
   },
   mixins: [vuex, audioPlayback, p5],
+  methods: {
+    setPoints: function(points) {
+      this.points = points
+      this.drawPoints(0,0,0)
+    },
+    drawPoints: function(r, g, b) {
+      const sketch = this.p5;
+
+      sketch.background(220);
+      sketch.translate(sketch.width / 2, sketch.height / 2);
+
+      //sketch.noFill();
+      sketch.fill(sketch.color(r,g,b))
+      sketch.stroke(255);
+      sketch.strokeWeight(1);
+      sketch.clear()
+      sketch.beginShape();
+      sketch.vertex(this.points[this.points.length - 1].x, this.points[this.points.length - 1].y);
+      this.points.forEach((point) => {
+        sketch.vertex(point.x, point.y);
+      });
+      sketch.endShape(close);
+    }
+  }
 };
 </script>
 
