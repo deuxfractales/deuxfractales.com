@@ -23,6 +23,7 @@ const actions = {
   async fetchFeatured({ commit }) {
     const response = await axios.get('http://localhost:3001/db/f1');
     commit('setFeatured', response.data);
+    console.log(response.data);
   },
 };
 

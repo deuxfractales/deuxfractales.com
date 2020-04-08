@@ -36,13 +36,13 @@ export default {
         mediaPlayer.pause();
         fftDataStop();
       } else {
-        setInterval(getFftData, 300);
-        console.log(getFftData);
+        setInterval(this.getFftData, 300);
+        console.log(this.getFftData);
         mediaPlayer.play();
       }
 
       function fftDataStop() {
-        clearInterval(fftData);
+        clearInterval(this.getFftData);
       }
 
       this.audioState = !this.audioState;
