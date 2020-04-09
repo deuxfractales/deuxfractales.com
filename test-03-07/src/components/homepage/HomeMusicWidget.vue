@@ -1,6 +1,6 @@
 <template>
   <div>
-    <vue-p5 ref="p5" class="p5" @setup="setup"></vue-p5>
+    <vue-p5 ref="p5" class="p5" :style="p5Style" @setup="setup"></vue-p5>
     <div class="beatinfo">
       <div class="beattitle">{{ product.name }}</div>
       <div id="w-node-e9c14a1e787a-edd6561d" class="div-block">
@@ -47,32 +47,61 @@ export default {
   data: function () {
     return {
       p5: undefined,
-      points: undefined
+      points: undefined,
+      rgb: { 'r': 10, 'g': 100, 'b': 200 },
+      p5Style: { 'background-color': 'rgb(0,0,0)' }
     };
   },
   mixins: [vuex, audioPlayback, p5],
+
+  created: function() {
+  },
+
   methods: {
     setPoints: function(points) {
       this.points = points
-      this.drawPoints(0,0,0)
+      this.renderPoints()
+      window.requestAnimationFrame(this.drawPoints)
     },
-    drawPoints: function(r, g, b) {
+    renderPoints: function(points) {
+      const { r,g,b } = this.rgb
       const sketch = this.p5;
 
       sketch.background(220);
       sketch.translate(sketch.width / 2, sketch.height / 2);
-
-      //sketch.noFill();
-      sketch.fill(sketch.color(r,g,b))
-      sketch.stroke(255);
-      sketch.strokeWeight(1);
       sketch.clear()
+
+      sketch.fill(sketch.color(r,g,b))
+
+      sketch.rect(-sketch.width,-sketch.height,sketch.width*2, sketch.height*2)
+
+      sketch.erase();
+
+      sketch.stroke(255);
+      sketch.strokeWeight(2);
       sketch.beginShape();
       sketch.vertex(this.points[this.points.length - 1].x, this.points[this.points.length - 1].y);
       this.points.forEach((point) => {
         sketch.vertex(point.x, point.y);
       });
       sketch.endShape(close);
+
+      sketch.noErase()
+
+      sketch.noFill();
+      sketch.stroke(255);
+      sketch.strokeWeight(1);
+      sketch.beginShape();
+      sketch.vertex(this.points[this.points.length - 1].x, this.points[this.points.length - 1].y);
+      this.points.forEach((point) => {
+        sketch.vertex(point.x, point.y);
+      });
+      sketch.endShape(close);
+    },
+    drawPoints: function() {
+      this.getFftData()
+      this.p5Style['background-color'] = `rgb(${this.rgb.r}, 0, 0)`
+      window.requestAnimationFrame(this.drawPoints)
     }
   }
 };

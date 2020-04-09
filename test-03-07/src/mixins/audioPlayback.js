@@ -21,8 +21,6 @@ export default {
 
     let source = ctx.createMediaElementSource(mediaPlayer);
 
-    console.log(source)
-
     source.connect(analyzerNode);
     analyzerNode.connect(gainNode);
     gainNode.connect(ctx.destination);
@@ -38,15 +36,8 @@ export default {
 
       if (this.audioState) {
         mediaPlayer.pause();
-        fftDataStop();
       } else {
-        this.fftInterval = setInterval(this.getFftData, 10);
         mediaPlayer.play();
-      }
-
-      const interval = this.fftInterval
-      function fftDataStop() {
-        clearInterval(interval);
       }
 
       this.audioState = !this.audioState;
@@ -59,10 +50,7 @@ export default {
     getFftData: function () {
       analyzerNode.getByteFrequencyData(dataArray);
       const colorFrom = dataArray[7]
-
-      console.log(colorFrom)
-
-      this.drawPoints(colorFrom,0,0)
+      this.rgb.r = colorFrom
     },
   },
 };
