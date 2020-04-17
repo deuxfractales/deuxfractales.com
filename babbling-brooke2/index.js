@@ -8,6 +8,8 @@ fastify.register(require('fastify-cors'), {
   exposedHeaders: ['Content-Range', 'X-Content-Range'],
 });
 
+fastify.register(require('fastify-multipart'))
+
 // Register routes
 fastify.register(require('./startPage'));
 fastify.register(require('./dbActions'));
