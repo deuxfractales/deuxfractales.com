@@ -2,12 +2,12 @@
   <div>
     <vue-p5 ref="p5" class="p5" :style="p5Style" @setup="setup"></vue-p5>
     <div class="beatinfo">
-      <div class="mobile-beattitle">{{ product.name }}</div>
       <div class="div-block">
-
+        <div class="mobile-beattitle">{{ product.name }}</div>
         <div class="mobile-beatartist">Artist{{ product.artist }}</div>
         <div class="mobile-beatgenre">{{ product.genre }}</div>
       </div>
+
       <div class="p5waveform">
         <audio ref="mediaPlayer" crossorigin="anonymous" controls="true" :src="product.url">
           Your browser does not support the
@@ -15,8 +15,7 @@
         </audio>
       </div>
 
-      <!-- previous style: id=w-node-1f91bc0acfe7-edd6561dNeed -->
-      <button id v-on:click="playPause" class="mobile-playButton">Play/Pause</button>
+      <button v-on:click="playPause" class="mobile-playButton">Play/Pause</button>
 
       <div class="mobile-buyprice">
         <a class="mobile-buybutton">BUY $150</a>
@@ -69,6 +68,8 @@ export default {
       sketch.fill(sketch.color(r,g,b))
 
       sketch.rect(-sketch.width,-sketch.height,sketch.width*2, sketch.height*2)
+      
+      sketch.scale(0.72);
 
       sketch.erase();
 
@@ -121,7 +122,8 @@ export default {
     width: 100%;
   }
   .mobile-beattitle {
-    position: absolute;
+    display: flex;
+    /* position: absolute; */
     height: auto;
     width: auto;
     left: 3px;
@@ -132,11 +134,13 @@ export default {
     line-height: 45px;
     font-weight: 700;
   }
+
   .mobile-beatgenre {
     position: absolute;
     font-family: Poppins, sans-serif;
     font-size: 20px;
     right: 3px;
+    top: 0;
     padding: 10px;
     color: pink;
   }
@@ -144,24 +148,13 @@ export default {
     position: absolute;
     font-family: Poppins, sans-serif;
     font-size: 20px;
-    right: 40%;
+    right: 43%;
+    top: 0;
     display: block;
     color: #ffc0cb;
     line-height: 45px;
   }
-  .mobile-buyprice {
-    background-color: #54426b;
-    font-family: Poppins, sans-serif;
-    color: #fffcf7;
-    font-size: 25px;
-    text-align: center;
-    position: absolute;
-    bottom: 8px;
-    right: 3px;
-    height: 17%;
-    width: 32%;
-    cursor: pointer;
-  }
+
   .mobile-playButton {
     position: absolute;
     bottom: 80px;
@@ -172,16 +165,27 @@ export default {
     background-color: green;
     cursor: pointer;
   }
+  .mobile-buyprice {
+    background-color: #54426b;
+    font-family: Poppins, sans-serif;
+    color: #fffcf7;
+    font-size: 25px;
+    text-align: center;
+    position: absolute;
+    bottom: 8px;
+    right: 3px;
+    width: 32%;
+    height: auto;
+    cursor: pointer;
+  }
   .mobile-buybutton {
     background-color: purple;
-    border: none;
     color: #fff;
     padding: 15px 32px;
     padding-right: 25px;
     text-decoration: none;
-    display: inline-block;
+    display: flex;
     font-size: 16px;
   }
-
 }
 </style>

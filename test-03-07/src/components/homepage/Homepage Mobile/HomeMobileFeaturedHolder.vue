@@ -18,7 +18,7 @@ import HomeMobileMusicWidget from './../Homepage Mobile/HomeMobileMusicWidget';
 export default {
   name: 'HomeMobileFeaturedHolder',
   components: {
-    HomeMobileMusicWidget: HomeMobileMusicWidget,
+    HomeMobileMusicWidget,
   },
   mixins: [vuex],
   created: async function () {

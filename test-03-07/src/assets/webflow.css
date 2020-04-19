@@ -164,17 +164,19 @@
   position: relative;
   left: 0%;
   top: 0%;
+  height: auto;
+  margin-top: 10px;
   right: auto;
   bottom: auto;
   z-index: 1;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
+  /* display: -webkit-box; */
+  /* display: -webkit-flex; */
+  /* display: -ms-flexbox; */
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-  -webkit-flex-direction: row;
-  -ms-flex-direction: row;
+  /* -webkit-box-orient: horizontal; */
+  /* -webkit-box-direction: normal; */
+  /* -webkit-flex-direction: row; */
+  /* -ms-flex-direction: row; */
   flex-direction: row;
 }
 
@@ -185,17 +187,17 @@
   right: 0%;
   bottom: 0%;
   z-index: 3;
-  display: -ms-grid;
   display: grid;
   width: 100%;
-  height: 100%;
-  grid-auto-columns: 1fr;
+  height: auto;
+  /* display: -ms-grid; */
+  /* grid-auto-columns: 1fr;
   grid-column-gap: 11px;
   grid-row-gap: 0px;
   -ms-grid-columns: 2fr 1fr;
   grid-template-columns: 2fr 1fr;
   -ms-grid-rows: 66% 33%;
-  grid-template-rows: 66% 33%;
+  grid-template-rows: 66% 33%; */
 }
 
 .p5 {
@@ -205,6 +207,8 @@
   right: 0%;
   bottom: 0%;
   z-index: 2;
+  height: auto;
+  width: auto;
 }
 
 .beattitle {
