@@ -33,6 +33,7 @@ fastify.register(require('./dbActions'));
 fastify.register(require('./audioStream'));
 fastify.register(require('./postBeats'));
 
+
 const start = async () => {
   try {
     await fastify.listen(3001);

@@ -3,6 +3,9 @@ import VueRouter from 'vue-router';
 import Home from '../views/Home.vue';
 import Upload from '../views/Upload';
 import HomepageMobile from '../views/HomepageMobile';
+import ShoppingCart from '../views/ShoppingCart'
+import Checkout from '../views/Checkout'
+import Confirmation from '../views/Confirmation'
 
 Vue.use(VueRouter);
 
@@ -30,6 +33,21 @@ const routes = [
     path: '/homepageMobile',
     name: 'HomepageMobile',
     component: HomepageMobile
+  },
+  {
+    path: '/cart',
+    name: 'ShoppingCart',
+    component: ShoppingCart
+  },
+  {
+    path: '/cart/checkout',
+    name: 'Checkout',
+    component: Checkout
+  },
+  {
+    path: '/cart/confirmation',
+    name: 'Confirmation',
+    component: Confirmation
   }
 ];
 

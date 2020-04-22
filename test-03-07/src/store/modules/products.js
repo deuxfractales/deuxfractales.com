@@ -13,6 +13,7 @@ const getters = {
   //   );
   // },
   featuredProducts: (state) => state.featuredProducts,
+
 };
 
 const actions = {
