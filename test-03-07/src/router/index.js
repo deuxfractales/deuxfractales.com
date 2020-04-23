@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Home from '../views/Home.vue';
-
+import Beats from '../views/Beats'
 import Upload from '../views/Upload';
 
 Vue.use(VueRouter);
@@ -11,6 +11,11 @@ const routes = [
     path: '/',
     name: 'Home',
     component: Home,
+  },
+  {
+    path: '/beats',
+    name: 'Beats',
+    component: Beats
   },
   {
     path: '/about',
