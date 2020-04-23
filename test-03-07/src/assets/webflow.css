@@ -99,6 +99,7 @@
 }
 
 .featured-holder {
+  border-radius: 10px;
   display: -ms-grid;
   display: grid;
   grid-auto-columns: 1fr;

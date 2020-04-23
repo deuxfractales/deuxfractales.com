@@ -41,6 +41,9 @@ export default {
 </script>
 
 <style scoped>
+.beatcontainer{
+  border-radius: 10px;
+}
 audio {
   width: 90%;
   margin-left: 5%;
