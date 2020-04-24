@@ -5,6 +5,7 @@
       v-if="product.featuredSlot1 === 1"
       :key="product.id"
       :ref="product.id"
+      :id="product.id"
       class="beatcontainer"
       :product="product"
     />

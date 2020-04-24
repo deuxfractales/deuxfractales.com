@@ -1,12 +1,6 @@
 const ctx = new (window.AudioContext || window.webkitAudioContext)();
 
 let gainNode = ctx.createGain();
-let analyzerNode = ctx.createAnalyser();
-analyzerNode.fftSize = 256;
-let bufferLength = analyzerNode.frequencyBinCount;
-let dataArray = new Uint8Array(bufferLength);
-
-let audio;
 
 export default {
   data: function () {
@@ -19,10 +13,15 @@ export default {
   mounted: function () {
     const mediaPlayer = this.$refs.mediaPlayer;
 
-    let source = ctx.createMediaElementSource(mediaPlayer);
+    this.analyzerNode = ctx.createAnalyser();
+    this.analyzerNode.fftSize = 256;
 
-    source.connect(analyzerNode);
-    analyzerNode.connect(gainNode);
+    let source = ctx.createMediaElementSource(mediaPlayer);
+    this.bufferLength = this.analyzerNode.frequencyBinCount;
+    this.dataArray = new Uint8Array(this.bufferLength);
+
+    source.connect(this.analyzerNode);
+    this.analyzerNode.connect(gainNode);
     gainNode.connect(ctx.destination);
 
     // for (let i = 0; i < bufferLength; i++) {
@@ -48,9 +47,11 @@ export default {
       }
     },
     getFftData: function () {
-      analyzerNode.getByteFrequencyData(dataArray);
-      const colorFrom = dataArray[7]
-      this.rgb.r = colorFrom
+      if(this.audioState) {
+        this.analyzerNode.getByteFrequencyData(this.dataArray);
+        const colorFrom = this.dataArray[7]
+        this.rgb.r = colorFrom
+      }
     },
   },
 };

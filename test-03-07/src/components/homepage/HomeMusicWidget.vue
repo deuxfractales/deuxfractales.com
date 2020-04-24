@@ -2,7 +2,8 @@
   <div>
     <vue-p5 ref="p5" class="p5" :style="p5Style" @setup="setup"></vue-p5>
     <div class="beatinfo">
-      <div class="beattitle">{{ product.name }}</div>
+      <div class="beattitle">{{ $attrs.id }}{{ product.name }}</div>
+    
       <div id="w-node-e9c14a1e787a-edd6561d" class="div-block">
         <div class="beatgenre">{{ product.genre }}</div>
         <!--CHANGE TO beatArtist on next css import, needs to be changed in webflow as well-->
@@ -64,6 +65,7 @@ export default {
       window.requestAnimationFrame(this.drawPoints)
     },
     renderPoints: function(points) {
+      
       const { r,g,b } = this.rgb
       const sketch = this.p5;
 
