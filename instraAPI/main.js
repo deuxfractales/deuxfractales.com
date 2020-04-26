@@ -1,6 +1,7 @@
 const request = require('request')
 const axios = require('axios');
 const {Builder, By, Key, until} = require('selenium-webdriver');
+const Promise = require("bluebird");
 
 const get = (p, o) =>
   p.reduce((xs, x) => (xs && xs[x]) ? xs[x] : null, o)
@@ -8,26 +9,29 @@ const get = (p, o) =>
 const following = 'd04b0a864b4b54837c0d870b0e77e076'
 const followers = 'c76146de99bb02f6415203be841dd25a'
 
+const posts = '9dcf6e1a98bc7f6e92953d5a61027b98'
+const postsLiked = 'd5d763b1e2acf209d62d22d184488e57'
+
 let accountCycle = 0
-let cookies = ['ig_did=75210148-05FD-4FE9-A908-320046518E50; mid=XqIvUQAEAAFdTH8Ji4LpO0Jk0Gfb; csrftoken=xy3etEvtJ9ClDeQsEi9b7NQ5RoIHXtKB; ds_user_id=18018019035; sessionid=18018019035%3ACCAWAtjPCmyYKP%3A1; rur=FTW;']
+let cookies = ['ig_did=D24124C4-5F47-4678-8739-EA397F703E08; mid=XqT9QQAEAAGYF68bE6bFMGIi9O0F; rur=FTW; csrftoken=ECLoFH0lyO2ZRAwrXHOLMWvFrJLk2Xva; ds_user_id=33701292098; sessionid=33701292098%3ATBrKwFSIm5aGi2%3A4;']
 
 const logins = [
   {
     username: 'noclout_goodmusic',
     password: '2Kd12##pqow'
+  },
+  {
+    username: 'sikomiw663',
+    password: '22Kd12##pqow2'
+  },
+  {
+    username: 'burner90210',
+    password: 'a_Emt"b8Tz5j4W@'
+  },
+  {
+    username: 'sewcul6',
+    password: 'a_Emt"b8Tz5j4W@'
   }
-//  {
-//    username: 'sikomiw663',
-//    password: '22Kd12##pqow2'
-//  },
-//  {
-//    username: 'burner90210',
-//    password: 'a_Emt"b8Tz5j4W@'
-//  },
-//  {
-//    username: 'sewcul6',
-//    password: 'a_Emt"b8Tz5j4W@'
-//  }
 ]
 
 function timeout(ms) {
@@ -72,19 +76,86 @@ function startModule() {
     promises = logins.map((login) => getCookies(login.username, login.password));
 
     Promise.all(promises).then((res) => {
+      // Set global cookies
       cookies = res
+      console.log(cookies)
       resolve(res)
     })
   })
 }
 
-/*
+function getPostsLiked(shortcode, cookie, after) {
+  const baseURL = `https://www.instagram.com/graphql/query/?query_hash=${postsLiked}&variables=`
 
-https://www.instagram.com/graphql/query/?query_hash=9dcf6e1a98bc7f6e92953d5a61027b98&variables=%7B%22id%22%3A%222895567238%22%2C%22first%22%3A12%2C%22after%22%3A%22QVFETnFyYXp3d2pjdHVud2FpTUI2dVBTa00xUjNhYmpneEE2ck5EMlE2YlpGVlpPY3BXdFFOOEhEa3Ztb29uT1JYdVpzcHY5NnMwYUVlQ3Q5TUdEamNKdw%3D%3D%22%7D
-query_hash=9dcf6e1a98bc7f6e92953d5a61027b98
-variables={"id":"2895567238","first":12,"after":"QVFETnFyYXp3d2pjdHVud2FpTUI2dVBTa00xUjNhYmpneEE2ck5EMlE2YlpGVlpPY3BXdFFOOEhEa3Ztb29uT1JYdVpzcHY5NnMwYUVlQ3Q5TUdEamNKdw=="}
+  const variables = {
+    shortcode,
+    "include_reel": true,
+    "first": 50, // 50 seems to be the max as of April 25 2020
+    after
+  };
 
-*/
+  const options = {
+    url: `${baseURL}${JSON.stringify(variables)}`,
+    headers: {
+      Cookie: cookie
+    }
+  }
+
+  return new Promise((resolve) => {
+    request(options, (error, response, bodyRaw) => {
+      const edge_liked_by = JSON.parse(bodyRaw).data.shortcode_media.edge_liked_by;
+
+      console.log(edge_liked_by.edges.length)
+
+      if (edge_liked_by.page_info.has_next_page) {
+        getPostsLiked(shortcode, cookie, edge_liked_by.page_info.end_cursor)
+          .then((res) => {
+            resolve(res.concat(edge_liked_by.edges));
+          })
+      } else {
+        resolve(edge_liked_by.edges);
+      }
+    })
+  });
+}
+
+function getPostsAfter(id, after, cookie, depth) {
+  // Number of requests to do
+  // 0 is one request
+  // 1 is two requests
+  // ...
+  const maxDepth = 0;
+
+  baseURL = `https://www.instagram.com/graphql/query/?query_hash=${posts}&variables=`
+
+  const variables = {
+    id,
+    "first": 20,
+    after
+  };
+
+  const options = {
+    url: `${baseURL}${JSON.stringify(variables)}`,
+    headers: {
+      Cookie: cookie
+    }
+  }
+
+  return new Promise((resolve) => {
+    request(options, (error, response, bodyRaw) => {
+      const timeline_media = JSON.parse(bodyRaw).data.user.edge_owner_to_timeline_media;
+
+      if (timeline_media.page_info.has_next_page && depth < maxDepth) {
+        getPostsAfter(id, timeline_media.page_info.end_cursor, cookie, depth+1)
+          .then((res) => {
+            resolve(res.concat(timeline_media.edges));
+          })
+      } else {
+        resolve(timeline_media.edges);
+      }
+    })
+  });
+}
 
 function getPosts(id) {
   accountCycle++;
@@ -93,22 +164,48 @@ function getPosts(id) {
   }
 
   const cookie = cookies[accountCycle]
-  const baseURL = `https://www.instagram.com/${id}/?__a=1`
 
-  const options = {
-    url: baseURL,
-    headers: {
-      Cookie: cookie
-    }
-  }
+  return new Promise((resolve) => {
+    getUID(id, (uid) => {
+      getPostsAfter(uid, undefined, cookie, 0).then((res) => {
+        const shortCodes = res.map((el) => el.node.shortcode);
 
-  request(options, (error, response, bodyRaw) => {
-    const parsed = JSON.parse(bodyRaw).graphql.user.edge_owner_to_timeline_media;
-    console.log(parsed)
-  })
+        Promise.map(shortCodes, (shortCode) => getPostsLiked(shortCode, cookie), { concurrency: 1 })
+          .then((likedArrays) => {
+            const parsedArrays = likedArrays.map((arr, i) => {
+              const {
+                display_url,
+                dimensions,
+                is_video,
+                shortcode,
+                owner,
+                edge_media_to_caption
+              } = res[i].node
+
+              return {
+                display_url,
+                dimensions,
+                is_video,
+                shortcode,
+                owner,
+                edge_media_to_caption,
+                liked: arr.map((el) => el.node.username)
+              }
+            });
+
+            resolve(parsedArrays);
+          });
+      });
+  });
+  });
 }
 
-getPosts('gryphonracing')
+// getPosts('gryphonracing')
+//  .then((res) => {
+//    console.log(res);
+//  });
+
+// startModule().then(() => {})
 
 //startModule().then((res) => {
 //  lookUp('gryphonracing').then((users) => {
@@ -129,7 +226,6 @@ function lookUp(id) {
       if (accountCycle > logins.length - 1) {
         accountCycle = 0
       }
-      console.log(accountCycle)
       getRequestUser(uid, cookies[accountCycle], '', followers, function(users) {
         resolve(users)
       })
