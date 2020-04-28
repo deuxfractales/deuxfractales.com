@@ -16,8 +16,8 @@
           <code>audio</code> element.
         </audio>
       </div>
-      <div id="w-node-8a1d5bef07c2-edd6561d" class="buyprice">BUY $150</div>
-      <button @click="addProductToCart(product)">Add Product To Cart</button>
+      <div id="w-node-8a1d5bef07c2-edd6561d" @click="addProductToCart(product)" class="buyprice">${{ product.pricing }}</div>
+
 
       <!--Need to change buyText to playButton, it's already changed in webflow but needs to be changed here during the next css import-->
       <button

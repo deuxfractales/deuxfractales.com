@@ -5,12 +5,25 @@
 </template>
 
 <script>
-    export default {
-        name: "HomeSearchBox",
-        computed: {
-            
-        }
-    }
+import vuex from '../../mixins/vuex';
+import {mapState, mapGetters, mapActions, mapMutations} from 'vuex'
+
+export default {
+  name: "HomeSearchBox",
+  computed: {
+    search: {
+      get() {
+        return this.$store.getters.search;
+      },
+      set(search) {
+        this.$store.dispatch('updateSearchValue', search);
+      }
+    },
+    ...mapGetters ({
+      filteredProducts:'filteredProducts'
+      })
+  }     
+}
 </script>
 
 <style scoped>

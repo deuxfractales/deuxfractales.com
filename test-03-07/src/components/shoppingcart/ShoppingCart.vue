@@ -39,8 +39,7 @@
                 </div>
               </th>
               <td class="border-0 align-middle">
-                <!-- {{ product.price }} -->
-                <strong>$150</strong>
+                <strong>${{ product.price }}</strong>
               </td>
               <td class="border-0 align-middle">
                 <a href="#" @click="deleteItem(product.id)" class="text-dark">
@@ -50,6 +49,9 @@
             </tr>
           </tbody>
         </table>
+        <!-- Coupon -->
+        <label for="coupon">Coupon:</label>
+        <input />
         <router-link style="color: white; text-decoration: none" to="/cart/confirmation">
           <button v-if="cartSize > 0" class="btn btn-primary">Checkout</button>
         </router-link>

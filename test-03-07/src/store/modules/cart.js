@@ -7,19 +7,20 @@ const getters = {
       const product = rootState.products.featuredProducts.find(
         product => product.id === cartItem.id
       );
-
       return {
         name: product.name,
-        genre: product.genre
+        genre: product.genre,
+        price: product.pricing
       };
     });
   },
   cartTotal(state, getters) {
     return getters.cartProducts.reduce(
-      (total, product) => (total += 1), //product.price
+      (total, product) => (total += parseInt(product.price)),
       0
     );
   },
+
   cartSize(state) {
     return state.items.length;
   }
@@ -37,7 +38,6 @@ const actions = {
   },
 
   emptyCart(context) {
-    console.log("asdasd")
     context.commit('emptyCart');
   }
 };
@@ -54,7 +54,6 @@ const mutations = {
   },
 
   emptyCart(state) {
-    console.log('asdasd');
     state.items = [];
   }
 };

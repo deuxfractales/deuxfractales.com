@@ -40,14 +40,13 @@
                 </div>
               </th>
               <td class="border-1">
-                <!-- {{ product.price }} -->
-                <strong>$150</strong>
+                <strong>${{ product.price }}</strong>
               </td>
             </tr>
           </tbody>
         </table>
         <hr />
-        <h3>Total: ${{ total }}</h3>
+        <h3>Total: ${{ total.toFixed(2) }}</h3>
         <div ref="paypal"></div>
       </div>
     </div>
@@ -97,9 +96,9 @@ export default {
         .Buttons({
           createOrder: (data, actions) => {
             return actions.order.create({
-              purchase_units: [
+               purchase_units: [
                 {
-                  description: "Deuxfractales music purchase",
+                  description: 'Deux fractales product',
                   amount: {
                     currency_code: "USD",
                     value: this.total
@@ -111,7 +110,6 @@ export default {
           onApprove: async (data, actions) => {
             const order = await actions.order.capture();
             this.paidFor = true;
-            console.log("pls work");
             this.emptyCart();
             console.log(order);
 
