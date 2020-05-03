@@ -45,6 +45,23 @@ const drawings = {
     }
     return points;
   },
+  juliaSet: function (n, d) {
+    const points= [];
+    var z= 0;
+    var ca= -0.8;
+    var cb= 0.156;
+    for(var a = 0; a < PI * 2 * d; a += 0.02) {
+      var a_new= n*n - d*d + ca;
+      var b_new= 2*n*b + cb;
+      var data = {
+        x: a_new,
+        y: b_new,
+      };
+      points.push(data);
+    }
+
+    return points;
+  },
   musicNote: function () {
     return [
       { x: 193, y: 47 },
