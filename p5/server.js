@@ -92,9 +92,10 @@ const drawings = {
       { x: 233, y: 111 },
     ];
   },
+  juliaSet(1,3);
 };
 
-juliaSet(1, 3);
+// juliaSet(1, 3);
 wss.on('connection', (ws) => {
   //connection is up, let's add a simple simple event
   ws.on('message', (message) => {
