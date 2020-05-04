@@ -45,16 +45,20 @@ const drawings = {
     }
     return points;
   },
-  juliaSet: function (n, d) {
+  juliaSet: function () {
     const pointsJ= [];
-    var z= 0;
-    var ca= -0.8;
-    var cb= 0.156;
-    for(var a = 0; a < PI * 2 * d; a += 0.02) {
-      var a_new= n*n - d*d + ca;
-      var b_new= 2*n*b + cb;
-      var dataJ = {
-        x: a_new,
+    let z= 0;
+    let ca= -0.8;
+    let cb= 0.156;
+    let d= 0;
+    for(let a = 0; a < 100; a ++) {
+      // let d= 0;
+      let z_new= z*z - d*d+ ca;
+      let b_new= 2*a*d + cb;
+      d= b_new;
+      z= z_new;
+      let dataJ = {
+        x: z_new,
         y: b_new,
       };
       pointsJ.push(dataJ);
@@ -92,10 +96,10 @@ const drawings = {
       { x: 233, y: 111 },
     ];
   },
-  juliaSet(1,3);
+  // juliaSet(1,3);
 };
 
-// juliaSet(1, 3);
+drawings.juliaSet(1, 3);
 wss.on('connection', (ws) => {
   //connection is up, let's add a simple simple event
   ws.on('message', (message) => {
