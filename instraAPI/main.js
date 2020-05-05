@@ -1,6 +1,6 @@
 const request = require('request')
 const axios = require('axios');
-const {Builder, By, Key, until} = require('selenium-webdriver');
+const { Builder, By, Key, until } = require('selenium-webdriver');
 const Promise = require("bluebird");
 
 const get = (p, o) =>

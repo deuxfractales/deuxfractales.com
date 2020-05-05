@@ -40,7 +40,9 @@ import p5 from '../../mixins/p5';
 export default {
   name: 'HomeMusicWidget',
   props: [
-    'product'
+    'product',
+    'currentlyPlaying',
+    'setCurrentlyPlaying'
   ],
   components: {
     'vue-p5': VueP5,
