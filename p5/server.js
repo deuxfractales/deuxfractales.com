@@ -45,20 +45,20 @@ const drawings = {
     }
     return points;
   },
-  juliaSet: function () {
+  juliaSet: function (x, y) {
     const pointsJ= [];
-    let z= 0;
+    let z= x;
     let ca= -0.8;
     let cb= 0.156;
-    let d= 0;
-    for(let a = 0; a < 100; a ++) {
+    let d= y;
+    for(let a = 0; a < 50; a ++) {
       // let d= 0;
       let z_new= z*z - d*d+ ca;
-      let b_new= 2*a*d + cb;
-      d= b_new;
+      let b_new= 2*z*d + cb;
       z= z_new;
+      d= b_new;
       let dataJ = {
-        x: z_new,
+        x: a_new,
         y: b_new,
       };
       pointsJ.push(dataJ);
