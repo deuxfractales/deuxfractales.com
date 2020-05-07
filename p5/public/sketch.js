@@ -1,7 +1,14 @@
 var socket
 var n = 2
-var d = 9
+var d = 14
 var k = n / d
+
+// let x = 0.1
+// let y = 0.3
+// let z= x;
+// let ca= -0.8;
+// let cb= 0.156;
+// let d= y;
 
 function setup() {
     createCanvas(400, 400);
@@ -38,11 +45,24 @@ function draw() {
         var x = r * cos(a);
         var y = r * sin(a);
         vertex(x,y);
-        var data = {
-            x: x,
-            y: y
-        }
-        //socket.emit('shape', data)
+        // var data = {
+        //     x: x,
+        //     y: y
+        // }
+
     }
+
+    // for(let a = 0; a < 50; a += 0.1) {
+    //   // let d= 0;
+    //   let z_new= z*z - d*d+ ca;
+    //   let b_new= 2*z*d + cb;
+    //   z= z_new;
+    //   d= b_new;
+    //   vertex(z_new,b_new)
+    //   let dataJ = {
+    //     x: z_new,
+    //     y: b_new,
+    //   };
+    // }
     endShape(close);
 }

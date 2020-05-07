@@ -51,18 +51,18 @@ const drawings = {
     let ca= -0.8;
     let cb= 0.156;
     let d= y;
-    for(let a = 0; a < 50; a ++) {
+    for(let a = 0; a < 50; a += 0.1) {
       // let d= 0;
       let z_new= z*z - d*d+ ca;
       let b_new= 2*z*d + cb;
       z= z_new;
       d= b_new;
       let dataJ = {
-        x: a_new,
+        x: z_new,
         y: b_new,
       };
       pointsJ.push(dataJ);
-      console.log(dataJ);
+      // console.log(dataJ);
     }
     return pointsJ;
   },
