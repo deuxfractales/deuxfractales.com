@@ -58,7 +58,7 @@ const drawings = {
       z= z_new;
       d= b_new;
       let dataJ = {
-        x: a_new,
+        x: z_new,
         y: b_new,
       };
       pointsJ.push(dataJ);
