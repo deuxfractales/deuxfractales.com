@@ -6,9 +6,6 @@ var k = n / d
 var minval = -0.5;
 var maxval = 0.5;
 
-var minSlider;
-var maxSlider;
-
 var x;
 var y;
 // var z= x;
@@ -20,9 +17,6 @@ var frDiv;
 function setup() {
     createCanvas(400, 400);
     pixelDensity(1);
-
-    // minSlider = createSlider(-2.5, 0, -2.5, 0.01);
-//   maxSlider = createSlider(0, 2.5, 2.5, 0.01);
 
     frDiv = createDiv('');
     // socket = io.connect('http://localhost:3000')
@@ -66,12 +60,14 @@ function draw() {
         var cb = 0.156;
   
         var n = 0;
+        var a_track= a;
+        var b_track= b;
   
         while (n < maxiterations) {
-          var aa = a * a - b * b;
-          var bb = 2 * a * b;
-          a = aa + ca;
-          b = bb + cb;
+          a = a_track*a_track - b_track*b_track + ca;
+          b = 2*a_track*b_track + cb;
+          a_track= a;
+          b_track= b;
           if (a * a + b * b > 16) {
             break;
           }
