@@ -42,16 +42,44 @@ async function dbActions(fastify) {
   fastify.get('/db/f1', async (req, reply) => {
     fastify.mysql.getConnection(onConnect);
     function onConnect(err, client) {
-      console.log(err);
-      if (err) reply.send(err);
+      if(err){
+        console.log(`connection error:${err}`)
+      }else{
+        console.log('no connection error')
+      }
 
       client.query(
         // Add DRY in by (1) Making the call dynamic ex: 'db/:featuredSlot' and (2) making the query dynamic ex:SELECT .... featured.[req.params.featuredSlot]
         'SELECT beatz.id,beatz.name,beatz.url,beatz.genre,featured.featuredSlot1 FROM featured LEFT JOIN beatz ON beatz.id = featured.beatId',
         function onResult(err, result) {
-          console.log(err);
+          if(err){
+            console.log(`query error:${err}`)
+          }else{
+            console.log('no query error')
+          }
           client.release();
-          reply.send(err || result);
+
+          function changeUrl(result){
+            let beats = []
+            for(a = 0; a < result.length; a++){
+              let eachRes = result[a]
+              let beat = {
+                url: eachRes.url.replace("localhost",`${process.env.IP}`),
+                id: eachRes.id,
+                name: eachRes.name,
+                genre: eachRes.genre,
+                featuredSlot1: eachRes.featuredSlot1
+              }
+              //console.log(beat)
+              beats.push(beat)
+            }
+            //console.log(beats)
+            return beats
+          }
+        
+          let newResult = changeUrl(result)
+          
+          reply.send(newResult || err)
         }
       );
     }

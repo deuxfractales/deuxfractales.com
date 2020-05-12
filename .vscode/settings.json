@@ -1,0 +1,13 @@
+{
+    "sqltools.connections": [
+        {
+            "database": "deuxfractales",
+            "dialect": "MySQL",
+            "name": "dfa",
+            "password": "bnhepos34q0dnu6p",
+            "port": 25060,
+            "server": "db1-deuxfractales-do-user-7211070-0.a.db.ondigitalocean.com",
+            "username": "ace"
+        }
+    ]
+}
