@@ -1,0 +1,9 @@
+{
+    "apps": [
+        {
+            "name": "dfa-dev",
+            "script": "npm",
+            "args" : "dev"
+        }
+    ]
+}
