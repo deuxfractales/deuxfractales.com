@@ -5,7 +5,7 @@ ig.startModule().then((res) => {
     console.log(users.username);
   });
 
-  ig.getPosts('saucedbenny').then((data) => {
-    console.log(data);
-  });
+  // ig.getPosts('saucedbenny').then((data) => {
+  //   console.log(data);
+  // });
 });
