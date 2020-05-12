@@ -5,6 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "concurrently": "^5.1.0",
+    "ip": "^1.1.5",
     "vue-audio-visual": "^2.0.0",
     "vue-template-loader": "^1.1.0"
   },
@@ -19,6 +20,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "concurrently \"cd babbling-brooke2 && npm run dev\" \"cd p5 && npm run dev\" \"cd test-03-07 && npm run serve \" ",
     "start": "concurrently \"cd babbling-brooke2 && npm run dev\" \"cd p5 && npm run start\" \"cd test-03-07 && npm run serve \" "
   },
   "repository": {
