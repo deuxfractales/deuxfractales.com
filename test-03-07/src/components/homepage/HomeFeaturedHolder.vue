@@ -6,8 +6,6 @@
       :key="product.id"
       :ref="product.id"
       :id="product.id"
-      :currentlyPlaying="playingId"
-      :setCurrentlyPlaying="setCurrentlyPlaying"
       class="beatcontainer"
       :product="product"
     />
@@ -24,16 +22,6 @@ export default {
     HomeMusicWidget: HomeMusicWidget,
   },
   mixins: [vuex],
-  methods: {
-    setCurrentlyPlaying: function(currentlyPlaying) {
-      this.playingId = currentlyPlaying;
-    }
-  },
-  watch: {
-    playingId: function () {
-      console.log(this.playingId)
-    }
-  },
   created: async function () {
     while (this.$socket.readyState != 1) {
       console.log('Waiting');
@@ -50,11 +38,6 @@ export default {
       refs[drawTo][0].setPoints(points)
     };
   },
-  data: function () {
-    return {
-      playingId: null,
-    };
-  }
 };
 </script>
 

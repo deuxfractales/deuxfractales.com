@@ -6,6 +6,7 @@ export default {
   data: function () {
     return {
       audioSource: undefined,
+      audioState: false,
       fftInterval: undefined
     };
   },
@@ -28,32 +29,17 @@ export default {
     //   console.log(barHeight);
     // }
   },
-  watch: {
-    currentlyPlaying: function (playingId) {
-      const mediaPlayer = this.$refs.mediaPlayer;
-
-      if (playingId != this.$attrs.id) {
-        mediaPlayer.pause();
-      } else {
-        mediaPlayer.play();
-      }
-
-      this.setCurrentlyPlaying(this.currentlyPlaying)
-    }
-  },
   methods: {
-    playback: function () {
+    playback: function (elementRef) {
       const mediaPlayer = this.$refs.mediaPlayer;
 
-      if (this.currentlyPlaying != this.$attrs.id) {
-        mediaPlayer.play();
-        this.currentlyPlaying = this.$attrs.id;
-      } else {
+      if (this.audioState) {
         mediaPlayer.pause();
-        this.currentlyPlaying = null;
+      } else {
+        mediaPlayer.play();
       }
 
-      this.setCurrentlyPlaying(this.currentlyPlaying)
+      this.audioState = !this.audioState;
     },
     playPause: function (event) {
       if (event) {
@@ -61,20 +47,10 @@ export default {
       }
     },
     getFftData: function () {
-      if (this.currentlyPlaying == this.$attrs.id) {
+      if(this.audioState) {
         this.analyzerNode.getByteFrequencyData(this.dataArray);
         const colorFrom = this.dataArray[7]
         this.rgb.r = colorFrom
-      } else if (this.rgb.r >= 0) {
-        const data = this;
-
-        var interval = setInterval(function() {
-          if (data.rgb.r >= 0) {
-            data.rgb.r -= 1;
-          } else {
-            clearInterval(interval)
-          }
-        }, 50);
       }
     },
   },
