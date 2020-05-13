@@ -3,14 +3,18 @@ const ctx = new (window.AudioContext || window.webkitAudioContext)();
 let gainNode = ctx.createGain();
 
 export default {
+  
   data: function () {
     return {
       audioSource: undefined,
-      fftInterval: undefined
+      fftInterval: undefined,
+     
     };
   },
   mounted: function () {
     const mediaPlayer = this.$refs.mediaPlayer;
+    this.setMediaPlayer(mediaPlayer)
+
 
     this.analyzerNode = ctx.createAnalyser();
     this.analyzerNode.fftSize = 256;
@@ -31,14 +35,17 @@ export default {
   watch: {
     currentlyPlaying: function (playingId) {
       const mediaPlayer = this.$refs.mediaPlayer;
-
+       
       if (playingId != this.$attrs.id) {
+        
         mediaPlayer.pause();
       } else {
-        mediaPlayer.play();
+         
+        mediaPlayer.play(); 
       }
 
       this.setCurrentlyPlaying(this.currentlyPlaying)
+      
     }
   },
   methods: {
@@ -47,17 +54,18 @@ export default {
 
       if (this.currentlyPlaying != this.$attrs.id) {
         mediaPlayer.play();
-        this.currentlyPlaying = this.$attrs.id;
+        this.currentlyPlaying = this.$attrs.id; 
       } else {
         mediaPlayer.pause();
         this.currentlyPlaying = null;
       }
-
+      
       this.setCurrentlyPlaying(this.currentlyPlaying)
     },
     playPause: function (event) {
       if (event) {
         this.playback(event.target.getAttribute('tag'));
+        
       }
     },
     getFftData: function () {
