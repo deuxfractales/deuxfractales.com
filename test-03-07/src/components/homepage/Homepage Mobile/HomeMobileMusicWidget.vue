@@ -9,10 +9,6 @@
       </div>
 
       <div class="p5waveform">
-        <audio ref="mediaPlayer" crossorigin="anonymous" controls="true" :src="product.url">
-          Your browser does not support the
-          <code>audio</code> element.
-        </audio>
       </div>
 
       <button v-on:click="playPause" class="mobile-playButton">Play/Pause</button>
@@ -20,6 +16,7 @@
       <div class="mobile-buyprice">
         <a class="mobile-buybutton">BUY $150</a>
       </div>
+      <MobileProgressBar v-on:setMediaPlayer="setMediaPlayer($event)" :product="product" :mediaPlayer="mediaPlayer" :currentlyPlaying="currentlyPlaying" :beatDurationAvailable="beatDurationAvailable" />
     </div>
   </div>
 </template>
@@ -29,21 +26,25 @@ import VueP5 from 'vue-p5';
 import vuex from '../../../mixins/vuex';
 import audioPlayback from '../../../mixins/audioPlayback';
 import p5 from '../../../mixins/p5';
+import MobileProgressBar from './MobileProgressBar';
 
 export default {
   name: 'HomeMusicWidget',
   props: [
-    'product'
+    'product',
+    'currentlyPlaying',
   ],
   components: {
     'vue-p5': VueP5,
+    'MobileProgressBar':MobileProgressBar
   },
   data: function () {
     return {
       p5: undefined,
       points: undefined,
       rgb: { 'r': 10, 'g': 100, 'b': 200 },
-      p5Style: { 'background-color': 'rgb(0,0,0)' }
+      p5Style: { 'background-color': 'rgb(0,0,0)' },
+      beatDurationAvailable:false
     };
   },
   mixins: [vuex, audioPlayback, p5],
@@ -52,6 +53,10 @@ export default {
   },
 
   methods: {
+     setMediaPlayer: function(currentMediaPlayer) {
+      this.$refs.mediaPlayer = currentMediaPlayer;
+      this.beatDurationAvailable = true; //used to trigger setDuration method in ProgressBar component
+    },
     setPoints: function(points) {
       this.points = points
       this.renderPoints()

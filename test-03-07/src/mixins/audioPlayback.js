@@ -18,7 +18,7 @@ export default {
   },
   mounted: function () {
     const mediaPlayer = this.$refs.mediaPlayer;
-
+    this.setMediaPlayer(mediaPlayer)
     let source = ctx.createMediaElementSource(mediaPlayer);
 
     source.connect(analyzerNode);
