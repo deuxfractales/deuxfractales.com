@@ -10,12 +10,14 @@ async function dbActions(fastify) {
 
     function onConnect(err, client) {
       if (err) reply.send(err);
-
+     
       client.query(
         'SELECT id,name,price,url,artist,genre FROM beatz',
         function onResult(err, result) {
           client.release();
-          reply.send(err || result);
+          let updatedResult = changeUrl(result)
+          console.log(updatedResult)
+          reply.send(err || updatedResult);
         }
       );
     }
@@ -32,8 +34,9 @@ async function dbActions(fastify) {
         [req.params.id],
         function onResult(err, result) {
           client.release();
-
-          reply.send(err || result);
+          let updatedResult = changeUrl(result)
+          console.log(updatedResult)
+          reply.send(err || updatedResult);
         }
       );
     }
@@ -51,7 +54,8 @@ async function dbActions(fastify) {
         function onResult(err, result) {
           console.log(err);
           client.release();
-          reply.send(err || result);
+          let updatedResult = changeUrl(result);
+          reply.send(err || updatedResult);
         }
       );
     }
@@ -75,5 +79,22 @@ async function dbActions(fastify) {
     }
   });
 }
+
+  function changeUrl(result){
+    let beats = []
+    for(a = 0; a < result.length; a++){
+      let eachRes = result[a]
+      let beat = {
+        url: eachRes.url.replace("localhost",`${process.env.IP}`),
+        id: eachRes.id,
+        name: eachRes.name,
+        genre: eachRes.genre,
+        featuredSlot1: eachRes.featuredSlot1
+      }
+      beats.push(beat)
+    }
+    return beats
+  }
+
 
 module.exports = dbActions;
