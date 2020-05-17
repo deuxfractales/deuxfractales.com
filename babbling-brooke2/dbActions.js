@@ -56,6 +56,24 @@ async function dbActions(fastify) {
       );
     }
   });
+  // send artists, subgenre, and ig_handles to redis DB
+  fastify.get('/db/f3', async (req, reply) => {
+    fastify.mysql.getConnection(onConnect);
+    function onConnect(err, client) {
+      console.log(err);
+      if (err) reply.send(err);
+
+      client.query(
+        'SELECT * FROM deuxfractales.artists',
+        function onResult(err, result) {
+          console.log(err);
+          client.release();
+          console.log(result);
+          reply.send(err || result);
+        }
+      );
+    }
+  });
 }
 
 module.exports = dbActions;

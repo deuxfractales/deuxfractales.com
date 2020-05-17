@@ -1,6 +1,7 @@
 const request = require('request');
 const axios = require('axios');
 const { Builder, By, Key, until } = require('selenium-webdriver');
+const firefox = require('selenium-webdriver/firefox');
 const Promise = require('bluebird');
 
 const get = (p, o) => p.reduce((xs, x) => (xs && xs[x] ? xs[x] : null), o);
@@ -43,10 +44,21 @@ function timeout(ms) {
 
 function getCookies(username, pass) {
   return new Promise(async (resolve, reject) => {
-    let driver = await new Builder().forBrowser('firefox').build();
+    let proxyAddress =
+      'http://scraperapi:b181e26cb6b1aec09907888cdae3b52f@proxy-server.scraperapi.com:8001';
+
+    let driver = await new Builder()
+      .forBrowser('firefox')
+      .setFirefoxOptions(
+        new firefox.Options()
+          // .addArguments(`--proxy-server=${proxyAddress}`)
+          .headless()
+      )
+
+      .build();
     let cookieString = '';
     try {
-      await driver.get('https://www.instagram.com/');
+      await driver.get('http://www.instagram.com/');
       await driver.wait(until.elementLocated(By.name('username')), 10000);
       await driver.wait(until.elementLocated(By.name('password')), 10000);
 
@@ -88,7 +100,7 @@ function startModule() {
 }
 
 function getPostsLiked(shortcode, cookie, after) {
-  const baseURL = `https://www.instagram.com/graphql/query/?query_hash=${postsLiked}&variables=`;
+  const baseURL = `http://www.instagram.com/graphql/query/?query_hash=${postsLiked}&variables=`;
 
   const variables = {
     shortcode,
@@ -102,6 +114,8 @@ function getPostsLiked(shortcode, cookie, after) {
     headers: {
       Cookie: cookie,
     },
+    proxy:
+      'http://scraperapi:b181e26cb6b1aec09907888cdae3b52f@proxy-server.scraperapi.com:8001',
   };
 
   return new Promise((resolve) => {
@@ -133,7 +147,7 @@ function getPostsAfter(id, after, cookie, depth) {
   // ...
   const maxDepth = 0;
 
-  baseURL = `https://www.instagram.com/graphql/query/?query_hash=${posts}&variables=`;
+  baseURL = `http://www.instagram.com/graphql/query/?query_hash=${posts}&variables=`;
 
   const variables = {
     id,
@@ -146,6 +160,8 @@ function getPostsAfter(id, after, cookie, depth) {
     headers: {
       Cookie: cookie,
     },
+    proxy:
+      'http://scraperapi:b181e26cb6b1aec09907888cdae3b52f@proxy-server.scraperapi.com:8001',
   };
 
   return new Promise((resolve) => {
@@ -251,19 +267,21 @@ function lookUp(id) {
 }
 
 function getUID(username, callback_) {
-  const url = `https://www.instagram.com/${username}/?__a=1`;
+  const url = `http://www.instagram.com/${username}/?__a=1`;
   request(
     {
       method: 'GET',
       url,
       json: true,
+      proxy:
+        'http://scraperapi:b181e26cb6b1aec09907888cdae3b52f@proxy-server.scraperapi.com:8001',
     },
     (error, response, body) => callback_(get(['graphql', 'user', 'id'], body))
   );
 }
 
 function getRequestUser(id, cookie, cursor, query, cb) {
-  const baseURL = `https://www.instagram.com/graphql/query/?query_hash=${query}&variables=`;
+  const baseURL = `http://www.instagram.com/graphql/query/?query_hash=${query}&variables=`;
   const variables = {
     id: id,
     include_reel: true,
@@ -277,10 +295,13 @@ function getRequestUser(id, cookie, cursor, query, cb) {
     headers: {
       Cookie: cookie,
     },
+    proxy:
+      'http://scraperapi:b181e26cb6b1aec09907888cdae3b52f@proxy-server.scraperapi.com:8001',
   };
 
   request(options, (error, response, bodyRaw) => {
     const body = JSON.parse(bodyRaw);
+    console.log(body);
     if (body.status === 'ok') {
       let data = [];
 
