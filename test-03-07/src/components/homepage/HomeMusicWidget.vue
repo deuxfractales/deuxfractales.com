@@ -49,9 +49,8 @@ export default {
       points: undefined,
       rgb: { 'r': 10, 'g': 100, 'b': 200 },
       p5Style: { 'background-color': 'rgb(0,0,0)' },
-      beatDurationAvailable:false
-      
-
+      beatDurationAvailable: false,
+      graphic: 'asdf'
     };
   },
   mixins: [vuex, audioPlayback, p5],
@@ -64,13 +63,42 @@ export default {
       this.$refs.mediaPlayer = currentMediaPlayer;
       this.beatDurationAvailable = true; //used to trigger setDuration method in ProgressBar component
     },
-    setPoints: function(points) {
+    setPoints: function(points, type) {
       this.points = points
-      this.renderPoints()
+      
+      if (type == 'png')
+        this.renderImage()
+      else if (type == 'points')
+        this.renderPoints()
+
       window.requestAnimationFrame(this.drawPoints)
     },
-    renderPoints: function(points) {
-      
+    renderImage: function() {
+      const { r,g,b } = this.rgb
+      const sketch = this.p5;
+
+      sketch.background(220);
+      sketch.translate(sketch.width / 2, sketch.height / 2);
+      sketch.clear()
+
+      sketch.fill(sketch.color(r,g,b))
+      sketch.rect(-sketch.width,-sketch.height,sketch.width*2, sketch.height*2)
+
+      sketch.erase();
+      sketch.noErase()
+      sketch.noFill();
+
+      const raw = new Image();
+      raw.src = 'data:image/png;base64, ' + this.points;
+
+      raw.onload = function() {
+        const img = sketch.createImage(sketch.width, sketch.height);
+        img.drawingContext.drawImage(raw, 0, 0);
+        img.resize(sketch.width, sketch.height);
+        sketch.image(img, 0, 0); // draw the image, etc here
+      }
+    },
+    renderPoints: function() {
       const { r,g,b } = this.rgb
       const sketch = this.p5;
 

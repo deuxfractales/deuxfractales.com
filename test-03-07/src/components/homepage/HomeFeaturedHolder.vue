@@ -47,7 +47,7 @@ export default {
       const points = jsonData.points;
       const drawTo = jsonData.id;
 
-      refs[drawTo][0].setPoints(points)
+      refs[drawTo][0].setPoints(points, jsonData.type);
     };
   },
   data: function () {

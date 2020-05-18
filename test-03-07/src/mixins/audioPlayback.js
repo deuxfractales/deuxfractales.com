@@ -3,7 +3,6 @@ const ctx = new (window.AudioContext || window.webkitAudioContext)();
 let gainNode = ctx.createGain();
 
 export default {
-  
   data: function () {
     return {
       audioSource: undefined,
@@ -11,10 +10,10 @@ export default {
      
     };
   },
+
   mounted: function () {
     const mediaPlayer = this.$refs.mediaPlayer;
     this.setMediaPlayer(mediaPlayer)
-
 
     this.analyzerNode = ctx.createAnalyser();
     this.analyzerNode.fftSize = 256;
@@ -32,22 +31,21 @@ export default {
     //   console.log(barHeight);
     // }
   },
+
   watch: {
     currentlyPlaying: function (playingId) {
       const mediaPlayer = this.$refs.mediaPlayer;
        
       if (playingId != this.$attrs.id) {
-        
         mediaPlayer.pause();
       } else {
-         
         mediaPlayer.play(); 
       }
 
       this.setCurrentlyPlaying(this.currentlyPlaying)
-      
     }
   },
+
   methods: {
     playback: function () {
       const mediaPlayer = this.$refs.mediaPlayer;
@@ -62,6 +60,7 @@ export default {
       
       this.setCurrentlyPlaying(this.currentlyPlaying)
     },
+
     playPause: function (event) {
       if (event) {
         this.playback(event.target.getAttribute('tag'));

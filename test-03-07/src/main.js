@@ -7,7 +7,8 @@ import AudioVisual from 'vue-audio-visual';
 import './assets/webflow.css';
 
 
-Vue.use(VueNativeSock, `ws://${process.env.IP}:3000`);
+// Vue.use(VueNativeSock, `ws://${process.env.IP}:3000`);
+Vue.use(VueNativeSock, `ws://localhost:3000`);
 
 Vue.use(AudioVisual);
 

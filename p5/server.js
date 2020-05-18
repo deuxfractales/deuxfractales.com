@@ -1,6 +1,7 @@
 var express = require('express');
 var http = require('http');
 var ws = require('ws');
+var fs = require('fs');
 
 const app = express();
 
@@ -83,12 +84,25 @@ wss.on('connection', (ws) => {
     const messageParsed = JSON.parse(message);
     console.log(messageParsed);
     if (messageParsed.type == 'getpoints') {
-      ws.send(
-        JSON.stringify({
-          points: drawings.roseCurve(14, 9),
-          id: messageParsed.id,
-        })
-      );
+      if (messageParsed.graphic == 'roseCurve') {
+        ws.send(
+          JSON.stringify({
+            points: drawings.roseCurve(14, 9),
+            id: messageParsed.id,
+            type: 'points'
+          })
+        );
+      } else if (messageParsed.graphic == 'asdf') {
+        const fileData = fs.readFileSync('./data/tiles.png', { encoding: 'base64' });
+
+        ws.send(
+          JSON.stringify({
+            points: fileData,
+            id: messageParsed.id,
+            type: 'png'
+          })
+        );
+      }
     }
   });
 });
