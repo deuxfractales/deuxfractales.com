@@ -43,7 +43,7 @@ async function main() {
         results.map((artist) => {
           ig.lookUp(artist).then((users) => {
             users.map((user) => {
-              client.rpush(`${artist} Followers`, user.username);
+              client.zincrby(`${artist} Followers`, 0, user.username);
             });
           });
         });
@@ -58,7 +58,7 @@ async function main() {
           ig.getPosts(artist).then((users) => {
             users.map((user) => {
               user.liked.map((liked) => {
-                client.rpush(`${artist} Post Likers`, 1, liked);
+                client.zincrby(`${artist} Post Likers`, 1, liked);
               });
             });
           });

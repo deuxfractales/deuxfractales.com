@@ -21,7 +21,7 @@ async function main() {
       close();
     });
 
-    const ig_username = '0l0l0l0l0l0l0987';
+    const ig_username = 're.farhan';
 
     // Sorted set --> ["artists": {"@travisscott": 0, "@cardib": 12}]
 
