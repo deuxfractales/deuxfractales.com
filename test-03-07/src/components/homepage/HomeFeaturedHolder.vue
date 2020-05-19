@@ -6,6 +6,8 @@
       :key="product.id"
       :ref="product.id"
       :id="product.id"
+      :k="product.k"
+      :d="product.d"
       :currentlyPlaying="playingId"
       :setCurrentlyPlaying="setCurrentlyPlaying"
       class="beatcontainer"
