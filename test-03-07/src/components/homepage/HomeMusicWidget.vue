@@ -36,8 +36,9 @@ export default {
   props: [
     'product',
     'currentlyPlaying',
-    'setCurrentlyPlaying'
-    
+    'setCurrentlyPlaying',
+    'k',
+    'd'
   ],
   components: {
     'vue-p5': VueP5,
@@ -50,7 +51,7 @@ export default {
       rgb: { 'r': 10, 'g': 100, 'b': 200 },
       p5Style: { 'background-color': 'rgb(0,0,0)' },
       beatDurationAvailable: false,
-      graphic: 'asdf'
+      graphic: 'roseCurve'
     };
   },
   mixins: [vuex, audioPlayback, p5],

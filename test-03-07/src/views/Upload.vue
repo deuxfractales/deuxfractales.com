@@ -57,7 +57,7 @@ export default {
 
       formData.append('mp3', this.mp3);
       axios
-        .post('http://localhost:3001/post/mp3', formData, {
+        .post(`http://${process.env.VUE_APP_IP}:3001/post/mp3`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },

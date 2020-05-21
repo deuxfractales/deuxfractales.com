@@ -87,7 +87,7 @@ wss.on('connection', (ws) => {
       if (messageParsed.graphic == 'roseCurve') {
         ws.send(
           JSON.stringify({
-            points: drawings.roseCurve(14, 9),
+            points: drawings.roseCurve(messageParsed.k, messageParsed.d),
             id: messageParsed.id,
             type: 'points'
           })
