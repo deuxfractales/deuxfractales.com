@@ -336,4 +336,5 @@ function getRequestUser(id, cookie, cursor, query, cb) {
   });
 }
 
+
 module.exports = { startModule, lookUp, getPosts };

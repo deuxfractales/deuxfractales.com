@@ -2,7 +2,7 @@ const Redis = require('redis-ssh');
 const axios = require('axios');
 const ig = require('./main');
 
-async function main() {
+async function update() {
   try {
     const { client, close } = await Redis.connect(
       {
@@ -25,8 +25,7 @@ async function main() {
     // get query of all artists from mySQL DB, and sotre them in sorted sets in the Redis DB
 
     // TODO: remove the empty value in the artists.ig_handle table
-    // 
-    
+
     // const artists = await axios.get('http://localhost:3001/db/f3');
 
     // // Store all artists in the redis database
@@ -37,37 +36,45 @@ async function main() {
     // });
 
     // First Check: create a sorted set for each artist that will contain the followers of that artist (ex. 'Travis Scott Followers')
-
-    ig.startModule().then((res) => {
-      client.zrange('artists', 0, -1, function (err, results) {
-        results.map((artist) => {
-          ig.lookUp(artist).then((users) => {
-            users.map((user) => {
-              client.zincrby(`${artist} Followers`, 0, user.username);
-            });
-          });
-        });
-      });
-    });
-
-    // Second Check: create a sorted set for each artist that will contain all of the users that liked any one of the artists images
-
-    ig.startModule().then((res) => {
-      client.zrange('artists', 0, -1, function (err, results) {
-        results.map((artist) => {
-          ig.getPosts(artist).then((users) => {
-            users.map((user) => {
-              user.liked.map((liked) => {
-                client.zincrby(`${artist} Post Likers`, 1, liked);
+    function addFollowers() {
+      ig.startModule().then((res) => {
+        client.zrange('artists', 0, -1, function (err, results) {
+          results.map((artist) => {
+            ig.lookUp(artist).then((users) => {
+              console.log('lookup: ' + artist);
+              users.map((user) => {
+                client.rpush(`${artist} Followers`, user.username);
               });
             });
           });
         });
       });
-    });
-  
-} catch (error) {
+    }
+
+    // Second Check: create a sorted set for each artist that will contain all of the users that liked any one of the artists images
+    function addLikedPosts() {
+      ig.startModule().then((res) => {
+        client.zrange('artists', 0, -1, function (err, results) {
+          results.map((artist) => {
+            ig.getPosts(artist).then((users) => {
+              console.log('getPost: ' + artist);
+              users.map((user) => {
+                user.liked.map((liked) => {
+                  client.zincrby(`${artist} Post Likers`, 1, liked);
+                });
+              });
+            });
+          });
+        });
+      });
+    }
+
+    addFollowers()
+    
+
+  } catch (error) {
     console.log(`Error: ${error}`);
   }
 }
-main();
+update();
+
