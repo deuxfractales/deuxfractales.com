@@ -46,9 +46,9 @@ const drawings = {
     return points;
   },
   juliaSet: function (x, y) {
-    var socket
-    socket = io.connect('http://localhost:3000')
-    socket.on('shape', newDrawing)
+    // var socket
+    // socket = io.connect('http://localhost:3000')
+    // socket.on('shape', newDrawing)
 
     var maxiterations = 100;
         var a = map(x, 0, width, -2.5, 2.5);
@@ -74,7 +74,7 @@ const drawings = {
 
 
 
-    socket.send( n)
+    // socket.send( n)
   },
   musicNote: function () {
     return [
