@@ -45,6 +45,37 @@ const drawings = {
     }
     return points;
   },
+  juliaSet: function (x, y) {
+    var socket
+    socket = io.connect('http://localhost:3000')
+    socket.on('shape', newDrawing)
+
+    var maxiterations = 100;
+        var a = map(x, 0, width, -2.5, 2.5);
+        var b = map(y, 0, height, -2.5, 2.5);
+  
+        var ca = -0.8;
+        var cb = 0.156;
+  
+        var n = 0;
+        var a_track= a;
+        var b_track= b;
+  
+        while (n < maxiterations) {
+          a = a_track*a_track - b_track*b_track + ca;
+          b = 2*a_track*b_track + cb;
+          a_track= a;
+          b_track= b;
+          if (a * a + b * b > 16) {
+            break;
+          }
+          n++;
+        }
+
+
+
+    socket.send( n)
+  },
   musicNote: function () {
     return [
       { x: 193, y: 47 },
