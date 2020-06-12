@@ -1,8 +1,26 @@
 const fastify = require('fastify')();
+const ip = require('ip')
+
+const serverIP = ip.address();
+ 
+
+
+// intialize env file based on server ip address
+if(serverIP == '192.168.5.15'){
+  require('dotenv').config({path:'../config/envs/dev.env'})
+console.log(process.env.IP);
+  
+}
+else if(serverIP == '138.197.137.112'){
+  require('dotenv').config({path:'../config/envs/prod.env'})
+  console.log(process.env.IP);
+}
+
 
 fastify.register(require('fastify-cors'), {
   // put your options here
-  origin: 'http://localhost:8080',
+  origin: `http://${process.env.IP}:8080`,
+ // origin: `http://localhost:8080`,
   methods: ['GET,PUT,POST'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   exposedHeaders: ['Content-Range', 'X-Content-Range'],

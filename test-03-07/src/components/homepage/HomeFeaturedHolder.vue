@@ -6,6 +6,10 @@
       :key="product.id"
       :ref="product.id"
       :id="product.id"
+      :k="product.k"
+      :d="product.d"
+      :currentlyPlaying="playingId"
+      :setCurrentlyPlaying="setCurrentlyPlaying"
       class="beatcontainer"
       :product="product"
     />
@@ -35,7 +39,7 @@ export default {
       const points = jsonData.points;
       const drawTo = jsonData.id;
 
-      refs[drawTo][0].setPoints(points)
+      refs[drawTo][0].setPoints(points, jsonData.type);
     };
   },
 };

@@ -8,17 +8,9 @@
         <div class="beatgenre">{{ product.genre }}</div>
         <!--CHANGE TO beatArtist on next css import, needs to be changed in webflow as well-->
         <div class="beattags">{{ product.artist }}</div>
+        
       </div>
-      <div id="w-node-7b98ada7c7b9-edd6561d" class="p5waveform">
-        <audio
-          ref="mediaPlayer"
-          crossorigin="anonymous"
-          controls="true"
-          :src="product.url"
-        >
-          Your browser does not support the
-          <code>audio</code> element.
-        </audio>
+      <div id="w-node-7b98ada7c7b9-edd6561d" class="p5waveform">    
       </div>
       <div id="w-node-8a1d5bef07c2-edd6561d" class="buyprice">BUY $150</div>
       <!--Need to change buyText to playButton, it's already changed in webflow but needs to be changed here during the next css import-->
@@ -27,6 +19,7 @@
         v-on:click="playPause"
         class="buytext"
       ></button>
+      <ProgressBar v-on:setMediaPlayer="setMediaPlayer($event)" :product="product" :mediaPlayer="mediaPlayer" :currentlyPlaying="currentlyPlaying" :beatDurationAvailable="beatDurationAvailable" />
     </div>
   </div>
 </template>
@@ -36,21 +29,29 @@ import VueP5 from 'vue-p5';
 import vuex from '../../mixins/vuex';
 import audioPlayback from '../../mixins/audioPlayback';
 import p5 from '../../mixins/p5';
+import ProgressBar from './ProgressBar';
 
 export default {
   name: 'HomeMusicWidget',
   props: [
-    'product'
+    'product',
+    'currentlyPlaying',
+    'setCurrentlyPlaying',
+    'k',
+    'd'
   ],
   components: {
     'vue-p5': VueP5,
+    'ProgressBar':ProgressBar
   },
   data: function () {
     return {
       p5: undefined,
       points: undefined,
       rgb: { 'r': 10, 'g': 100, 'b': 200 },
-      p5Style: { 'background-color': 'rgb(0,0,0)' }
+      p5Style: { 'background-color': 'rgb(0,0,0)' },
+      beatDurationAvailable: false,
+      graphic: 'roseCurve'
     };
   },
   mixins: [vuex, audioPlayback, p5],
@@ -59,13 +60,46 @@ export default {
   },
 
   methods: {
-    setPoints: function(points) {
+      setMediaPlayer: function(currentMediaPlayer) {
+      this.$refs.mediaPlayer = currentMediaPlayer;
+      this.beatDurationAvailable = true; //used to trigger setDuration method in ProgressBar component
+    },
+    setPoints: function(points, type) {
       this.points = points
-      this.renderPoints()
+      
+      if (type == 'png')
+        this.renderImage()
+      else if (type == 'points')
+        this.renderPoints()
+
       window.requestAnimationFrame(this.drawPoints)
     },
-    renderPoints: function(points) {
-      
+    renderImage: function() {
+      const { r,g,b } = this.rgb
+      const sketch = this.p5;
+
+      sketch.background(220);
+      sketch.translate(sketch.width / 2, sketch.height / 2);
+      sketch.clear()
+
+      sketch.fill(sketch.color(r,g,b))
+      sketch.rect(-sketch.width,-sketch.height,sketch.width*2, sketch.height*2)
+
+      sketch.erase();
+      sketch.noErase()
+      sketch.noFill();
+
+      const raw = new Image();
+      raw.src = 'data:image/png;base64, ' + this.points;
+
+      raw.onload = function() {
+        const img = sketch.createImage(sketch.width, sketch.height);
+        img.drawingContext.drawImage(raw, 0, 0);
+        img.resize(sketch.width, sketch.height);
+        sketch.image(img, 0, 0); // draw the image, etc here
+      }
+    },
+    renderPoints: function() {
       const { r,g,b } = this.rgb
       const sketch = this.p5;
 

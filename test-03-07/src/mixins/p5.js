@@ -14,7 +14,10 @@ export default {
 
       this.$socket.send(JSON.stringify({
         type: 'getpoints',
-        id: this.product.id
+        graphic: this.graphic,
+        id: this.product.id,
+        k: this.k,
+        d: this.d
       }));
     }
   }
