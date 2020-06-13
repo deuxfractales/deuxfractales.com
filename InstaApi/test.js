@@ -1,7 +1,7 @@
 const ig = require('./main');
 
 ig.startModule().then((res) => {
-  ig.lookUp('21savage').then((users) => {
+  ig.lookUp('future').then((users) => {
     console.log(users[0].username);
   });
 

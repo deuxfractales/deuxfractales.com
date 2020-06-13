@@ -40,12 +40,10 @@ function timeout(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-// LookedUp, Username, FullName
-
 function getCookies(username, pass) {
   return new Promise(async (resolve, reject) => {
-    let proxyAddress =
-      'http://scraperapi:b181e26cb6b1aec09907888cdae3b52f@proxy-server.scraperapi.com:8001';
+//    let proxyAddress =
+//      'http://scraperapi:b181e26cb6b1aec09907888cdae3b52f@proxy-server.scraperapi.com:8001';
 
     let driver = await new Builder()
       .forBrowser('firefox')
@@ -114,27 +112,40 @@ function getPostsLiked(shortcode, cookie, after) {
     headers: {
       Cookie: cookie,
     },
-    proxy:
-      'http://scraperapi:b181e26cb6b1aec09907888cdae3b52f@proxy-server.scraperapi.com:8001',
+//    proxy:
+//      'http://scraperapi:b181e26cb6b1aec09907888cdae3b52f@proxy-server.scraperapi.com:8001',
   };
 
   return new Promise((resolve) => {
     request(options, (error, response, bodyRaw) => {
-      const edge_liked_by = JSON.parse(bodyRaw).data.shortcode_media
-        .edge_liked_by;
+      cycleAccounts();
 
-      console.log(edge_liked_by.edges.length);
+      try {
+        const edge_liked_by = JSON.parse(bodyRaw).data.shortcode_media
+          .edge_liked_by;
 
-      if (edge_liked_by.page_info.has_next_page) {
+        console.log(edge_liked_by.edges.length);
+
+        if (edge_liked_by.page_info.has_next_page) {
+          getPostsLiked(
+            shortcode,
+            cookies[accountCycle],
+            edge_liked_by.page_info.end_cursor
+          ).then((res) => {
+            resolve(res.concat(edge_liked_by.edges));
+          });
+        } else {
+          resolve(edge_liked_by.edges);
+        }
+      } catch {
+        // Try again
         getPostsLiked(
           shortcode,
-          cookie,
+          cookies[accountCycle],
           edge_liked_by.page_info.end_cursor
         ).then((res) => {
           resolve(res.concat(edge_liked_by.edges));
         });
-      } else {
-        resolve(edge_liked_by.edges);
       }
     });
   });
@@ -160,12 +171,14 @@ function getPostsAfter(id, after, cookie, depth) {
     headers: {
       Cookie: cookie,
     },
-    proxy:
-      'http://scraperapi:b181e26cb6b1aec09907888cdae3b52f@proxy-server.scraperapi.com:8001',
+//    proxy:
+//      'http://scraperapi:b181e26cb6b1aec09907888cdae3b52f@proxy-server.scraperapi.com:8001',
   };
 
   return new Promise((resolve) => {
     request(options, (error, response, bodyRaw) => {
+      cycleAccounts();
+
       const timeline_media = JSON.parse(bodyRaw).data.user
         .edge_owner_to_timeline_media;
 
@@ -173,7 +186,7 @@ function getPostsAfter(id, after, cookie, depth) {
         getPostsAfter(
           id,
           timeline_media.page_info.end_cursor,
-          cookie,
+          cookies[accountCycle],
           depth + 1
         ).then((res) => {
           resolve(res.concat(timeline_media.edges));
@@ -185,11 +198,15 @@ function getPostsAfter(id, after, cookie, depth) {
   });
 }
 
-function getPosts(id) {
+function cycleAccounts() {
   accountCycle++;
   if (accountCycle > logins.length - 1) {
     accountCycle = 0;
   }
+}
+
+function getPosts(id) {
+  cycleAccounts()
 
   const cookie = cookies[accountCycle];
 
@@ -200,7 +217,7 @@ function getPosts(id) {
 
         Promise.map(
           shortCodes,
-          (shortCode) => getPostsLiked(shortCode, cookie),
+          (shortCode) => getPostsLiked(shortCode, cookies[accountCycle]),
           { concurrency: 1 }
         ).then((likedArrays) => {
           const parsedArrays = likedArrays.map((arr, i) => {
@@ -231,32 +248,11 @@ function getPosts(id) {
   });
 }
 
-// getPosts('gryphonracing')
-//  .then((res) => {
-//    console.log(res);
-//  });
-
-// startModule().then(() => {})
-
-//startModule().then((res) => {
-//  lookUp('gryphonracing').then((users) => {
-//    console.log(users)
-//  })
-//  lookUp('gryphonracing').then((users) => {
-//    console.log(users)
-//  })
-//  lookUp('gryphonracing').then((users) => {
-//    console.log(users)
-//  })
-//})
-
 function lookUp(id) {
   return new Promise((resolve) => {
     getUID(id, (uid) => {
-      accountCycle++;
-      if (accountCycle > logins.length - 1) {
-        accountCycle = 0;
-      }
+      cycleAccounts();
+
       getRequestUser(uid, cookies[accountCycle], '', followers, function (
         users
       ) {
@@ -273,8 +269,8 @@ function getUID(username, callback_) {
       method: 'GET',
       url,
       json: true,
-      proxy:
-        'http://scraperapi:b181e26cb6b1aec09907888cdae3b52f@proxy-server.scraperapi.com:8001',
+//      proxy:
+//        'http://scraperapi:b181e26cb6b1aec09907888cdae3b52f@proxy-server.scraperapi.com:8001',
     },
     (error, response, body) => callback_(get(['graphql', 'user', 'id'], body))
   );
@@ -295,43 +291,55 @@ function getRequestUser(id, cookie, cursor, query, cb) {
     headers: {
       Cookie: cookie,
     },
-    proxy:
-      'http://scraperapi:b181e26cb6b1aec09907888cdae3b52f@proxy-server.scraperapi.com:8001',
+//    proxy:
+//      'http://scraperapi:b181e26cb6b1aec09907888cdae3b52f@proxy-server.scraperapi.com:8001',
   };
 
   request(options, (error, response, bodyRaw) => {
-    const body = JSON.parse(bodyRaw);
-    console.log(body);
-    if (body.status === 'ok') {
-      let data = [];
+    cycleAccounts();
 
-      if (body.data.user.edge_followed_by) {
-        data = body.data.user.edge_followed_by;
-      } else {
-        data = body.data.user.edge_follow;
-      }
+    try {
+      const body = JSON.parse(bodyRaw);
 
-      let { count, page_info } = data;
-      let { has_next_page, end_cursor } = page_info;
+      console.log(body);
+      if (body.status === 'ok') {
+        let data = [];
 
-      const users = data.edges.map((datum) => ({
-        username: datum.node.username,
-        fullName: datum.node.full_name,
-      }));
+        if (body.data.user.edge_followed_by) {
+          data = body.data.user.edge_followed_by;
+        } else {
+          data = body.data.user.edge_follow;
+        }
 
-      if (has_next_page) {
-        getRequestUser(id, cookie, end_cursor, query, function (users_other) {
+        let { count, page_info } = data;
+        let { has_next_page, end_cursor } = page_info;
+
+        const users = data.edges.map((datum) => ({
+          username: datum.node.username,
+          fullName: datum.node.full_name,
+        }));
+
+        if (has_next_page) {
+          getRequestUser(id, cookies[accountCycle], end_cursor, query, function (users_other) {
+            setTimeout(() => {
+              cb(users.concat(users_other));
+            }, 1000);
+          });
+        } else {
           setTimeout(() => {
-            cb(users.concat(users_other));
+            cb(users);
           }, 1000);
-        });
+        }
       } else {
-        setTimeout(() => {
-          cb(users);
-        }, 1000);
+        console.log(`Error: ${error}`);
+        throw error;
       }
-    } else {
-      console.log(`Error: ${error}`);
+    } catch (e) {
+      getRequestUser(id, cookies[accountCycle], cursor, query, function (users_other) {
+        setTimeout(() => {
+          cb(users.concat(users_other));
+        }, 1000);
+      });
     }
   });
 }
