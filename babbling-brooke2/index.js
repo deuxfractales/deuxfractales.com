@@ -2,8 +2,6 @@ const fastify = require('fastify')();
 const ip = require('ip')
 
 const serverIP = ip.address();
- 
-
 
 // intialize env file based on server ip address
 if(serverIP == '192.168.5.15'){
@@ -11,6 +9,7 @@ if(serverIP == '192.168.5.15'){
 console.log(process.env.IP);
   
 }
+
 else if(serverIP == '138.197.137.112'){
   require('dotenv').config({path:'../config/envs/prod.env'})
   console.log(process.env.IP);
