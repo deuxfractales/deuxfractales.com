@@ -8,7 +8,6 @@ async function audioStream (fastify, options){
     })
 
     fastify.get('/beats/:name', async (request, reply) => {
-
        reply.sendFile(`/${request.params.name}.mp3`)
     });
 
