@@ -91,7 +91,7 @@
   grid-auto-columns: 1fr;
   grid-column-gap: 0px;
   grid-row-gap: 0px;
-  grid-template-areas: ".";
+  grid-template-areas: '.';
   -ms-grid-columns: 28% 0px 70%;
   grid-template-columns: 28% 70%;
   -ms-grid-rows: 51vh 0px 10vh;
@@ -148,7 +148,7 @@
 }
 
 .grid-2 {
-  grid-template-areas: "Area" "Area" "Area" "Area" "Area";
+  grid-template-areas: 'Area' 'Area' 'Area' 'Area' 'Area';
   -ms-grid-columns: 28% 1fr 1fr;
   grid-template-columns: 28% 1fr 1fr;
   -ms-grid-rows: 10vh 10vh 10vh 10vh 10vh;
@@ -440,4 +440,3 @@
   -ms-grid-row-span: 2;
   grid-row-end: 3;
 }
-

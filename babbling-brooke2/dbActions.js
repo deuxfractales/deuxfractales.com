@@ -75,7 +75,26 @@ async function dbActions(fastify) {
           console.log(result);
           reply.send(err || result);
         }
-      );
+      )
+
+    }
+  });
+  // GET price values
+  fastify.get('/db/f2', async (req, reply) => {
+    fastify.mysql.getConnection(onConnect);
+    function onConnect(err, client) {
+      console.log(err);
+      if (err) reply.send(err);
+
+      client.query(
+        'SELECT pricing.price FROM pricing LEFT JOIN beatz ON beatz.pricing=pricing.price',
+        function onResult(err, result) {
+          console.log(err);
+          client.release();
+          reply.send(err || result);
+        }
+      )
+
     }
   });
 }

@@ -1,7 +1,7 @@
 <template>
   <div id="w-node-3c6e0d08d641-edd6561d" class="featured-holder">
     <HomeMusicWidget
-      v-for="product in featuredProducts"
+      v-for="product in filteredProducts"
       v-if="product.featuredSlot1 === 1"
       :key="product.id"
       :ref="product.id"
@@ -19,11 +19,15 @@
 <script>
 import vuex from '../../mixins/vuex';
 import HomeMusicWidget from './HomeMusicWidget.vue';
+import {mapState, mapGetters, mapActions, mapMutations} from 'vuex'
 
 export default {
   name: 'HomeFeaturedHolder',
   components: {
-    HomeMusicWidget: HomeMusicWidget,
+    HomeMusicWidget,
+  },
+  computed: {
+    ...mapGetters ({filteredProducts:'filteredProducts'})
   },
   mixins: [vuex],
   created: async function () {

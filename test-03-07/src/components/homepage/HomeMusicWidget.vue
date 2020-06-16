@@ -10,9 +10,15 @@
         <div class="beattags">{{ product.artist }}</div>
         
       </div>
-      <div id="w-node-7b98ada7c7b9-edd6561d" class="p5waveform">    
+      <div id="w-node-7b98ada7c7b9-edd6561d" class="p5waveform">
+        <audio ref="mediaPlayer" crossorigin="anonymous" controls="true" :src="product.url">
+          Your browser does not support the
+          <code>audio</code> element.
+        </audio>
       </div>
-      <div id="w-node-8a1d5bef07c2-edd6561d" class="buyprice">BUY $150</div>
+      <div id="w-node-8a1d5bef07c2-edd6561d" @click="addProductToCart(product)" class="buyprice">${{ product.pricing }}</div>
+
+
       <!--Need to change buyText to playButton, it's already changed in webflow but needs to be changed here during the next css import-->
       <button
         id="w-node-1f91bc0acfe7-edd6561d"
@@ -30,6 +36,7 @@ import vuex from '../../mixins/vuex';
 import audioPlayback from '../../mixins/audioPlayback';
 import p5 from '../../mixins/p5';
 import ProgressBar from './ProgressBar';
+import { mapActions } from 'vuex';
 
 export default {
   name: 'HomeMusicWidget',
@@ -64,6 +71,9 @@ export default {
       this.$refs.mediaPlayer = currentMediaPlayer;
       this.beatDurationAvailable = true; //used to trigger setDuration method in ProgressBar component
     },
+    ...mapActions ({
+      addProductToCart: 'cart/addProductToCart'
+    }),
     setPoints: function(points, type) {
       this.points = points
       
@@ -138,7 +148,8 @@ export default {
       this.getFftData()
       this.p5Style['background-color'] = `rgb(${this.rgb.r}, 0, 0)`
       window.requestAnimationFrame(this.drawPoints)
-    }
+    },
+    
   }
 };
 </script>
