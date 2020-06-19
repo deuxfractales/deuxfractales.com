@@ -1,7 +1,6 @@
 async function dbActions(fastify) {
   fastify.register(require('fastify-mysql'), {
-    connectionString:
-      'mysql://ace:bnhepos34q0dnu6p@db1-deuxfractales-do-user-7211070-0.a.db.ondigitalocean.com:25060/deuxfractales?',
+    connectionString: 'mysql://ace:bnhepos34q0dnu6p@db1-deuxfractales-do-user-7211070-0.a.db.ondigitalocean.com:25060/deuxfractales?',
   });
 
   //GET ALL BEATS
@@ -10,13 +9,13 @@ async function dbActions(fastify) {
 
     function onConnect(err, client) {
       if (err) reply.send(err);
-     
+
       client.query(
         'SELECT id,name,price,url,artist,genre FROM beatz',
         function onResult(err, result) {
           client.release();
-          let updatedResult = changeUrl(result)
-          console.log(updatedResult)
+          let updatedResult = changeUrl(result);
+          console.log(updatedResult);
           reply.send(err || updatedResult);
         }
       );
@@ -34,8 +33,8 @@ async function dbActions(fastify) {
         [req.params.id],
         function onResult(err, result) {
           client.release();
-          let updatedResult = changeUrl(result)
-          console.log(updatedResult)
+          let updatedResult = changeUrl(result);
+          console.log(updatedResult);
           reply.send(err || updatedResult);
         }
       );
@@ -44,6 +43,7 @@ async function dbActions(fastify) {
   //GET HOMEPAGE FEATURED 1 BEATS
   fastify.get('/db/f1', async (req, reply) => {
     fastify.mysql.getConnection(onConnect);
+
     function onConnect(err, client) {
       console.log(err);
       if (err) reply.send(err);
@@ -63,25 +63,26 @@ async function dbActions(fastify) {
   // send artists, subgenre, and ig_handles to redis DB
   fastify.get('/db/f3', async (req, reply) => {
     fastify.mysql.getConnection(onConnect);
+
     function onConnect(err, client) {
       console.log(err);
       if (err) reply.send(err);
 
-      client.query(
-        'SELECT * FROM deuxfractales.artists',
-        function onResult(err, result) {
-          console.log(err);
-          client.release();
-          console.log(result);
-          reply.send(err || result);
-        }
-      )
-
+      client.query('SELECT * FROM deuxfractales.artists', function onResult(
+        err,
+        result
+      ) {
+        console.log(err);
+        client.release();
+        console.log(result);
+        reply.send(err || result);
+      });
     }
   });
   // GET price values
   fastify.get('/db/f2', async (req, reply) => {
     fastify.mysql.getConnection(onConnect);
+
     function onConnect(err, client) {
       console.log(err);
       if (err) reply.send(err);
@@ -93,16 +94,98 @@ async function dbActions(fastify) {
           client.release();
           reply.send(err || result);
         }
-      )
-
+      );
     }
   });
-}
 
-  function changeUrl(result){
-    let beats = []
-    for(a = 0; a < result.length; a++){
-      let eachRes = result[a]
+  
+  fastify.get('/db/genres', async (req, reply) => {
+    console.log('run');
+    fastify.mysql.getConnection(onConnect);
+
+    function onConnect(err, client) {
+      console.log(err);
+      console.log('wac');
+      if (err) reply.send(err);
+
+      client.query('select DISTINCT genre from beatz LEFT JOIN genres ON beatz.genre = genres.name', function onResult(
+        err,
+        result
+      ) {
+        console.log(err);
+        console.log('how');
+        client.release();
+        reply.send(err || result);
+      });
+    }
+  });
+
+  fastify.get('/db/artists', async (req, reply) => {
+    console.log('run');
+    fastify.mysql.getConnection(onConnect);
+
+    function onConnect(err, client) {
+      console.log(err);
+      console.log('wac');
+      if (err) reply.send(err);
+
+      client.query(
+        'SELECT DISTINCT artist_name FROM artists',
+        function onResult(err, result) {
+          console.log(err);
+          console.log('how');
+          client.release();
+          reply.send(err || result);
+        }
+      );
+    }
+  });
+
+// stored information about beats 
+
+  fastify.post('/db/upload', async (req, reply) => {
+
+    let beatsData = {};
+    let sqlStatement;
+
+    if (!req.isMultipart()) {
+      reply.code(400).send(new Error('Request is not multipart'));
+      return;
+    }
+
+    const mp = req.multipart(handler, onEnd);
+
+    mp.on('field', function (key, value) {
+      beatsData[key] = value; // stores beat data from client-side to an object 
+    });
+
+    function onEnd(err) {
+
+      sqlStatement = `INSERT INTO beatz (name,url,genre,related_artist,pricing,k,d) VALUES ('${beatsData.beatName}','/beats/${beatsData.beatName}','${beatsData.genre}','${beatsData.relatedArtist}',null,${beatsData.k},${beatsData.d})`
+      fastify.mysql.getConnection(onConnect);
+
+      function onConnect(err, client) {
+
+        if (err) reply.send(err);
+        client.query(sqlStatement, function onResult(
+          err,
+          result
+        ) {
+          console.log(err);
+          client.release();
+          reply.send(err || result);
+        });
+      }
+      reply.code(200).send();
+    }
+
+    function handler(field, file, filename, encoding, mimetype) {}
+  });
+
+  function changeUrl(result) {
+    let beats = [];
+    for (a = 0; a < result.length; a++) {
+      let eachRes = result[a];
       let beat = {
         // url: eachRes.url.replace("localhost",`${process.env.IP}`),
         url: eachRes.url,
@@ -111,12 +194,11 @@ async function dbActions(fastify) {
         genre: eachRes.genre,
         featuredSlot1: eachRes.featuredSlot1,
         k: eachRes.k,
-        d: eachRes.d
-      }
-      beats.push(beat)
+        d: eachRes.d,
+      };
+      beats.push(beat);
     }
-    return beats
+    return beats;
   }
-
-
+}
 module.exports = dbActions;

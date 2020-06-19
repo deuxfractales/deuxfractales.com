@@ -8,7 +8,7 @@ async function audioStream (fastify, options){
     })
 
     fastify.get('/beats/:name', async (request, reply) => {
-       reply.sendFile(`/${request.params.name}.mp3`)
+       reply.sendFile(`/${request.params.name}.mp3`)// check what type of file it is and then append correct file type 
     });
 
 }

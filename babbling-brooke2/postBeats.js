@@ -9,7 +9,7 @@ module.exports = async function (fastify, opts) {
 
   // ROUTES "POST-MP3" TO STORAGE FOLDER
   //TODO: Dont repeat yourself
-  fastify.post('/post/mp3', async (request, reply) => {
+  fastify.post('/beats/mp3', async (request, reply) => {
     const mp = request.multipart(handler, function (err) {
       if (err) {
         reply.code(400).send({
@@ -28,12 +28,12 @@ module.exports = async function (fastify, opts) {
     mp.on('field', function (key, value) {
       console.log('form-data', key, value);
     });
+
     function handler(field, file, filename, encoding, mimetype) {
       pump(file, fs.createWriteStream(`./storage/mp3/${filename}`));
     }
   });
-  // ROUTES "POST-WAV" TO STORAGE FOLDER
-  //TODO: Dont repeat yourself
+
   fastify.post('/beats/wav', async (request, reply) => {
     const mp = request.multipart(handler, function (err) {
       if (err) {
@@ -53,12 +53,13 @@ module.exports = async function (fastify, opts) {
     mp.on('field', function (key, value) {
       console.log('form-data', key, value);
     });
+
     function handler(field, file, filename, encoding, mimetype) {
-      pump(file, fs.createWriteStream(`./services/storage/wav/${filename}`));
+      pump(file, fs.createWriteStream(`./storage/wav/${filename}`));
     }
   });
-  // ROUTES "POST-STEMS" TO STORAGE FOLDER
-  //TODO: Dont repeat yourself
+
+
   fastify.post('/beats/stems', async (request, reply) => {
     const mp = request.multipart(handler, function (err) {
       if (err) {
@@ -78,8 +79,11 @@ module.exports = async function (fastify, opts) {
     mp.on('field', function (key, value) {
       console.log('form-data', key, value);
     });
+
     function handler(field, file, filename, encoding, mimetype) {
-      pump(file, fs.createWriteStream(`./services/storage/stems/${filename}`));
+      pump(file, fs.createWriteStream(`./storage/stems/${filename}`));
     }
   });
+
+
 };
