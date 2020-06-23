@@ -47,10 +47,28 @@ async function dbActions(fastify) {
 
       client.query(
         // Add DRY in by (1) Making the call dynamic ex: 'db/:featuredSlot' and (2) making the query dynamic ex:SELECT .... featured.[req.params.featuredSlot]
-        'SELECT beatz.id,beatz.name,beatz.url,beatz.genre,featured.featuredSlot1 FROM featured LEFT JOIN beatz ON beatz.id = featured.beatId',
+        'SELECT beatz.id,beatz.name,beatz.url,beatz.genre,beatz.related_artist,featured.featuredSlot1 FROM featured LEFT JOIN beatz ON beatz.id = featured.beatId',
         function onResult(err, result) {
           console.log(err);
           client.release();
+          reply.send(err || result);
+        }
+      );
+    }
+  });
+  // Get all artists
+  fastify.get('/db/artists', async (req, reply) => {
+    fastify.mysql.getConnection(onConnect);
+    function onConnect(err, client) {
+      console.log(err);
+      if (err) reply.send(err);
+
+      client.query(
+        'SELECT artist_name FROM deuxfractales.artists;',
+        function onResult(err, result) {
+          console.log(err);
+          client.release();
+          console.log(result);
           reply.send(err || result);
         }
       );

@@ -95,7 +95,7 @@
   -ms-grid-columns: 28% 0px 70%;
   grid-template-columns: 28% 70%;
   -ms-grid-rows: 51vh 0px 10vh;
-  grid-template-rows: 51vh 10vh;
+  grid-template-rows: 51vh 22vh;
 }
 
 .featured-holder {
@@ -178,6 +178,76 @@
   -ms-flex-direction: row;
   flex-direction: row;
 }
+
+/* featured slot 2 styles */
+
+.featuredSlot2_beatinfo {
+  background-color: white;
+  position: relative;
+  z-index: 3;
+  width: 70%;
+  height: 58%;
+
+
+}
+
+.featuredSlot2_beattitle{
+  height: 20%;
+  font-family: Poppins, sans-serif;
+  font-size: 20px;
+  font-style: italic;
+  font-weight: 700;
+}
+
+.featuredSlot2_beatgenre{
+  display:none
+}
+
+.featuredSlot2_beatartist{
+  display:none
+}
+
+.featuredSlot2_audio{
+}
+
+.featuredSlot2_buyprice{
+  left: 15%;
+  
+  position: absolute;
+  height: 53%;
+  margin: 7px;
+  width: 30%;
+  background-color: #54426b;
+  background-image: url('./images/add-to-cart.svg');
+  background-position: 50% 50%;
+  background-size: 45%;
+  background-repeat: no-repeat;
+  display: inline-block;
+  
+  /* To get rid of text */
+  text-indent: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.featuredSlot2_pause-button{
+  right: 15%;
+
+  height: 53%;
+  margin: 7px;
+
+  border: none;
+  background-color: white;
+  
+  position: absolute;
+  width: 30%;
+  background-image: url('./images/play-button.svg');
+  background-position: 50% 50%;
+  background-size: 45%;
+  background-repeat: no-repeat;
+  display: inline-block;
+}
+
 
 .beatinfo {
   position: absolute;

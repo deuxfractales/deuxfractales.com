@@ -13,6 +13,7 @@ const getters = {
   //   );
   // },
   featuredProducts: (state) => state.featuredProducts,
+
 };
 
 const actions = {
@@ -29,7 +30,7 @@ const actions = {
 
 const mutations = {
   setAll: (state, products) => (state.products = products),
-  setFeatured: (state, products) => (state.featuredProducts = products),
+  setFeatured: (state, products) => (state.featuredProducts = products), 
 };
 
 export default {
