@@ -34,7 +34,6 @@ const actions = {
     const price = await axios.get('/db/f2');
     commit('setFeatured', response.data);
     commit('setPrice', price.data);
-    console.log(response.data);
   },
   async updateSearchValue({ commit }, payload) {
     commit('updateSearchValue', payload);
