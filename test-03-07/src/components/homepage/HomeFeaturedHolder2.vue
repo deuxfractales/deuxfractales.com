@@ -41,11 +41,14 @@ export default {
 <style scoped>
 .holder2 {
   display: grid;
-  overflow: scroll;
-  grid-template-columns: 35% 35% 35% 35%;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  /* grid-template-columns: 35%; */
   grid-template-rows: 100%;
   grid-gap: 10px;
   margin-top: 3px;
+  grid-auto-columns: 35%;
+  grid-auto-flow: column;
 }
 
 .beat {
