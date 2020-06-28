@@ -1,35 +1,10 @@
-const ctx = new (window.AudioContext || window.webkitAudioContext)();
-
-let gainNode = ctx.createGain();
-
 export default {
   data: function () {
     return {
       audioSource: undefined,
       fftInterval: undefined,
-     
+      ctx: undefined
     };
-  },
-
-  mounted: function () {
-    const mediaPlayer = this.$refs.mediaPlayer;
-    this.setMediaPlayer(mediaPlayer)
-
-    this.analyzerNode = ctx.createAnalyser();
-    this.analyzerNode.fftSize = 256;
-
-    let source = ctx.createMediaElementSource(mediaPlayer);
-    this.bufferLength = this.analyzerNode.frequencyBinCount;
-    this.dataArray = new Uint8Array(this.bufferLength);
-
-    source.connect(this.analyzerNode);
-    this.analyzerNode.connect(gainNode);
-    gainNode.connect(ctx.destination);
-
-    // for (let i = 0; i < bufferLength; i++) {
-    //   let barHeight = dataArray[i];
-    //   console.log(barHeight);
-    // }
   },
 
   watch: {
@@ -47,8 +22,37 @@ export default {
   },
 
   methods: {
+    init: function () {
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      this.ctx = ctx;
+
+      let gainNode = ctx.createGain();
+
+      const mediaPlayer = this.$refs.mediaPlayer;
+      this.setMediaPlayer(mediaPlayer)
+
+      this.analyzerNode = ctx.createAnalyser();
+      this.analyzerNode.fftSize = 256;
+
+      let source = ctx.createMediaElementSource(mediaPlayer);
+      this.bufferLength = this.analyzerNode.frequencyBinCount;
+      this.dataArray = new Uint8Array(this.bufferLength);
+
+      source.connect(this.analyzerNode);
+      this.analyzerNode.connect(gainNode);
+      gainNode.connect(ctx.destination);
+
+      // for (let i = 0; i < bufferLength; i++) {
+      //   let barHeight = dataArray[i];
+      //   console.log(barHeight);
+      // }
+    },
+
     playback: function () {
       const mediaPlayer = this.$refs.mediaPlayer;
+
+      if (this.ctx == undefined)
+        this.init()
 
       if (this.currentlyPlaying != this.$attrs.id) {
         mediaPlayer.play();
