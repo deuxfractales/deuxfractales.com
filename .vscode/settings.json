@@ -1,0 +1,11 @@
+{
+    "sqltools.connections": [
+        {
+            "connectString": "mysql://doadmin:s8392dglpeju18ne@db1-deuxfractales-do-user-7211070-0.a.db.ondigitalocean.com:25060/deuxfractales?ssl-mode=REQUIRED",
+            "dialect": "MySQL",
+            "isActive": false,
+            "isConnected": false,
+            "name": "deuxfractales"
+        }
+    ]
+}

@@ -1,5 +1,5 @@
 <template>
-  <div id="w-node-668c28d507c8-edd6561d" class="search-box">
+  <div class="searchHolder">
     <div class="tags">
       <a v-for="artistName in selectedArtists" :key="artistName">
         <span class="tag-rounded selected">
@@ -22,20 +22,21 @@
   </div>
 </template>
 
+
 <script>
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
-    name: "HomeSearchBox",
+    name: "BeatSearch",
     data: function () {
       return {
-        page: 'homepage',
+        page: 'beatspage',
       };
     },
     computed: {
         ...mapGetters({
-            artists: 'homepageArtists',
-            selectedArtists: 'homepageSelectedArtists',
+            artists: 'beatspageArtists',
+            selectedArtists: 'beatspageSelectedArtists',
         }),
     },
     methods: {
@@ -45,19 +46,39 @@ export default {
         }),
     },
 
-}
 
+}
 </script>
         
 
-<style scoped>
-.search-box {
-  overflow: auto;
+
+<style>
+.searchHolder {
+  width: 100%;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+
+  overflow-y: hidden;
+  overflow-x: auto;
+
+  white-space: nowrap;
+  display: inline-block;
+}
+
+.tags span {
+  display: inline;
+  margin-right: 3px;
+  margin-right: 3px;
+  font-size: 15px;
+  text-decoration: none;
+  margin-bottom: 5px;
 }
 .tags .tag-rounded.selected {
   background-color: rgb(220, 220, 220);
 }
 .tags .tag-rounded {
+  display: inline-block;
   background-color: rgb(235, 235, 235);
   border-radius: 25px;
   padding: 8px 12px;
@@ -65,19 +86,9 @@ export default {
   color: #000000;
   transition: all 0.3s ease-in-out;
 }
-
 .tags .tag-rounded:hover {
   cursor: default;
   color: #000000;
   background-color: rgb(220, 220, 220);
-}
-.tags a {
-  margin-right: 3px;
-  font-size: 15px;
-  text-decoration: none;
-}
-.tags span {
-  display: inline-block;
-  margin-bottom: 5px;
 }
 </style>

@@ -1,60 +1,56 @@
 <template>
-  <div class="holder2">
+  <div class="beatGrid">
     <HomeMusicWidget
       v-for="product in filteredProducts"
-      v-if="product.featuredSlot1 === 2"
+      v-if="product.featuredSlot1 === 3"
       :key="product.id"
       :ref="product.id"
-
       :id="product.id"
       :k="product.k"
       :d="product.d"
       :currentlyPlaying="playingId"
       :setCurrentlyPlaying="setCurrentlyPlaying"
       :product="product"
-
       class="beat"
-      beatInfo="featuredSlot2_beatInfo"
-      beatTitle="featuredSlot2_beatTitle"
-      beatGenre="featuredSlot2_beatGenre"
-      beatArtist="featuredSlot2_beatArtist"
-      beatPrice="featuredSlot2_beatPrice"
-      beatPlay="featuredSlot2_beatPlay"
+      beatInfo="featuredSlot3_beatInfo"
+      beatTitle="featuredSlot3_beatTitle"
+      beatGenre="featuredSlot3_beatGenre"
+      beatArtist="featuredSlot3_beatArtist"
+      beatPrice="featuredSlot3_beatPrice"
+      beatPlay="featuredSlot3_beatPlay"
     />
   </div>
 </template>
 
 <script>
 import vuex from '../../mixins/vuex';
-import HomeMusicWidget from './HomeMusicWidget.vue';
-import { mapGetters } from 'vuex'
+import HomeMusicWidget from '../homepage/HomeMusicWidget.vue';
+import { mapGetters } from 'vuex';
 
 export default {
-  name: 'HomeFeaturedHolder2',
+  name: 'BeatGrid',
   components: {
     HomeMusicWidget: HomeMusicWidget,
   },
   computed: {
-  ...mapGetters ({
-      filteredProducts:'homepageFilteredProducts'
-    })
+    ...mapGetters({
+      filteredProducts: 'beatspageFilteredProducts',
+    }),
   },
 };
 </script>
 
-<style>
-.holder2 {
+<style scoped>
+.beatGrid {
+  margin-top: 20px;
   display: grid;
-  overflow-x: scroll;
-  overflow-y: hidden;
-  grid-template-rows: 100%;
-  grid-gap: 10px;
-  margin-top: 3px;
-  grid-auto-columns: 35%;
-  grid-auto-flow: column;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  /* auto grow rows based on search results */
+  grid-template-rows: 200px 200px 200px;
+  grid-gap: 10px 10px;
 }
-
 .beat {
+  background-color: aquamarine;
   position: relative;
   left: 0%;
   top: 0%;
@@ -70,44 +66,36 @@ export default {
   -webkit-flex-direction: row;
   -ms-flex-direction: row;
   flex-direction: row;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-  -ms-flex-align: center;
-  align-items: center;
 }
 
-/* FeaturedSlot 2 Styles */
+/* FeaturedSlot 3 Styles */
 
-.featuredSlot2_beatInfo {
+.featuredSlot3_beatInfo {
   background-color: white;
   position: relative;
   z-index: 3;
   width: 70%;
   height: 58%;
 }
-.featuredSlot2_beatTitle {
+.featuredSlot3_beatTitle {
   height: 20%;
   font-family: Poppins, sans-serif;
   font-size: 20px;
   font-style: italic;
   font-weight: 700;
 }
-.featuredSlot2_beatGenre {
+.featuredSlot3_beatGenre {
   display: none;
 }
-.featuredSlot2_beatArtist {
+.featuredSlot3_beatArtist {
   display: none;
 }
-.featuredSlot2_beatPrice {
+.featuredSlot3_beatPrice {
   left: 15%;
   margin-top: 10px;
 
   position: absolute;
-  height: 53%;
+  height: 50%;
 
   width: 30%;
   background-color: #54426b;
@@ -116,28 +104,28 @@ export default {
   background-size: 45%;
   background-repeat: no-repeat;
   display: inline-block;
-  
+
   /* To get rid of text */
   text-indent: 100%;
   white-space: nowrap;
   overflow: hidden;
 }
-.featuredSlot2_beatPlay {
+
+.featuredSlot3_beatPlay {
   right: 15%;
   margin-top: 10px;
 
-  height: 53%;
+  height: 50%;
+  width: 30%;
 
   border: none;
   background-color: white;
-  
+
   position: absolute;
-  width: 30%;
   background-image: url('../../assets/images/play-button.svg');
   background-position: 50% 50%;
   background-size: 45%;
   background-repeat: no-repeat;
   display: inline-block;
 }
-
 </style>

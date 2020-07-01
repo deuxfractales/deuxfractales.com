@@ -1,9 +1,7 @@
 <template>
   <div class="navbar">
-    <div class="navlink">
-      <router-link to="/">home</router-link>
-    </div>
-    <div class="navlink">beats</div>
+    <router-link to="/" class="navlink">home</router-link>
+    <router-link to="/beats" class="navlink">beats</router-link>
     <div class="navlink">ai mixing</div>
     <div class="navlink">custom</div>
     <div class="navlink">sign-in</div>

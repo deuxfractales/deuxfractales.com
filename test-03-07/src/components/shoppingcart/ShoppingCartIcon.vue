@@ -1,27 +1,50 @@
 <template>
   <div class="navlink">
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
-    />
     <router-link to="/cart">
-      <i class="fa fa-shopping-cart" style="font-size:30px">({{ cartSize }})</i>
+      <div>
+        <div class="icon"></div>
+        <span v-if="cartSize > 0" class="badge" id="itemCount">{{ cartSize }}</span>
+      </div>
     </router-link>
   </div>
 </template>
 
 <script>
-import {mapState, mapGetters, mapActions} from 'vuex'
+import { mapState, mapGetters, mapActions } from 'vuex';
 export default {
   name: 'NavBar',
 
   computed: {
-      ...mapGetters ('cart', {
-          cartSize: 'cartSize'
-      })
-  }
+    ...mapGetters('cart', {
+      cartSize: 'cartSize',
+    }),
+  },
 };
 </script>
 
 <style scoped>
+#itemCount {
+  text-decoration: none;
+  font-size: 12px;
+  background: #3c91c4;
+  color: #fff;
+  padding: 0 5px;
+  vertical-align: top;
+  margin-left: -12px;
+}
+
+.badge {
+  border-radius: 9px;
+}
+
+.icon {
+  display: inline-block;
+  vertical-align: middle;
+  background-image: url('../../assets/images/shopping-cart.svg');
+  background-size: 100%;
+  background-repeat: no-repeat;
+
+  height: 30px;
+  width: 30px;
+}
 </style>

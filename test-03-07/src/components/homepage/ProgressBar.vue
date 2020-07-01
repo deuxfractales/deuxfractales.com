@@ -116,32 +116,32 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 
 .container{
   display: flex;
-  grid-column:span 2
 }
 
 #seek-bar {
-  margin-top: 3%;
   width: 100%;
+  bottom: 0;
   background-color: #e0e0e0;
   padding: 3px;
   border-radius: 3px;
-  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+  height: 3px;
+  /* box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2); */
   }
 
-  #fill {
-  display: block;
-  height: 15px;
-  background-color: #659cef;
-  border-radius: 3px;
-  }
+#fill {
+display: block;
+height: 3px;
+background-color: #659cef;
+border-radius: 3px;
+}
 
-  .time{
-  margin-top: 3%;
-  }
+.time{
+margin-top: 3%;
+}
 
 
 </style>

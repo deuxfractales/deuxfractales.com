@@ -1,18 +1,16 @@
 <template>
-  <div class="holder2">
+  <div class="beatGrid2">
     <HomeMusicWidget
       v-for="product in filteredProducts"
       v-if="product.featuredSlot1 === 2"
       :key="product.id"
       :ref="product.id"
-
       :id="product.id"
       :k="product.k"
       :d="product.d"
       :currentlyPlaying="playingId"
       :setCurrentlyPlaying="setCurrentlyPlaying"
       :product="product"
-
       class="beat"
       beatInfo="featuredSlot2_beatInfo"
       beatTitle="featuredSlot2_beatTitle"
@@ -26,8 +24,8 @@
 
 <script>
 import vuex from '../../mixins/vuex';
-import HomeMusicWidget from './HomeMusicWidget.vue';
-import { mapGetters } from 'vuex'
+import HomeMusicWidget from '../homepage/HomeMusicWidget.vue';
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'HomeFeaturedHolder2',
@@ -35,26 +33,28 @@ export default {
     HomeMusicWidget: HomeMusicWidget,
   },
   computed: {
-  ...mapGetters ({
-      filteredProducts:'homepageFilteredProducts'
-    })
+    ...mapGetters({
+      filteredProducts: 'beatspageFilteredProducts',
+    }),
   },
 };
 </script>
 
-<style>
-.holder2 {
-  display: grid;
+<style scoped>
+.beatGrid2 {
+  width: 100%;
+
   overflow-x: scroll;
   overflow-y: hidden;
-  grid-template-rows: 100%;
-  grid-gap: 10px;
-  margin-top: 3px;
-  grid-auto-columns: 35%;
+  margin-top: 30px;
+  display: grid;
+  grid-auto-columns: 24%;
   grid-auto-flow: column;
+  grid-column-gap: 1vh;
+  grid-template-rows: 30vh;
 }
-
 .beat {
+  background-color: aqua;
   position: relative;
   left: 0%;
   top: 0%;
@@ -70,14 +70,6 @@ export default {
   -webkit-flex-direction: row;
   -ms-flex-direction: row;
   flex-direction: row;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-  -ms-flex-align: center;
-  align-items: center;
 }
 
 /* FeaturedSlot 2 Styles */
@@ -116,7 +108,7 @@ export default {
   background-size: 45%;
   background-repeat: no-repeat;
   display: inline-block;
-  
+
   /* To get rid of text */
   text-indent: 100%;
   white-space: nowrap;
@@ -130,7 +122,7 @@ export default {
 
   border: none;
   background-color: white;
-  
+
   position: absolute;
   width: 30%;
   background-image: url('../../assets/images/play-button.svg');
@@ -139,5 +131,4 @@ export default {
   background-repeat: no-repeat;
   display: inline-block;
 }
-
 </style>

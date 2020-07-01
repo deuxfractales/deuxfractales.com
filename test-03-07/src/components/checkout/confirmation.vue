@@ -1,13 +1,7 @@
 <template>
   <div>
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
-      integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu"
-      crossorigin="anonymous"
-    />
-    <router-link style="color: white; text-decoration: none" to="/cart/checkout">
-      <button class="btn btn-primary">Continue</button>
+    <router-link to="/cart/checkout">
+      <button class="confirm-button">Continue</button>
     </router-link>
   </div>
 </template>
@@ -19,4 +13,13 @@ export default {
 </script>
 
 <style scoped>
+/* style="color: white; text-decoration: none" */
+.confirm-button {
+  box-sizing: border-box;
+  background-color: #16cc9b;
+  color: #ffffff;
+  font-size: 1rem;
+  padding: 0.8rem 2.8rem;
+  border-radius: 1.5rem;
+}
 </style>

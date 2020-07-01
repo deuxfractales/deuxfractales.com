@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Home from '../views/Home.vue';
+import Beats from '../views/Beats'
 import Upload from '../views/Upload';
 import HomepageMobile from '../views/HomepageMobile';
 import ShoppingCart from '../views/ShoppingCart'
@@ -14,6 +15,11 @@ const routes = [
     path: '/',
     name: 'Home',
     component: Home
+  },
+  {
+    path: '/beats',
+    name: 'Beats',
+    component: Beats
   },
   {
     path: '/about',
