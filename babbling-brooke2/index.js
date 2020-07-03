@@ -32,6 +32,7 @@ fastify.register(require('./startPage'));
 fastify.register(require('./dbActions'));
 fastify.register(require('./audioStream'));
 fastify.register(require('./postBeats'));
+fastify.register(require('./postPurchase'))
 
 
 const start = async () => {
