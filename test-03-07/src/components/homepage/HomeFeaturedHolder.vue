@@ -1,8 +1,8 @@
 <template>
   <div class="featured-holder">
     <div class="h1">
-      <!--if no artist is selected then it will say Featured Beats-->
-      *artist's* type beats
+      <!--if no artist is selected then omit the artist's name-->
+      Featured *artist's name* Type Beats
     </div>
     <HomeMusicWidget
       v-for="product in filteredProducts"
@@ -169,22 +169,26 @@ export default {
   grid-row-start: 2;
 
 }
+.h1{
+  font-family: Poppins, sans-serif;
+  font-weight: 800;
+  font-size: 25px;
+  grid-row-start: 1;
+  grid-row-end: 1;
+  grid-column-start: 1;
+  grid-column-end: 3;
+}
 
 .featured-holder {
   border-radius: 10px;
   display: -ms-grid;
   display: grid;
   grid-auto-columns: 1fr;
-  grid-column-gap: 16px;
-  grid-row-gap: 16px;
-  -ms-grid-columns: 1fr 1fr;
-  -ms-grid-rows: auto;
-  -ms-grid-column-span: 1;
-  -ms-grid-column: 2;
-  -ms-grid-row-span: 1;
-  -ms-grid-row: 1;
+  grid-column-gap: 10px;
+  grid-row-gap: 0px;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: 20% 80%;
+  grid-template-rows: 10% 90%;
+  padding: 20px;
 }
 
 </style>
