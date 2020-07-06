@@ -83,7 +83,7 @@ export default {
 /* FeaturedSlot 2 Styles */
 
 .featuredSlot2_beatInfo {
-  background-color: white;
+  background-color: #A8DADC;
   position: relative;
   z-index: 3;
   width: 70%;

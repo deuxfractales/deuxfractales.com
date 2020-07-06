@@ -1,5 +1,6 @@
 <template>
   <div class="body">
+    <Header />
     <NavBar />
     <router-view />
   </div>
@@ -11,13 +12,16 @@
   padding: 0;
   margin: 0;
 }
+
 </style>
 <script>
 import {mapActions} from "vuex";
 
 import NavBar from "./components/global/NavBar";
+import Header from "./components/global/Header";
+
 export default {
-  components: {NavBar},
+  components: {NavBar, Header},
   methods: {
     ...mapActions(['fetchArtists', 'fetchFeatured', 'fetchAll']),
   },
