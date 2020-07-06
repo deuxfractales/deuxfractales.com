@@ -9,6 +9,7 @@
   "dependencies": {
     "axios": "^0.19.2",
     "core-js": "^3.6.4",
+    "v-tooltip": "^2.0.3",
     "vue": "^2.6.11",
     "vue-audio-visual": "^2.0.0",
     "vue-native-websocket": "^2.0.14",

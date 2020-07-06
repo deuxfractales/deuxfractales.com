@@ -1,5 +1,5 @@
 <template>
-  <div id="w-node-3c6e0d08d641-edd6561d" class="featured-holder">
+  <div class="featured-holder">
     <HomeMusicWidget
       v-for="product in filteredProducts"
       v-if="product.featuredSlot1 === 1"
@@ -13,7 +13,7 @@
       :setCurrentlyPlaying="setCurrentlyPlaying"
       :product="product"
     
-      class="beatcontainer"
+      class="beatContainer"
       beatInfo="featuredSlot1_beatInfo"
       beatTitle="featuredSlot1_beatTitle"
       beatGenre="featuredSlot1_beatGenre"
@@ -65,23 +65,7 @@ export default {
 
 /* FeaturedSlot 1 styles */
 
-.beatcontainer {
-  position: relative;
-  left: 0%;
-  top: 0%;
-  right: auto;
-  bottom: auto;
-  z-index: 1;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-  -webkit-flex-direction: row;
-  -ms-flex-direction: row;
-  flex-direction: row;
-}
+
 
 .featuredSlot1_beatInfo {
   position: relative;
@@ -139,7 +123,7 @@ export default {
   border-right: 1px solid #54426b;
   border-left: 1px solid #000;
   border-radius: 3px;
-  background-color: #54426b;
+  background-color: #457b9d;
   font-family: Poppins, sans-serif;
   color: #fffcf7;
   font-size: 25px;
@@ -161,6 +145,43 @@ export default {
   display: inline-block;
 }
 
+.beatContainer {
+  position: relative;
+  left: 0%;
+  top: 0%;
+  right: auto;
+  bottom: auto;
+  z-index: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+}
 
+.featured-holder {
+  border-radius: 10px;
+  display: -ms-grid;
+  display: grid;
+  grid-auto-columns: 1fr;
+  grid-column-gap: 16px;
+  grid-row-gap: 16px;
+  -ms-grid-columns: 1fr 1fr;
+  -ms-grid-rows: auto;
+  -ms-grid-column-span: 1;
+  -ms-grid-column: 2;
+  -ms-grid-row-span: 1;
+  -ms-grid-row: 1;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 20% 80%;
+  grid-column-end: 3;
+  grid-column-start: 2;
+  grid-row-end: 2;
+  grid-row-start: 1;
+}
 
 </style>

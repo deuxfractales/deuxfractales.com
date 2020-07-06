@@ -1,5 +1,8 @@
 <template>
   <div class="body">
+    <div class="logo">
+      TYPE BEAT WAREHOUSE
+    </div>
     <NavBar />
     <router-view />
   </div>
@@ -11,6 +14,11 @@
   padding: 0;
   margin: 0;
 }
+  .logo{
+    font-family: Poppins, sans-serif;
+    font-weight: 800;
+    font-size: 30px;
+  }
 </style>
 <script>
 import {mapActions} from "vuex";

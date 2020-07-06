@@ -46,7 +46,7 @@ export default {
     return {
       p5: undefined,
       points: undefined,
-      rgb: { 'r': 10, 'g': 100, 'b': 200 },
+      rgb: { 'r': 168, 'g': 218, 'b': 220 },
       p5Style: { 'background-color': 'rgb(0,0,0)' },
       beatDurationAvailable: false,
       graphic: 'roseCurve'
