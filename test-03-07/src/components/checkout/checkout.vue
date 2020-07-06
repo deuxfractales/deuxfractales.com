@@ -44,18 +44,15 @@
           <li>
             Subtotal <span>${{ cartTotal }}</span>
           </li>
-          <!-- <li>
-            Discount <span>{{ discountPrice }}</span>
-          </li> -->
-          <!-- <li>
-            Tax <span>{{ tax | currencyFormatted }}</span>
-          </li> -->
+
           <li class="total">
             Total <span>${{ cartTotal }}</span>
           </li>
         </ul>
       </div>
-      <div ref="paypal"></div>
+      <!-- <paypal :amount="cartTotal" :items="products" /> -->
+
+      <Paypal :products="products" :total="cartTotal"/>
     </section>
     <!-- End Summary -->
   </div>
@@ -63,61 +60,18 @@
 
 <script>
 import { mapState, mapGetters, mapActions, mapMutations } from 'vuex';
+import Paypal from './paypal'
+
 export default {
   name: 'Checkout',
+  components: {"Paypal": Paypal},
 
-  data: function () {
-    return {
-      loaded: false,
-      paidFor: false,
-    };
-  },
   computed: {
     ...mapGetters('cart', {
       products: 'cartProducts',
       cartTotal: 'cartTotal',
       cartSize: 'cartSize',
     }),
-  },
-  mounted: function () {
-    const script = document.createElement('script');
-    script.src = `https://www.paypal.com/sdk/js?client-id=AcfH33GUvo1o4ObrA9TSRyrz4Nure7e7MvrWkR9ef8J0tbomLIl7NzqgYSgs0sKBjRdHdIlXv3-4Psvs`;
-    script.addEventListener('load', this.setLoaded);
-    document.body.appendChild(script);
-  },
-  methods: {
-    ...mapActions({
-      emptyCart: 'cart/emptyCart',
-    }),
-    setLoaded: function () {
-      this.loaded = true;
-      window.paypal
-        .Buttons({
-          createOrder: (data, actions) => {
-            return actions.order.create({
-              purchase_units: [
-                {
-                  description: 'Deux fractales product',
-                  amount: {
-                    currency_code: 'USD',
-                    value: this.total,
-                  },
-                },
-              ],
-            });
-          },
-          onApprove: async (data, actions) => {
-            const order = await actions.order.capture();
-            this.paidFor = true;
-            this.emptyCart();
-            console.log(order);
-          },
-          onError: (err) => {
-            console.log(err);
-          },
-        })
-        .render(this.$refs.paypal);
-    },
   },
 };
 </script>

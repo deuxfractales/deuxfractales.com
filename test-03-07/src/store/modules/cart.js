@@ -26,18 +26,18 @@ const getters = {
   }
 };
 const actions = {
-  addProductToCart(context, product) {
+  async addProductToCart(context, product) {
     const cartItem = context.state.items.find(item => item.id === product.id);
     if (!cartItem) {
       context.commit('pushProductToCart', product.id);
     }
   },
 
-  deleteItem(context, id) {
+  async deleteItem(context, id) {
     context.commit('deleteItem', id);
   },
 
-  emptyCart(context) {
+  async emptyCart(context) {
     context.commit('emptyCart');
   }
 };

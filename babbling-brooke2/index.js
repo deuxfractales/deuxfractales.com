@@ -18,8 +18,8 @@ else if(serverIP == '138.197.137.112'){
 
 fastify.register(require('fastify-cors'), {
   // put your options here
-  origin: `http://${process.env.IP}:8080`,
- // origin: `http://localhost:8080`,
+  // origin: `http://${process.env.IP}:8080`,
+  origin: `http://localhost:8080`,
   methods: ['GET,PUT,POST'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   exposedHeaders: ['Content-Range', 'X-Content-Range'],
@@ -32,6 +32,7 @@ fastify.register(require('./startPage'));
 fastify.register(require('./dbActions'));
 fastify.register(require('./audioStream'));
 fastify.register(require('./postBeats'));
+fastify.register(require('./payment'));
 
 
 const start = async () => {
