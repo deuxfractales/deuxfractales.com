@@ -1,5 +1,9 @@
 <template>
   <div class="featured-holder">
+    <div class="h1">
+      <!--if no artist is selected then it will say Featured Beats-->
+      *artist's* type beats
+    </div>
     <HomeMusicWidget
       v-for="product in filteredProducts"
       v-if="product.featuredSlot1 === 1"
@@ -161,6 +165,9 @@ export default {
   -webkit-flex-direction: row;
   -ms-flex-direction: row;
   flex-direction: row;
+  grid-row-end: 2;
+  grid-row-start: 2;
+
 }
 
 .featured-holder {
@@ -178,10 +185,6 @@ export default {
   -ms-grid-row: 1;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 20% 80%;
-  grid-column-end: 3;
-  grid-column-start: 2;
-  grid-row-end: 2;
-  grid-row-start: 1;
 }
 
 </style>
