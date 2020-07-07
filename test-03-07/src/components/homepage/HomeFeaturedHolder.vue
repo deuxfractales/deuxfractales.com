@@ -170,13 +170,14 @@ export default {
 
 }
 .h1{
-  font-family: Poppins, sans-serif;
-  font-weight: 800;
-  font-size: 25px;
+  font-size: 20px;
   grid-row-start: 1;
   grid-row-end: 1;
   grid-column-start: 1;
   grid-column-end: 3;
+  font-family: Poppins, sans-serif;
+  color: #F1FAEE;
+  background-color: #e63946;
 }
 
 .featured-holder {
@@ -188,7 +189,6 @@ export default {
   grid-row-gap: 0px;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 10% 90%;
-  padding: 20px;
 }
 
 </style>
