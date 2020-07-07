@@ -6,12 +6,13 @@
       <div :class="beatGenre">{{ product.genre }}</div>
       <div :class="beatArtist">{{ product.artist }}</div>
 
+      <!--TODO: change id to class on line 11-->
       <div
         id="w-node-8a1d5bef07c2-edd6561d"
         @click="addProductToCart(product)"
         :class="beatPrice"
       >${{ product.pricing }}</div>
-
+      <!--TODO: change id to class on line 16-->
       <button id="w-node-1f91bc0acfe7-edd6561d" v-on:click="playPause" :class="beatPlay"></button>
     </div>
   </div>
