@@ -35,7 +35,7 @@
     import InfoFilterNav from "../components/homepage/holder/InfoFilterNav";
     import GlobalHeader from "../components/global/GlobalHeader";
     import GlobalNavBar from "../components/global/GlobalNavBar";
-    import HomeMusicWidget from "../components/homepage/Homepage Mobile/HomeMobileMusicWidget";
+    import HomeMusicWidget from "../components/homepage/HomeMusicWidget";
     import vuex from '../mixins/vuex';
     import { mapGetters } from 'vuex'
     import ProductGrid from "../components/homepage/holder/ProductGrid";
