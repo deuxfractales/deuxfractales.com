@@ -1,27 +1,6 @@
 <template>
     <div class="productGrid">
-        <HomeMusicWidget
-                v-for="product in filteredProducts"
-                v-if="product.featuredSlot1 === 1"
-                :key="product.id"
-                :ref="product.id"
-
-                :id="product.id"
-                :k="product.k"
-                :d="product.d"
-                :currentlyPlaying="playingId"
-                :setCurrentlyPlaying="setCurrentlyPlaying"
-                :product="product"
-
-                class="beatContainer"
-                beatInfo="featuredSlot1_beatInfo"
-                beatTitle="featuredSlot1_beatTitle"
-                beatGenre="featuredSlot1_beatGenre"
-                beatArtist="featuredSlot1_beatArtist"
-                beatPrice="featuredSlot1_beatPrice"
-                beatPlay="featuredSlot1_beatPlay"
-
-        />
+        <slot></slot>
     </div>
 </template>
 
@@ -45,6 +24,7 @@
     -ms-grid-rows: auto auto;
     grid-template-rows: auto auto;
     display: -ms-grid;
+    background-color: #3c91c4;
 }
 .p5waveform {
     display: flex;

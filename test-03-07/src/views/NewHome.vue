@@ -3,7 +3,30 @@
         <GlobalHeader/>
         <GlobalNavBar/>
         <InfoFilterNav/>
-        <ProductGrid/>
+        <ProductGrid>
+            <HomeMusicWidget
+                    v-for="product in filteredProducts"
+                    v-if="product.featuredSlot1 === 1"
+                    :key="product.id"
+                    :ref="product.id"
+
+                    :id="product.id"
+                    :k="product.k"
+                    :d="product.d"
+                    :currentlyPlaying="playingId"
+                    :setCurrentlyPlaying="setCurrentlyPlaying"
+                    :product="product"
+
+                    class="beatContainer"
+                    beatInfo="featuredSlot1_beatInfo"
+                    beatTitle="featuredSlot1_beatTitle"
+                    beatGenre="featuredSlot1_beatGenre"
+                    beatArtist="featuredSlot1_beatArtist"
+                    beatPrice="featuredSlot1_beatPrice"
+                    beatPlay="featuredSlot1_beatPlay"
+
+            />
+        </ProductGrid>
 
     </div>
 </template>
