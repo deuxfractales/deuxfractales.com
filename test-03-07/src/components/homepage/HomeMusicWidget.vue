@@ -12,7 +12,7 @@
         :class="beatPrice"
       >${{ product.pricing }}</div>
 
-      <button id="w-node-1f91bc0acfe7-edd6561d" v-on:click="playPause" :class="beatPlay"></button>
+      <button id="w-node-1f91bc0acfe7-edd6561d" @click="setPlayerCurrentTrack(product)" :class="beatPlay"></button>
     </div>
   </div>
 </template>
@@ -63,7 +63,8 @@ export default {
       this.beatDurationAvailable = true; //used to trigger setDuration method in ProgressBar component
     },
     ...mapActions ({
-      addProductToCart: 'cart/addProductToCart'
+      addProductToCart: 'cart/addProductToCart',
+      setPlayerCurrentTrack: 'playbar/setPlayerCurrentTrack',
     }),
     setPoints: function(points, type) {
       this.points = points

@@ -1,9 +1,9 @@
 {
-    "apps": [
-        {
-            "name": "dfa-dev",
-            "script": "npm",
-            "args" : "dev"
-        }
-    ]
+  "apps": [
+    {
+      "name": "dfa-dev",
+      "script": "npm",
+      "args": "dev"
+    }
+  ]
 }

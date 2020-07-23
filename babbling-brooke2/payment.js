@@ -3,10 +3,12 @@ const axios = require('axios');
 
 module.exports = async function payment(fastify, opts) {
   // Creating an environment
-  let clientId =
+  // put these in .env
+  const clientID =
     'AS8sFDWaGYjHUZF3xxN9oeCU7l7x-XY4sb_XEKnNwuCqtZ3QJUu9MDHCvTGrfLZDBEWVfPZGx6NDftKm';
-  let clientSecret =
+  const clientSecret =
     'ECbsaYygyFL2sonBijnGvkmzw1LPQsR4wIjYB6XxZ-IHyuqnlgGYCwQ8Ylf4wzfAqaMJxF03cq5ThS73';
+  const webhookID = '4U618991LA200371T';
   // let clientId = process.env.PAYPAL_CLIENT_ID;
   // let clientSecret = process.env.PAYPAL_CLIENT_SECRET;
 
@@ -194,12 +196,6 @@ module.exports = async function payment(fastify, opts) {
         );
       };
 
-      // put these in .env
-      const clientID =
-        'AS8sFDWaGYjHUZF3xxN9oeCU7l7x-XY4sb_XEKnNwuCqtZ3QJUu9MDHCvTGrfLZDBEWVfPZGx6NDftKm';
-      const clientSecret =
-        'ECbsaYygyFL2sonBijnGvkmzw1LPQsR4wIjYB6XxZ-IHyuqnlgGYCwQ8Ylf4wzfAqaMJxF03cq5ThS73';
-      const webhookID = '4U618991LA200371T';
 
       // retrieve access token
       // 1) store and refresh this
