@@ -10,7 +10,6 @@
       <code>audio</code> element.
     </audio>
     <div class="pausePlay" @click="playPause($refs.mediaPlayer)"></div>
-    <div @click="setDuration()">asd</div>
   </div>
 </template>
 <script>
@@ -18,6 +17,15 @@ import { mapGetters, mapActions } from 'vuex';
 import audioPlayback from '../../mixins/audioPlayback';
 export default {
   name: 'Player',
+  data: function () {
+    return {
+      progress: 0,
+      playBackTime: '00:00',
+      totalTime: '00:00',
+      isMouseDown: false,
+      beatDurationAvailable: false,
+    };
+  },
 
   computed: {
     ...mapGetters('playbar', {
@@ -26,21 +34,23 @@ export default {
     }),
   },
 
-  data: function () {
-    return {
-      progress: 0,
-      playBackTime: '00:00',
-      totalTime: '00:00',
-      isMouseDown: false,
-      beatDurationAvailable:false
-
-    };
-  },
-
   methods: {
     ...mapActions('playbar', {
       playPause: 'playPause',
     }),
+    setDuration: function () {
+      let mediaPlayer = this.$refs.mediaPlayer;
+      mediaPlayer.addEventListener('durationchange', (event) => {
+        let totalMinute = parseInt(mediaPlayer.duration / 60) % 60;
+        let totalSeconds = (mediaPlayer.duration % 60).toFixed();
+        let totalTime =
+          (totalMinute < 10 ? '0' + totalMinute : totalMinute) +
+          ':' +
+          (totalSeconds < 10 ? '0' + totalSeconds : totalSeconds);
+        this.totalTime = totalTime;
+      });
+      console.log('asdsad');
+    },
     updateProgressBar: function () {
       let mediaPlayer = this.$refs.mediaPlayer;
       if (this.currentlyPlaying == this.product.id) {
@@ -54,18 +64,7 @@ export default {
         });
       }
     },
-    setDuration: function () {
-      let mediaPlayer = this.$refs.mediaPlayer;
-      mediaPlayer.addEventListener('durationchange', (event) => {
-        let totalMinute = parseInt(mediaPlayer.duration / 60) % 60;
-        let totalSeconds = (mediaPlayer.duration % 60).toFixed();
-        let totalTime =
-          (totalMinute < 10 ? '0' + totalMinute : totalMinute) +
-          ':' +
-          (totalSeconds < 10 ? '0' + totalSeconds : totalSeconds);
-        this.totalTime = totalTime;
-      });
-    },
+
     drag: function (event) {
       window.addEventListener('mouseup', this.stopDrag);
       this.isMouseDown = true;
@@ -110,12 +109,12 @@ export default {
   },
 
   watch: {
-    product: [
+    componentKey: [
       {
         handler: 'updateProgressBar',
       },
     ],
-    beatDurationAvailable: [
+    componentKey: [
       {
         handler: 'setDuration',
       },
@@ -153,14 +152,13 @@ export default {
   width: 100%;
   bottom: 0;
   background-color: #e0e0e0;
-  padding: 3px;
   border-radius: 3px;
-  height: 3px;
+  height: 10px;
   /* box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2); */
 }
 #fill {
   display: block;
-  height: 3px;
+  height: 10px;
   background-color: #659cef;
   border-radius: 3px;
 }

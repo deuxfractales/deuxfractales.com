@@ -3,6 +3,7 @@
       <BeatSearch />
       <BeatFeatured />
       <BeatGrid />
+      <Player />
   </div>
 </template>
 
@@ -10,10 +11,11 @@
 import BeatSearch from '../components/beatpage/BeatSearch.vue'
 import BeatFeatured from '../components/beatpage/BeatFeatured.vue'
 import BeatGrid from '../components/beatpage/BeatGrid.vue'
+import Player from "../components/global/Playbar";
 
 export default {
     name: 'Beats',
-    components:{BeatSearch,BeatFeatured,BeatGrid},
+    components:{BeatSearch,BeatFeatured,BeatGrid,Player},
 }
 </script>
 
