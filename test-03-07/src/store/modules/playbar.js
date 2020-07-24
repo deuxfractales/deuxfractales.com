@@ -1,67 +1,36 @@
 const state = {
-  isPlay: false,
-  playerCurrentTime: 0,
-  playerDuration: 0,
-  playerTracks: [],
+  isPlay: true,
   playerCurrentTrack: null,
-  playerSeeking: false,
+  playBackTime: '00:00',
+  totalTime: '00:00',
 };
 
 const getters = {
   isPlay: (state) => state.isPlay,
-  playerCurrentTime: (state) => state.playerCurrentTime,
-  playerDuration: (state) => state.playerDuration,
-  playerTracks: (state) => state.playerTracks,
   playerCurrentTrack: (state) => state.playerCurrentTrack,
-  playerSeeking: (state) => state.playerSeeking,
 };
 
 const actions = {
-  play(context) {
-    context.commit('PLAY');
-  },
-  pause(context) {
-    context.commit('PAUSE');
-  },
-  setPlayerCurrentTime(context, time) {
-    context.commit('SET_PLAYER_CURRENT_TIME', time);
-  },
-  setPlayerDuration(context, time) {
-    context.commit('SET_PLAYER_DURATION', time);
-  },
-  setPlayerTracks(context, tracks) {
-    context.commit('SET_PLAYER_TRACKS', tracks);
+  playPause(context, mediaPlayer) {
+    context.commit('PLAYPAUSE', mediaPlayer);
   },
   setPlayerCurrentTrack(context, track) {
     context.commit('SET_PLAYER_CURRENT_TRACK', track);
   },
- 
-  setPlayerSeeking(context, track) {
-    context.commit('SET_PLAYER_SEEKING', track);
-  },
 };
 
 const mutations = {
-  PLAY(state) {
-    state.isPlay = true;
-  },
-  PAUSE(state) {
-    state.isPlay = false;
-  },
-  SET_PLAYER_CURRENT_TIME(state, time) {
-    state.playerCurrentTime = time;
-  },
-  SET_PLAYER_DURATION(state, time) {
-    state.playerDuration = time;
-  },
-  SET_PLAYER_TRACKS(state, tracks) {
-    state.playerTracks = tracks;
+  PLAYPAUSE(state, mediaPlayer) {
+    if (state.isPlay) {
+      mediaPlayer.pause();
+      state.isPlay = false;
+    } else {
+      mediaPlayer.play();
+      state.isPlay = true;
+    }
   },
   SET_PLAYER_CURRENT_TRACK(state, track) {
     state.playerCurrentTrack = track;
-  },
-  SET_PLAYER_SEEKING(state, seeking) {
-    state.playerSeeking = seeking;
   },
 };
 

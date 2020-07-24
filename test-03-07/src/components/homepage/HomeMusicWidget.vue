@@ -23,6 +23,7 @@ import vuex from '../../mixins/vuex';
 import audioPlayback from '../../mixins/audioPlayback';
 import p5 from '../../mixins/p5';
 import { mapActions } from 'vuex';
+import ProgressBar from './ProgressBar';
 
 export default {
   name: 'HomeMusicWidget',
@@ -41,6 +42,7 @@ export default {
   ],
   components: {
     'vue-p5': VueP5,
+    'ProgressBar': ProgressBar
   },
   data: function () {
     return {

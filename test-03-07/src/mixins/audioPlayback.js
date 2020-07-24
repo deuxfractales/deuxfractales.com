@@ -50,25 +50,18 @@ export default {
 
     playback: function () {
       const mediaPlayer = this.$refs.mediaPlayer;
-
-      if (this.ctx == undefined)
+      console.log(mediaPlayer);
+      if (this.ctx == undefined) {
         this.init()
 
-      if (this.currentlyPlaying != this.$attrs.id) {
-        mediaPlayer.play();
-        this.currentlyPlaying = this.$attrs.id; 
-      } else {
-        mediaPlayer.pause();
-        this.currentlyPlaying = null;
       }
       
-      this.setCurrentlyPlaying(this.currentlyPlaying)
     },
 
     playPause: function (event) {
       if (event) {
         this.playback(event.target.getAttribute('tag'));
-        
+        console.log(mediaPlayer);
       }
     },
     getFftData: function () {
