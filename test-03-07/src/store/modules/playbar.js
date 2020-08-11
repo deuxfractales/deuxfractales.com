@@ -1,8 +1,6 @@
 const state = {
-  isPlay: true,
+  isPlay: false,
   playerCurrentTrack: null,
-  playBackTime: '00:00',
-  totalTime: '00:00',
 };
 
 const getters = {
@@ -11,26 +9,15 @@ const getters = {
 };
 
 const actions = {
-  playPause(context, mediaPlayer) {
-    context.commit('PLAYPAUSE', mediaPlayer);
-  },
   setPlayerCurrentTrack(context, track) {
     context.commit('SET_PLAYER_CURRENT_TRACK', track);
   },
 };
 
 const mutations = {
-  PLAYPAUSE(state, mediaPlayer) {
-    if (state.isPlay) {
-      mediaPlayer.pause();
-      state.isPlay = false;
-    } else {
-      mediaPlayer.play();
-      state.isPlay = true;
-    }
-  },
   SET_PLAYER_CURRENT_TRACK(state, track) {
     state.playerCurrentTrack = track;
+    state.isPlay = true;
   },
 };
 

@@ -1,33 +1,67 @@
-
 <template>
   <div class="container">
-    <div ref="seekBar" id="seek-bar" @click="seekProgressBar">
-      <div id="fill" :style="{ width: progress + '%' }" @mousedown="drag"></div>
+    <div class="player">
+      <!-- playback time -->
+      <p>{{ currentTime }} / {{ duration }}</p>
+
+      <!-- progress bar -->
+      <div ref="seekBar" id="seek-bar" :disabled="!loaded">
+        <div id="fill" :style="{ width: percentage + '%' }"></div>
+      </div>
+
+      <!-- play/pause music button -->
+      <div @click="playing ? pause() : play()" :disabled="!loaded">
+        <div class="play"></div>
+      </div>
+
+      <!-- stop music button -->
+      <div @click="stop()" :disabled="!loaded">
+        <div>STOP</div>
+      </div>
+
+      <!-- loop music button -->
+      <div @click="loop ? loop=false : loop=true" :disabled="!loaded">
+        <div v-if="loop">UNLOOP SONG</div>
+        <div v-else>LOOP SONG</div>
+      </div>
+
+      <!-- mute music button -->
+      <div @click="mute()" :disabled="!loaded">
+        <div v-if="!isMuted">VOLUME HIGH</div>
+        <div v-else>VOLUME MUTE</div>
+      </div>
     </div>
-    <span class="time">{{ playBackTime }}/{{ totalTime }}</span>
-    <audio ref="mediaPlayer" crossorigin="anonymous" :src="product.url" autoplay preload>
-      Your browser does not support the
-      <code>audio</code> element.
-    </audio>
-    <div class="pausePlay" @click="playPause($refs.mediaPlayer)"></div>
+    <audio crossorigin="anonymous" id="player" ref="player" :loop="loop" :src="product.url" preload></audio>
   </div>
 </template>
+
 <script>
-import { mapGetters, mapActions } from 'vuex';
-import audioPlayback from '../../mixins/audioPlayback';
+import { mapGetters } from 'vuex';
+
+// Format seconds to '00:00:00' format
+const formatTime = (second) =>
+  new Date(second * 1000).toISOString().substr(11, 8);
+
 export default {
   name: 'Player',
-  data: function () {
+  data() {
     return {
-      progress: 0,
-      playBackTime: '00:00',
-      totalTime: '00:00',
-      isMouseDown: false,
-      beatDurationAvailable: false,
+      firstPlay: true,
+      isMuted: false,
+      loaded: false,
+      playing: this.isPlay,
+      paused: false,
+      percentage: 0,
+      currentTime: '00:00:00',
+      audio: undefined,
+      totalDuration: 0,
+      loop: false,
     };
   },
-
   computed: {
+    duration: function () {
+      return this.audio ? formatTime(this.totalDuration) : '';
+    },
     ...mapGetters('playbar', {
       product: 'playerCurrentTrack',
       isPlay: 'isPlay',
@@ -35,90 +69,150 @@ export default {
   },
 
   methods: {
-    ...mapActions('playbar', {
-      playPause: 'playPause',
-    }),
-    setDuration: function () {
-      let mediaPlayer = this.$refs.mediaPlayer;
-      mediaPlayer.addEventListener('durationchange', (event) => {
-        let totalMinute = parseInt(mediaPlayer.duration / 60) % 60;
-        let totalSeconds = (mediaPlayer.duration % 60).toFixed();
-        let totalTime =
-          (totalMinute < 10 ? '0' + totalMinute : totalMinute) +
-          ':' +
-          (totalSeconds < 10 ? '0' + totalSeconds : totalSeconds);
-        this.totalTime = totalTime;
-      });
-      console.log('asdsad');
-    },
-    updateProgressBar: function () {
-      let mediaPlayer = this.$refs.mediaPlayer;
-      if (this.currentlyPlaying == this.product.id) {
-        mediaPlayer.addEventListener('timeupdate', (event) => {
-          this.updateCurrentTime();
+    getClickPosition(e) {
+      e = e || window.e;
 
-          if (!this.isMouseDown) {
-            this.progress =
-              (mediaPlayer.currentTime / mediaPlayer.duration) * 100;
-          }
-        });
+      // get target element
+      let target = e.target || e.srcElement;
+      if (target.nodeType == 3) target = target.parentNode;
+      // set initial progressbar width
+      this.wrapperWidth = this.wrapperWidth || target.offsetWidth;
+
+      // get the seek width
+      let seekWidth = e.offsetX;
+
+      // change seek position
+      this.percentage = (seekWidth / this.wrapperWidth) * 100;
+      this.audio.currentTime = Math.floor(
+        (this.totalDuration / 100) * this.percentage
+      );
+
+      console.log(this.percentage);
+      console.log(this.audio.currentTime);
+      //   this.audio.currentTime
+    },
+    detectMouseDown(e) {
+      // prevent browser from moving objects, following links etc
+      e.preventDefault();
+
+      // start listening to mouse movements
+      this.$refs.seekBar.addEventListener(
+        'mousemove',
+        this.getClickPosition,
+        false
+      );
+    },
+    detectMouseUp(e) {
+      // stop listening to mouse movements
+      this.$refs.seekBar.removeEventListener(
+        'mousemove',
+        this.getClickPosition,
+        false
+      );
+    },
+    windowResize(e) {
+      let prog = this;
+      setTimeout(() => {
+        prog.wrapperWidth = prog.$refs.listenTo.offsetWidth;
+      }, 200);
+    },
+
+    stop() {
+      this.audio.pause();
+      this.paused = true;
+      this.playing = false;
+      this.audio.currentTime = 0;
+    },
+
+    play() {
+      if (this.playing) return;
+      this.audio.play().then((_) => (this.playing = true));
+      this.paused = false;
+    },
+    pause() {
+      this.paused = !this.paused;
+      this.paused ? this.audio.pause() : this.audio.play();
+    },
+    mute() {
+      this.isMuted = !this.isMuted;
+      this.audio.muted = this.isMuted;
+      this.volumeValue = this.isMuted ? 0 : 75;
+    },
+    _handleLoaded: function () {
+      if (this.audio.readyState >= 2) {
+        if (this.audio.duration === Infinity) {
+          this.audio.currentTime = 1e101;
+          this.audio.ontimeupdate = () => {
+            this.audio.ontimeupdate = () => {};
+            this.audio.currentTime = 0;
+            this.totalDuration = parseInt(this.audio.duration);
+            this.loaded = true;
+          };
+        } else {
+          this.totalDuration = parseInt(this.audio.duration);
+          this.loaded = true;
+        }
+        if (this.isPlay) this.audio.play();
+      } else {
+        throw new Error('Failed to load sound file');
       }
     },
-
-    drag: function (event) {
-      window.addEventListener('mouseup', this.stopDrag);
-      this.isMouseDown = true;
-      this.$refs.seekBar.addEventListener('mousemove', this.onDragEvent);
+    _handlePlayingUI: function (e) {
+      this.percentage = (this.audio.currentTime / this.audio.duration) * 100;
+      this.currentTime = formatTime(this.audio.currentTime);
+      this.playing = true;
     },
-    stopDrag: function (event) {
-      if (this.isMouseDown) {
-        this.isMouseDown = false;
-        this.$refs.seekBar.removeEventListener('mousemove', this.onDragEvent);
+    _handlePlayPause: function (e) {
+      if (e.type === 'play' && this.firstPlay) {
+        this.audio.currentTime = 0;
+        if (this.firstPlay) {
+          this.firstPlay = false;
+        }
+      }
+      if (
+        e.type === 'pause' &&
+        this.paused === false &&
+        this.playing === false
+      ) {
+        this.currentTime = '00:00:00';
       }
     },
-    onDragEvent: function (event) {
-      let mediaPlayer = this.$refs.mediaPlayer;
-      let maxLayer = this.$refs.seekBar.clientWidth;
-      mediaPlayer.currentTime =
-        event.offsetX * (mediaPlayer.duration / maxLayer);
-      this.updateCurrentTime();
-      this.progress = (mediaPlayer.currentTime / mediaPlayer.duration) * 100;
+    _handleEnded() {
+      this.paused = this.playing = false;
+      // this.audio.currentTime = 0;
     },
-    seekProgressBar: function (event) {
-      let mediaPlayer = this.$refs.mediaPlayer;
-      let maxLayer = this.$refs.seekBar.clientWidth;
-      mediaPlayer.currentTime =
-        event.offsetX * (mediaPlayer.duration / maxLayer);
-      this.updateCurrentTime();
+    init: function () {
+      this.audio.addEventListener('timeupdate', this._handlePlayingUI);
+      this.audio.addEventListener('loadeddata', this._handleLoaded);
+      this.audio.addEventListener('pause', this._handlePlayPause);
+      this.audio.addEventListener('play', this._handlePlayPause);
+      this.audio.addEventListener('ended', this._handleEnded);
 
-      if (!this.isMouseDown) {
-        this.progress = (mediaPlayer.currentTime / mediaPlayer.duration) * 100;
-      }
-    },
+      this.seekBar.addEventListener('click', this.getClickPosition, false);
+      this.seekBar.addEventListener('mousedown', this.detectMouseDown, false);
+      this.seekBar.addEventListener('mouseup', this.detectMouseUp, false);
 
-    updateCurrentTime: function () {
-      let mediaPlayer = this.$refs.mediaPlayer;
-      let currentMinute = parseInt(mediaPlayer.currentTime / 60) % 60;
-      let currentSeconds = (mediaPlayer.currentTime % 60).toFixed();
-      let currentTime =
-        (currentMinute < 10 ? '0' + currentMinute : currentMinute) +
-        ':' +
-        (currentSeconds < 10 ? '0' + currentSeconds : currentSeconds);
-      this.playBackTime = currentTime;
+      //add a listener that will listen to window resize and modify progress width accordingly
+      window.addEventListener('resize', this.windowResize, false);
     },
   },
+  mounted() {
+    this.audio = this.$refs.player;
+    this.seekBar = this.$refs.seekBar;
+    this.init();
+  },
+  beforeDestroy() {
+    this.audio.removeEventListener('timeupdate', this._handlePlayingUI);
+    this.audio.removeEventListener('loadeddata', this._handleLoaded);
+    this.audio.removeEventListener('pause', this._handlePlayPause);
+    this.audio.removeEventListener('play', this._handlePlayPause);
+    this.audio.removeEventListener('ended', this._handleEnded);
 
-  watch: {
-    componentKey: [
-      {
-        handler: 'updateProgressBar',
-      },
-    ],
-    componentKey: [
-      {
-        handler: 'setDuration',
-      },
-    ],
+    this.seekBar.removeEventListener('click', this.getClickPosition, false);
+    this.seekBar.removeEventListener('mousedown', this.detectMouseDown, false);
+    this.seekBar.removeEventListener('mouseup', this.detectMouseUp, false);
+
+    window.removeEventListener('resize', this.windowResize, false);
   },
 };
 </script>
@@ -127,14 +221,14 @@ export default {
 .container {
   position: fixed;
   width: 100%;
-  height: 50px;
+  height: 100px;
   background: #f2f2f2;
   bottom: 0px;
   z-index: 2;
   padding-bottom: 50px;
 }
 
-.pausePlay {
+.play {
   display: absolute;
   position: absolute;
   height: 80%;
@@ -148,8 +242,11 @@ export default {
   margin-bottom: 50px;
 }
 
+.pause {
+}
+
 #seek-bar {
-  width: 100%;
+  width: 40%;
   bottom: 0;
   background-color: #e0e0e0;
   border-radius: 3px;

@@ -5,8 +5,10 @@
       <HomeFeaturedHolder2 />
       <HomeSearchBox />
     </div>
-    <Player />
     <HomeFeaturedHolder3 />
+    <div v-if="isPlay">
+      <Player />
+    </div>
   </div>
 </template>
 
@@ -21,7 +23,7 @@ import Player from '../components/global/Playbar';
 
 import ShoppingCart from '../components/shoppingcart/ShoppingCart';
 import HomeSearchBox from '../components/homepage/HomeSearchBox';
-import { mapActions } from 'vuex';
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'Home',
@@ -32,6 +34,12 @@ export default {
     HomeFeaturedHolder,
     ShoppingCart,
     Player,
+  },
+ computed: {
+    ...mapGetters('playbar', {
+      product: 'playerCurrentTrack',
+      isPlay: 'isPlay',
+    }),
   },
 };
 </script>
