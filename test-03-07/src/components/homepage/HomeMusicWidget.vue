@@ -6,6 +6,7 @@
       <div :class="beatGenre">{{ product.genre }}</div>
       <div :class="beatArtist">{{ product.artist }}</div>
 
+      <!--TODO: change id to class on line 11-->
       <div
         id="w-node-8a1d5bef07c2-edd6561d"
         @click="addProductToCart(product)"
@@ -48,7 +49,7 @@ export default {
     return {
       p5: undefined,
       points: undefined,
-      rgb: { 'r': 10, 'g': 100, 'b': 200 },
+      rgb: { 'r': 168, 'g': 218, 'b': 220 },
       p5Style: { 'background-color': 'rgb(0,0,0)' },
       beatDurationAvailable: false,
       graphic: 'roseCurve'
@@ -148,8 +149,41 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 .p5waveform {
   display: flex;
+}
+.p5 {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+  z-index: 2;
+}
+.p5waveform {
+  display: flex;
+}
+
+.h1{
+  font-size: 20px;
+  grid-row-start: 1;
+  grid-row-end: 1;
+  grid-column-start: 1;
+  grid-column-end: 3;
+  font-family: Poppins, sans-serif;
+  color: #F1FAEE;
+  background-color: #e63946;
+}
+
+.featured-holder {
+  border-radius: 10px;
+  display: -ms-grid;
+  display: grid;
+  grid-auto-columns: 1fr;
+  grid-column-gap: 10px;
+  grid-row-gap: 0px;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 10% 90%;
 }
 </style>

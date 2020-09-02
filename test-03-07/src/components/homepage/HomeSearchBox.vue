@@ -1,5 +1,8 @@
 <template>
   <div id="w-node-668c28d507c8-edd6561d" class="search-box">
+    <div class="box-heading">
+      Choose up to 3 artists
+    </div>
     <div class="tags">
       <a v-for="artistName in selectedArtists" :key="artistName">
         <span class="tag-rounded selected">
@@ -48,22 +51,32 @@ export default {
 }
 
 </script>
-        
+
 
 <style scoped>
+  .box-heading{
+    font-family: Poppins, sans-serif;
+    color: #F1FAEE;
+    background-color: #e63946;
+    margin-bottom: 3%;
+  }
 .search-box {
   overflow: auto;
+  background-color: #A8DADC;
+  margin-right: 4%;
 }
 .tags .tag-rounded.selected {
   background-color: rgb(220, 220, 220);
 }
 .tags .tag-rounded {
-  background-color: rgb(235, 235, 235);
+  background-color: #457b9d;
   border-radius: 25px;
   padding: 8px 12px;
   font-size: 15px;
-  color: #000000;
+  color: #fffcf7;
   transition: all 0.3s ease-in-out;
+  font-family: Poppins, sans-serif;
+  font-weight: 200
 }
 
 .tags .tag-rounded:hover {

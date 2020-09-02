@@ -1,5 +1,9 @@
 <template>
-  <div id="w-node-3c6e0d08d641-edd6561d" class="featured-holder">
+  <div class="featured-holder">
+    <div class="h1">
+      <!--if no artist is selected then omit the artist's name-->
+      Featured *artist's name* Type Beats
+    </div>
     <HomeMusicWidget
       v-for="product in filteredProducts"
       v-if="product.featuredSlot1 === 1"
@@ -13,7 +17,7 @@
       :setCurrentlyPlaying="setCurrentlyPlaying"
       :product="product"
     
-      class="beatcontainer"
+      class="beatContainer"
       beatInfo="featuredSlot1_beatInfo"
       beatTitle="featuredSlot1_beatTitle"
       beatGenre="featuredSlot1_beatGenre"
@@ -65,23 +69,7 @@ export default {
 
 /* FeaturedSlot 1 styles */
 
-.beatcontainer {
-  position: relative;
-  left: 0%;
-  top: 0%;
-  right: auto;
-  bottom: auto;
-  z-index: 1;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-  -webkit-flex-direction: row;
-  -ms-flex-direction: row;
-  flex-direction: row;
-}
+
 
 .featuredSlot1_beatInfo {
   position: relative;
@@ -139,7 +127,7 @@ export default {
   border-right: 1px solid #54426b;
   border-left: 1px solid #000;
   border-radius: 3px;
-  background-color: #54426b;
+  background-color: #457b9d;
   font-family: Poppins, sans-serif;
   color: #fffcf7;
   font-size: 25px;
@@ -161,6 +149,46 @@ export default {
   display: inline-block;
 }
 
+.beatContainer {
+  position: relative;
+  left: 0%;
+  top: 0%;
+  right: auto;
+  bottom: auto;
+  z-index: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  grid-row-end: 2;
+  grid-row-start: 2;
 
+}
+.h1{
+  font-size: 20px;
+  grid-row-start: 1;
+  grid-row-end: 1;
+  grid-column-start: 1;
+  grid-column-end: 3;
+  font-family: Poppins, sans-serif;
+  color: #F1FAEE;
+  background-color: #e63946;
+}
+
+.featured-holder {
+  border-radius: 10px;
+  display: -ms-grid;
+  display: grid;
+  grid-auto-columns: 1fr;
+  grid-column-gap: 10px;
+  grid-row-gap: 0px;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 10% 90%;
+}
 
 </style>

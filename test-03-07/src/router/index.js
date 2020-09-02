@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Home from '../views/Home.vue';
+import NewHome from "../views/NewHome";
 import Beats from '../views/Beats'
 import Upload from '../views/Upload';
 import HomepageMobile from '../views/HomepageMobile';
@@ -14,7 +15,7 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: NewHome
   },
   {
     path: '/beats',

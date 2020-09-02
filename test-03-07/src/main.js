@@ -6,8 +6,11 @@ import VueNativeSock from 'vue-native-websocket';
 import AudioVisual from 'vue-audio-visual';
 import './assets/webflow.css';
 
+
+
 Vue.use(VueNativeSock, `ws://${window.location.hostname}:3000`);
 Vue.use(AudioVisual);
+
 
 Vue.config.productionTip = false;
 Vue.config.silent = true;

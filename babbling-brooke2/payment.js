@@ -104,7 +104,6 @@ module.exports = async function payment(fastify, opts) {
       captureOrder(req.body.orderID);
     }),
     fastify.post('/order/verify', async function (req, res) {
-
       // GET new access token
       let getAccessToken = async (clientID, clientSecret) => {
         return await axios({
@@ -195,7 +194,6 @@ module.exports = async function payment(fastify, opts) {
           }
         );
       };
-
 
       // retrieve access token
       // 1) store and refresh this

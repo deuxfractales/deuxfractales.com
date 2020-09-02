@@ -182,6 +182,9 @@ export default {
     display: inline-block;
     font-size: 16px;
   }
+  .div-block {
+    height: 100%;
+  }
 
 }
 </style>

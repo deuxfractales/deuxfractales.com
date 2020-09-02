@@ -29,6 +29,8 @@ fastify.register(require('./dbActions'));
 fastify.register(require('./audioStream'));
 fastify.register(require('./postBeats'));
 fastify.register(require('./postPurchase'));
+// fastify.register(require('./payment'));
+
 
 const start = async () => {
   try {

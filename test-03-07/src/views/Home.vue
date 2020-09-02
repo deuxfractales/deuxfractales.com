@@ -47,4 +47,20 @@ export default {
 .page {
   width: 100%;
 }
+.hero {
+  display: -ms-grid;
+  display: grid;
+  width: 98%;
+  margin-top: 5px;
+  margin-right: 0%;
+  margin-left: 0%;
+  justify-content: center;
+  justify-items: stretch;
+  grid-auto-columns: 1fr;
+  grid-column-gap: 1vw;
+  grid-row-gap: 1vh;
+  grid-template-areas: '.';
+  grid-template-columns: 28% 70%;
+  grid-template-rows: 51vh 22vh;
+}
 </style>

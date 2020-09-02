@@ -221,7 +221,7 @@ export default {
 .container {
   position: fixed;
   width: 100%;
-  height: 100px;
+  height: 50px;
   background: #f2f2f2;
   bottom: 0px;
   z-index: 2;
