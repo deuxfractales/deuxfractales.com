@@ -12,7 +12,7 @@ async function dbActions(fastify) {
       if (err) reply.send(err);
 
       client.query(
-        'SELECT id,name,price,url,artist,genre FROM beatz',
+        'SELECT id,name,pricing,url,genre,related_artist,k,d FROM beatz',
         function onResult(err, result) {
           client.release();
           let updatedResult = changeUrl(result);
