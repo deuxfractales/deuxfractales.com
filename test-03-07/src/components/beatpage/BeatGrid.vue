@@ -122,7 +122,7 @@ export default {
   background-color: white;
 
   position: absolute;
-  background-image: url('../../assets/images/play-button.svg');
+  background-image: url('../../assets/images/playbar/play.svg');
   background-position: 50% 50%;
   background-size: 45%;
   background-repeat: no-repeat;

@@ -12,7 +12,7 @@ async function dbActions(fastify) {
       if (err) reply.send(err);
 
       client.query(
-        'SELECT id,name,pricing,url,genre,related_artist,k,d FROM beatz',
+        'SELECT id,name,pricing,url,genre,related_artist,k,d,plays FROM beatz',
         function onResult(err, result) {
           client.release();
           let updatedResult = changeUrl(result);
@@ -50,7 +50,7 @@ async function dbActions(fastify) {
 
       client.query(
         // Add DRY in by (1) Making the call dynamic ex: 'db/:featuredSlot' and (2) making the query dynamic ex:SELECT .... featured.[req.params.featuredSlot]
-        'SELECT beatz.id,beatz.name,beatz.url,beatz.genre,beatz.related_artist,beatz.pricing,beatz.k,beatz.d,featured.featuredSlot1 FROM featured LEFT JOIN beatz ON beatz.id = featured.beatId',
+        'SELECT beatz.id,beatz.name,beatz.url,beatz.genre,beatz.related_artist,beatz.plays,beatz.pricing,beatz.k,beatz.d,featured.featuredSlot1 FROM featured LEFT JOIN beatz ON beatz.id = featured.beatId',
         function onResult(err, result) {
           console.log(err);
           client.release();
@@ -111,6 +111,7 @@ function changeUrl(result) {
       pricing: eachRes.pricing,
       related_artist: eachRes.related_artist,
       featuredSlot1: eachRes.featuredSlot1,
+      plays: eachRes.plays,
       k: eachRes.k,
       d: eachRes.d,
     };

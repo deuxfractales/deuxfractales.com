@@ -1,35 +1,36 @@
 <template>
   <div class="container">
     <div class="player">
+      <!-- play/pause music button -->
+      <div @click="playing ? pause() : play()" :disabled="!loaded">
+        <div class="play" v-if="!playing || paused"></div>
+        <div class="pause" v-else></div>
+      </div>
+
+      <!-- stop music button -->
+      <div class="stop" @click="stop()" :disabled="!loaded"></div>
+
       <!-- playback time -->
-      <p>{{ currentTime }} / {{ duration }}</p>
+      <div class="playback">
+        <p>{{ currentTime }} / {{ duration }}</p>
+      </div>
 
       <!-- progress bar -->
       <div ref="seekBar" id="seek-bar" :disabled="!loaded">
         <div id="fill" :style="{ width: percentage + '%' }"></div>
       </div>
 
-      <!-- play/pause music button -->
-      <div @click="playing ? pause() : play()" :disabled="!loaded">
-        <div class="play"></div>
-      </div>
-
-      <!-- stop music button -->
-      <div @click="stop()" :disabled="!loaded">
-        <div>STOP</div>
-      </div>
-
       <!-- loop music button -->
-      <div @click="loop ? loop=false : loop=true" :disabled="!loaded">
-        <div v-if="loop">UNLOOP SONG</div>
-        <div v-else>LOOP SONG</div>
-      </div>
+      <!-- <div class="loop" @click="loop ? loop=false : loop=true" :disabled="!loaded">
+        <div v-if="loop" style="color:red"></div>
+        <div v-else style="color:blue"></div>
+      </div> -->
 
       <!-- mute music button -->
-      <div @click="mute()" :disabled="!loaded">
+      <!-- <div class="mute" @click="mute()" :disabled="!loaded">
         <div v-if="!isMuted">VOLUME HIGH</div>
         <div v-else>VOLUME MUTE</div>
-      </div>
+      </div> -->
     </div>
     <audio crossorigin="anonymous" id="player" ref="player" :loop="loop" :src="product.url" preload></audio>
   </div>
@@ -122,16 +123,22 @@ export default {
       this.paused = true;
       this.playing = false;
       this.audio.currentTime = 0;
+      // change state
+      this.isPlay = false;
     },
 
     play() {
       if (this.playing) return;
       this.audio.play().then((_) => (this.playing = true));
       this.paused = false;
+      // change state
+      this.isPlay = true;
     },
     pause() {
       this.paused = !this.paused;
       this.paused ? this.audio.pause() : this.audio.play();
+      // change state
+      this.isPlay = false;
     },
     mute() {
       this.isMuted = !this.isMuted;
@@ -217,44 +224,74 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .container {
   position: fixed;
   width: 100%;
-  height: 50px;
+  height: 65px;
   background: #f2f2f2;
   bottom: 0px;
   z-index: 2;
   padding-bottom: 50px;
 }
 
+.player {
+  height: inherit;
+  padding: 10px 5px;
+}
+
 .play {
-  display: absolute;
   position: absolute;
-  height: 80%;
-  width: 5%;
-  background-image: url('../../assets/images/play-button.svg');
-  background-position: 50% 50%;
-  background-size: 50%;
+  height: 60%;
+  width: 2.5%;
+  left: 50px;
+  top: 8px;
+  background-image: url('../../assets/images/playbar/play.svg');
+  background-size: 100%;
   background-repeat: no-repeat;
-  left: 30%;
-  vertical-align: middle;
-  margin-bottom: 50px;
 }
 
 .pause {
+  position: absolute;
+  height: 60%;
+  width: 2.5%;
+  left: 50px;
+  top: 8px;
+  background-image: url('../../assets/images/playbar/pause.svg');
+  background-size: 100%;
+  background-repeat: no-repeat;
+}
+
+.stop {
+  left: 5px;
+  position: absolute;
+  height: 60%;
+  width: 2.5%;
+  background-image: url('../../assets/images/playbar/stop.svg');
+  background-size: 100%;
+  background-repeat: no-repeat;
+}
+
+.loop {
+  position: absolute;
+  height: 60%;
+  width: 2.5%;
+  background-image: url('../../assets/images/playbar/loop.svg');
+  background-size: 100%;
+  background-repeat: no-repeat;
 }
 
 #seek-bar {
-  width: 40%;
-  bottom: 0;
+  width: 60%;
+  right: 20%;
+  /* bottom: 0; */
   background-color: #e0e0e0;
   border-radius: 3px;
   height: 10px;
+  float: right;
   /* box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2); */
 }
 #fill {
-  display: block;
   height: 10px;
   background-color: #659cef;
   border-radius: 3px;

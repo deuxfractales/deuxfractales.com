@@ -1,6 +1,5 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import Home from '../views/Home.vue';
 import NewHome from "../views/NewHome";
 import Beats from '../views/Beats'
 import Upload from '../views/Upload';
