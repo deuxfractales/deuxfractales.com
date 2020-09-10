@@ -1,36 +1,42 @@
 <template>
   <div class="container">
     <div class="player">
+      <!-- prev song button -->
+      <div class="prevSong" @click="prev()" :disabled="!loaded"></div>
+
       <!-- play/pause music button -->
       <div @click="playing ? pause() : play()" :disabled="!loaded">
         <div class="play" v-if="!playing || paused"></div>
         <div class="pause" v-else></div>
       </div>
 
-      <!-- stop music button -->
-      <div class="stop" @click="stop()" :disabled="!loaded"></div>
-
-      <!-- playback time -->
-      <div class="playback">
-        <p>{{ currentTime }} / {{ duration }}</p>
-      </div>
+      <!-- next song button -->
+      <div class="nextSong" @click="next()" :disabled="!loaded"></div>
 
       <!-- progress bar -->
       <div ref="seekBar" id="seek-bar" :disabled="!loaded">
         <div id="fill" :style="{ width: percentage + '%' }"></div>
       </div>
 
+      <!-- playback time -->
+      <div class="playback">
+        <p>{{ currentTime }} / {{ duration }}</p>
+      </div>
+
+      <!-- stop music button -->
+      <!-- <div class="stop" @click="stop()" :disabled="!loaded"></div> -->
+
       <!-- loop music button -->
       <!-- <div class="loop" @click="loop ? loop=false : loop=true" :disabled="!loaded">
         <div v-if="loop" style="color:red"></div>
         <div v-else style="color:blue"></div>
-      </div> -->
+      </div>-->
 
       <!-- mute music button -->
       <!-- <div class="mute" @click="mute()" :disabled="!loaded">
         <div v-if="!isMuted">VOLUME HIGH</div>
         <div v-else>VOLUME MUTE</div>
-      </div> -->
+      </div>-->
     </div>
     <audio crossorigin="anonymous" id="player" ref="player" :loop="loop" :src="product.url" preload></audio>
   </div>
@@ -145,6 +151,12 @@ export default {
       this.audio.muted = this.isMuted;
       this.volumeValue = this.isMuted ? 0 : 75;
     },
+    prev() {
+      //add functionality
+    },
+    next() {
+      //add functionality
+    },
     _handleLoaded: function () {
       if (this.audio.readyState >= 2) {
         if (this.audio.duration === Infinity) {
@@ -242,10 +254,11 @@ export default {
 
 .play {
   position: absolute;
-  height: 60%;
+  display: inline-block;
+  height: 100%;
   width: 2.5%;
   left: 50px;
-  top: 8px;
+
   background-image: url('../../assets/images/playbar/play.svg');
   background-size: 100%;
   background-repeat: no-repeat;
@@ -253,13 +266,60 @@ export default {
 
 .pause {
   position: absolute;
-  height: 60%;
+  display: inline-block;
+  height: 100%;
   width: 2.5%;
   left: 50px;
-  top: 8px;
+
   background-image: url('../../assets/images/playbar/pause.svg');
   background-size: 100%;
   background-repeat: no-repeat;
+}
+
+.prevSong {
+  left: 5px;
+  display: inline-block;
+  position: absolute;
+  height: 100%;
+  width: 2.5%;
+
+  background-image: url('../../assets/images/playbar/prev.svg');
+  background-size: 100%;
+  background-repeat: no-repeat;
+}
+.nextSong {
+  left: 100px;
+  display: inline-block;
+  position: absolute;
+  height: 100%;
+  width: 2.5%;
+
+  background-image: url('../../assets/images/playbar/next.svg');
+  background-size: 100%;
+  background-repeat: no-repeat;
+}
+
+#seek-bar {
+  position: absolute;
+  display: inline-block;
+  width: 75%;
+  left: 11%;
+  bottom: 50%;
+  background-color: #e0e0e0;
+  border-radius: 3px;
+  height: 10px;
+  /* box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2); */
+}
+#fill {
+  height: 10px;
+  background-color: #659cef;
+  border-radius: 3px;
+}
+.playback {
+  /* display: inline-block; */
+  position: absolute;
+  bottom: 45%;
+  right: 5%;
 }
 
 .stop {
@@ -279,26 +339,5 @@ export default {
   background-image: url('../../assets/images/playbar/loop.svg');
   background-size: 100%;
   background-repeat: no-repeat;
-}
-
-#seek-bar {
-  width: 60%;
-  right: 20%;
-  /* bottom: 0; */
-  background-color: #e0e0e0;
-  border-radius: 3px;
-  height: 10px;
-  float: right;
-  /* box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2); */
-}
-#fill {
-  height: 10px;
-  background-color: #659cef;
-  border-radius: 3px;
-}
-.time {
-  margin-top: 3%;
-  bottom: 0;
-  right: 0;
 }
 </style>
