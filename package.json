@@ -10,9 +10,8 @@
     "http-server": "^0.12.3",
     "ip": "^1.1.5",
     "nodemon": "^2.0.4",
-    "vue-audio-visual": "^2.0.3",
-    "v-tooltip": "^2.0.3",
     "vue-audio-visual": "^2.0.0",
+    "v-tooltip": "^2.0.3",
     "vue-template-loader": "^1.1.0"
   },
   "devDependencies": {
