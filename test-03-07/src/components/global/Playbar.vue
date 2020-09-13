@@ -38,7 +38,7 @@
         <div v-else>VOLUME MUTE</div>
       </div>-->
     </div>
-    <audio crossorigin="anonymous" id="player" ref="player" :loop="loop" :src="product.url" preload></audio>
+    <audio crossorigin="anonymous" id="player" ref="player" :loop="loop" :src="`http://localhost:3001/api/v1${product.url}`" preload></audio>
   </div>
 </template>
 
@@ -78,7 +78,6 @@ export default {
   methods: {
     getClickPosition(e) {
       e = e || window.e;
-
       // get target element
       let target = e.target || e.srcElement;
       if (target.nodeType == 3) target = target.parentNode;

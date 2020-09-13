@@ -2,24 +2,44 @@
   <div>
     <!-- <vue-p5 ref="p5" class="p5" :style="p5Style" @setup="setup"></vue-p5> -->
     <div class="beatInfo">
-      <div class="beatTitle">{{ product.name }}</div>
+      <div class="beatTitle">
+        <!-- should acctually be: '/product.artist/' + 'product.name' -->
+
+        <router-link
+          class="productLink"
+          :to="{ name: 'beatDetails', params: { name: product.name } }"
+          >{{ product.name }}</router-link
+        >
+      </div>
       <div class="beatGenre">{{ product.genre }}</div>
-      <div class="beatArtist">{{ product.artist }}</div>
+      <div class="beatArtist">{{ product.producer }}</div>
 
       <!--TODO: change id to class on line 11-->
       <div
         id="w-node-8a1d5bef07c2-edd6561d"
         @click="addProductToCart(product)"
         class="beatPrice"
-      >${{ product.pricing }}</div>
+      >
+        ${{ product.pricing }}
+      </div>
 
       <div class="controls">
         <div
           v-if="isPlay && playerCurrentTrack.id === product.id"
-          @click="setPlayerCurrentTrack(product); setTogglePause()"
+          @click="
+            setPlayerCurrentTrack(product);
+            setTogglePause();
+          "
           class="pause"
         ></div>
-        <div v-else @click="setPlayerCurrentTrack(product); setTogglePlay()" class="play"></div>
+        <div
+          v-else
+          @click="
+            setPlayerCurrentTrack(product);
+            setTogglePlay();
+          "
+          class="play"
+        ></div>
       </div>
     </div>
   </div>
@@ -272,5 +292,14 @@ export default {
   background-size: 20%;
   background-repeat: no-repeat;
   display: inline-block;
+}
+
+.productLink {
+  text-decoration: none;
+  color: black;
+}
+
+.productLink:hover {
+  color: red;
 }
 </style>

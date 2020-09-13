@@ -43,7 +43,7 @@ const getters = {
 
 const actions = {
   async fetchArtists({ commit }) {
-    const response = await axios.get('/db/artists');
+    const response = await axios.get('http://localhost:3001/api/v1/artists');
     commit('setArtists', response.data);
   },
 
