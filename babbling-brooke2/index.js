@@ -32,8 +32,7 @@ fastify.register(require('fastify-cors'), {
 
 // Import Audios
 fastify.register(require('fastify-static'), {
-  root: path.join(__dirname, 'storage/mp3'),
-  prefix: '/public/', // optional: default '/'
+  root: path.join(__dirname, 'storage'),
 });
 
 // Import Routes Dynamically
@@ -64,4 +63,3 @@ const start = async () => {
 };
 
 start();
-
