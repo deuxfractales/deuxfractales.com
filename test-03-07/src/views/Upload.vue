@@ -22,7 +22,7 @@
       </form>
       <button class="next-step" v-on:click="nextStep">Next Steps</button>
     </div>
-    
+
     <transition name="fade">
       <div v-if="showNextStep" class="formholder">
         <h1>Hello</h1>
@@ -61,6 +61,8 @@ export default {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
+
+          body: JSON.stringify({ "hello": "world" }),
         })
         .then(function (response) {
           console.log(response);

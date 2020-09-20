@@ -1,51 +1,42 @@
-const { DATABASE } = require('../index');
 const path = require('path');
 const fs = require('fs');
 const pump = require('pump');
-
-exports.getAllBeats = async (request, reply) => {
-  try {
-    DATABASE.mysql.query(
-      'SELECT beatz.id,beatz.name,beatz.url,beatz.genre,beatz.related_artist,beatz.plays,beatz.pricing,beatz.k,beatz.d,beatz.producer, featured.featuredSlot1 FROM featured LEFT JOIN beatz ON beatz.id = featured.beatId',
-      function onResult(err, result) {
-        const updatedResult = changeUrl(result);
-        console.log(updatedResult);
-        reply.send(err || updatedResult);
-      }
-    );
-  } catch (err) {
-    console.log(err);
-  }
-};
+const { fastify } = require('../index');
 
 exports.incrementBeatPlays = async (request, reply) => {
   try {
-    DATABASE.mysql.query(
-      'UPDATE beatz SET plays=plays+1 WHERE name=?',
-      [request.params.name],
-      function onResult(err, result) {
-        console.log(result);
-        reply.send(err || result);
-      }
+    const { Beats } = fastify.sequelize;
+    const beats = await changeURL(
+      Beats.increment('plays', {
+        by: 1,
+        where: {
+          name: request.params.name,
+        },
+      })
     );
+    return beats;
   } catch (error) {
-    console.log(error);
+    reply.send(error);
   }
 };
 
+exports.getAllBeats = async (request, reply) => {
+  try {
+    const { Beats } = fastify.sequelize;
+    return await Beats.findAll();
+  } catch (error) {
+    reply.send(error);
+  }
+};
+
+/* CRUD FUNCTIONALITY */
 exports.getBeat = async (request, reply) => {
   try {
-    DATABASE.mysql.query(
-      'SELECT id,name,url,genre,related_artist,k,d,pricing,plays,producer FROM beatz WHERE name=?',
-      [request.params.name],
-      function onResult(err, result) {
-        const updatedResult = changeUrl(result);
-        console.log(updatedResult);
-        reply.send(err || updatedResult);
-      }
-    );
+    const { Beats } = fastify.sequelize;
+    const name = request.params.name;
+    return await Beats.findOne({ where: { name } });
   } catch (error) {
-    console.log(error);
+    reply.send(error);
   }
 };
 
@@ -57,80 +48,77 @@ exports.createBeat = async (request, reply) => {
       return;
     }
 
-    const mp = request.multipart(handler, onEnd);
+    const { Beats } = fastify.sequelize;
+    const body = {};
 
-    mp.on('field', function (key, value) {
-      console.log('form-data', key, value);
-    });
-
-    function onEnd(err) {
-      if (err) {
-        reply.code(400).send({
-          uploaded: false,
-          error: err,
-        });
+    const parts = await request.parts();
+    for await (const part of parts) {
+      if (part.file) {
+        const { ext } = path.parse(part.filename);
+        if (ext === '.mp3' || ext === '.wav' || ext === '.zip') {
+          await pump(
+            part.file,
+            fs.createWriteStream(`./storage/${ext.slice(1)}/${part.filename}`)
+          );
+        }
       } else {
-        reply.code(200).send({
-          uploaded: true,
-          success: 'Upload Complete',
-        });
+        var field = part.fields;
+
+        body[field.name.fieldname] = field.name.value;
+        body[field.url.fieldname] = field.url.value;
+        body[field.genre.fieldname] = field.genre.value;
+        body[field.related_artist.fieldname] = field.related_artist.value;
+        body[field.k.fieldname] = field.k.value;
+        body[field.d.fieldname] = field.d.value;
+        body[field.pricing.fieldname] = field.pricing.value;
+        body[field.producer.fieldname] = field.producer.value;
+
+        console.log(body);
+        return await Beats.create(body);
       }
     }
 
-    function handler(field, file, filename, encoding, mimetype) {
-      const { ext } = path.parse(filename);
-      if (ext === '.mp3' || ext === '.wav' || ext === '.zip') {
-        pump(
-          file,
-          fs.createWriteStream(`./storage/${ext.slice(1)}/${filename}`)
-        );
-      } else {
-        console.log('error');
-      }
-    }
+    // var body = {};
+    // const mp = request.multipart(handler, onEnd);
 
-    let id = request.body.id;
-    let name = request.body.name;
-    let url = request.body.url;
-    let genre = request.body.genre;
-    let related_artist = request.body.related_artist;
-    let k = request.body.k;
-    let d = request.body.d;
-    let pricing = request.body.pricing;
-    let plays = request.body.plays;
-    let producer = request.body.producer;
+    // mp.on('field', (key, value) => {
+    //   body[key] = value;
+    // });
 
-    DATABASE.mysql.query(
-      'INSERT INTO beatz (id,name,url,genre,related_artist,k,d,pricing,plays,producer) VALUES (?,?,?,?,?,?,?,?,?,?)',
-      [id, name, url, genre, related_artist, k, d, pricing, plays, producer],
-      function onResult(err, result) {
-        reply.send(err || result);
-      }
-    );
+    // async function onEnd(err) {
+    //   if (err) {
+    //     reply.code(400).send({
+    //       uploaded: false,
+    //       error: err,
+    //     });
+    //   } else {
+    //     const beat = await Beats.create(body);
+    //     reply.code(200).send({
+    //       uploaded: true,
+    //       success: 'Upload Complete',
+    //       data: beat,
+    //     });
+    //   }
+    // }
+
+    // function handler(field, file, filename, encoding, mimetype) {
+    //   const { ext } = path.parse(filename);
+    //   if (ext === '.mp3' || ext === '.wav' || ext === '.zip') {
+    //     pump(
+    //       file,
+    //       fs.createWriteStream(`./storage/${ext.slice(1)}/${filename}`)
+    //     );
+    //   } else {
+    //     console.log('error');
+    //   }
+    // }
   } catch (error) {
-    console.log(error);
-  }
-};
-
-exports.deleteBeat = async (request, reply) => {
-  try {
-    DATABASE.mysql.query(
-      'DELETE FROM beatz WHERE name=?;',
-      [request.params.name],
-      function onResult(err, result) {
-        const updatedResult = changeUrl(result);
-        console.log(updatedResult);
-        reply.send(err || updatedResult);
-      }
-    );
-  } catch (error) {
-    console.log(error);
+    reply.send(error);
   }
 };
 
 exports.updateBeat = async (request, reply) => {
   try {
-    let id = request.body.id;
     let name = request.body.name;
     let url = request.body.url;
     let genre = request.body.genre;
@@ -138,31 +126,31 @@ exports.updateBeat = async (request, reply) => {
     let k = request.body.k;
     let d = request.body.d;
     let pricing = request.body.pricing;
-    let plays = request.body.plays;
     let producer = request.body.producer;
 
-    DATABASE.mysql.query(
-      'UPDATE beatz SET id=?,name=?,url=?,genre=?,related_artist=?,k=?,d=?,pricing=?,plays=?,producer=? WHERE name=?',
-      [
-        id,
-        name,
-        url,
-        genre,
-        related_artist,
-        k,
-        d,
-        pricing,
-        plays,
-        producer,
-        name,
-      ],
-      function onResult(err, result) {
-        console.log(result);
-        reply.send(err || result);
+    return await producer.update(
+      { name, url, genre, related_artist, k, d, pricing, producer },
+      {
+        where: {
+          name: request.params.name,
+        },
       }
     );
   } catch (error) {
-    console.log(error);
+    reply.send(error);
+  }
+};
+
+exports.deleteBeat = async (request, reply) => {
+  try {
+    const { Beats } = fastify.sequelize;
+    return await Beats.destroy({
+      where: {
+        name: request.params.name,
+      },
+    });
+  } catch (error) {
+    reply.send(error);
   }
 };
 
@@ -178,7 +166,6 @@ function changeUrl(result) {
       genre: eachRes.genre,
       pricing: eachRes.pricing,
       related_artist: eachRes.related_artist,
-      featuredSlot1: eachRes.featuredSlot1,
       plays: eachRes.plays,
       k: eachRes.k,
       d: eachRes.d,

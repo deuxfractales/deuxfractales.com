@@ -6,7 +6,7 @@ const path = require('path');
 const ip = require('ip');
 
 const serverIP = ip.address();
-
+console.log(serverIP);
 // intialize env file based on server ip address
 if (serverIP == '192.168.5.15') {
   require('dotenv').config({ path: './config/envs/dev.env' });
@@ -30,6 +30,10 @@ fastify.register(require('fastify-cors'), {
   exposedHeaders: ['Content-Range', 'X-Content-Range'],
 });
 
+// custom sequlize sequelize plugin
+fastify.register(require('./plugins/sequelize'), process.env.CONNECTION_STRING);
+exports.fastify = fastify;
+
 // Import Audios
 fastify.register(require('fastify-static'), {
   root: path.join(__dirname, 'storage'),
@@ -39,16 +43,6 @@ fastify.register(require('fastify-static'), {
 fastify.register(AutoLoad, {
   dir: path.join(__dirname, 'routes'),
   options: Object.assign({ prefix: 'api/v1' }),
-});
-
-// Databse Connection with Sequalize
-// fastify.register(require('fastify-sequelize'), process.env.CONNECTION_STRING, {
-//   dialect: 'mysql',
-// });
-
-// Databse Connection with mysql queries
-exports.DATABASE = fastify.register(require('fastify-mysql'), {
-  connectionString: process.env.CONNECTION_STRING,
 });
 
 const start = async () => {

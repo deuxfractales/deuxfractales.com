@@ -1,80 +1,67 @@
-const { DATABSE } = require('../index');
+const { fastify } = require('../index');
 
 exports.getAllProducers = async (request, reply) => {
   try {
-    DATABSE.mysql.query('SELECT handle,name FROM producers', function onResult(
-      err,
-      result
-    ) {
-      console.log(result);
-      reply.send(err || result);
-    });
+    const { Producers } = fastify.sequelize;
+    return await Producers.findAll();
   } catch (error) {
-    console.log(error);
+    reply.send(error);
   }
 };
 
 exports.getProducer = async (request, reply) => {
   try {
-    DATABSE.mysql.query(
-      'SELECT handle,name FROM producers WHERE name=?',
-      [request.params.name],
-      function onResult(err, result) {
-        console.log(result);
-        reply.send(err || result);
-      }
-    );
+    const { Producers } = fastify.sequelize;
+    return await Producers.findOne({
+      where: {
+        name: request.params.name,
+      },
+    });
   } catch (error) {
-    console.log(error);
+    reply.send(error);
   }
 };
 
 exports.createProducer = async (request, reply) => {
   try {
+    const { Producers } = fastify.sequelize;
     let handle = request.body.handle;
     let name = request.body.name;
 
-    DATABASE.mysql.query(
-      'INSERT INTO producers (handle,name) VALUES (?,?)',
-      [handle, name],
-      function onResult(err, result) {
-        reply.send(err || result);
-      }
-    );
+    return await Producers.create({ handle, name });
   } catch (error) {
-    console.log(error);
+    reply.send(error);
   }
 };
 
 exports.updateProducer = async (request, reply) => {
   try {
+    const { Producers } = fastify.sequelize;
     let handle = request.body.handle;
     let name = request.body.name;
 
-    DATABASE.mysql.query(
-      'UPDATE producers SET handle=?,name=? WHERE name=?',
-      [handle, name, name],
-      function onResult(err, result) {
-        reply.send(err || result);
+    return await Producers.update(
+      { handle, name },
+      {
+        where: {
+          name: request.params.name,
+        },
       }
     );
   } catch (error) {
-    console.log(error);
+    reply.send(error);
   }
 };
 
 exports.deleteProducer = async (request, reply) => {
   try {
-    DATABASE.mysql.query(
-      'DELETE FROM producers WHERE name=?;',
-      [request.params.name],
-      function onResult(err, result) {
-        const updatedResult = changeUrl(result);
-        console.log(updatedResult);
-        reply.send(err || updatedResult);
-      }
-    );
+    const { Producers } = fastify.sequelize;
+    return await Producers.destroy({
+      where: {
+        name: request.params.name,
+      },
+    });
   } catch (error) {
-    console.log(error);
+    reply.send(error);
   }
 };

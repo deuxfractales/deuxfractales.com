@@ -2,7 +2,7 @@
 const artistsController = require('../controllers/artists');
 
 module.exports = async function (fastify, options) {
-  // INCREMENT plays
+  // INCREMENT clicks
   fastify.patch(
     '/artists/:name/clicked',
     artistsController.incrementArtistClicks

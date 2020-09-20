@@ -1,78 +1,71 @@
-const { DATABASE } = require('../index');
+const { fastify } = require('../index');
+
+exports.incrementArtistClicks = async (request, reply) => {
+  try {
+    const { Artists } = fastify.sequelize;
+
+    return await Artists.increment('clicks', {
+      by: 1,
+      where: {
+        artist_name: request.params.name,
+      },
+    });
+  } catch (error) {
+    reply.send(error);
+  }
+};
 
 exports.getAllArtists = async (request, reply) => {
   try {
-    DATABASE.mysql.query(
-      'SELECT artist_name,subgenre,ig_handle FROM deuxfractales.artists',
-      function onResult(err, result) {
-        console.log(result);
-        reply.send(err || result);
-      }
-    );
+    const { Artists } = fastify.sequelize;
+    return await Artists.findAll();
   } catch (error) {
-    console.log(error);
+    reply.send(error);
   }
 };
 
 exports.createArtist = async (request, reply) => {
   try {
-    DATABASE.mysql.query(
-      'INSERT INTO artists (artist_name,subgenre,ig_handle) VALUES (?,?,?)',
-      [request.body.artist_name, request.body.subgenre, request.body.ig_handle],
-      function onResult(err, result) {
-        console.log(result);
-        reply.send(err || result);
-      }
-    );
+    const { Artists } = fastify.sequelize;
+    let artist_name = request.body.artist_name;
+    let subgenre = request.body.subgenre;
+    let ig_handle = request.body.ig_handle;
+
+    return await Artists.create({ artist_name, subgenre, ig_handle });
   } catch (error) {
-    console.log(error);
+    reply.send(error);
   }
 };
 
 exports.updateArtist = async (request, reply) => {
   try {
+    const { Artists } = fastify.sequelize;
     let artist_name = request.body.artist_name;
     let subgenre = request.body.subgenre;
     let ig_handle = request.body.ig_handle;
 
-    DATABASE.mysql.query(
-      'UPDATE artists SET artist_name=?,subgenre=?,ig_handle=? WHERE name=?',
-      [artist_name, subgenre, ig_handle, name],
-      function onResult(err, result) {
-        reply.send(err || result);
+    return await Artists.update(
+      { artist_name, subgenre, ig_handle },
+      {
+        where: {
+          artist_name: request.params.name,
+        },
       }
     );
   } catch (error) {
-    console.log(error);
+    reply.send(error);
   }
 };
 
 exports.deleteArtist = async (request, reply) => {
   try {
-    DATABASE.mysql.query(
-      'DELETE FROM artists WHERE artist_name=?;',
-      [request.params.name],
-      function onResult(err, result) {
-        console.log(result);
-        reply.send(err || result);
-      }
-    );
+    const { Artists } = fastify.sequelize;
+    return await Artists.destroy({
+      where: {
+        artist_name: request.params.name,
+      },
+    });
   } catch (error) {
-    console.log(error);
-  }
-};
-
-exports.incrementArtistClicks = async (request, reply) => {
-  try {
-    DATABASE.mysql.query(
-      'UPDATE artists SET clicks=clicks+1 WHERE artist_name=?',
-      [request.params.name],
-      function onResult(err, result) {
-        console.log(result);
-        reply.send(err || result);
-      }
-    );
-  } catch (error) {
-    console.log(error);
+    reply.send(error);
   }
 };

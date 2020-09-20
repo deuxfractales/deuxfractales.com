@@ -1,6 +1,5 @@
 const fs = require('fs');
 const sgMail = require('@sendgrid/mail');
-const { DATABASE } = require('../index');
 
 exports.postPurchase = async function (request, reply) {
   sgMail.setApiKey(process.env.SGMAIL_API_KEY);

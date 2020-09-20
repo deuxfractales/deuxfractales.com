@@ -2,7 +2,6 @@
 const beatsController = require('../controllers/beats');
 
 module.exports = async function (fastify, options) {
-  // GET all beats
   fastify.get('/beats', beatsController.getAllBeats);
 
   // INCREMENT plays
