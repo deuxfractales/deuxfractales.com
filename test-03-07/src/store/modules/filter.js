@@ -4,9 +4,6 @@ import featuredProduct from './products';
 const state = {
   homepageArtists: [],
   homepageSelectedArtists: [],
-
-  beatspageArtists: [],
-  beatspageSelectedArtists: [],
 };
 
 const getters = {
@@ -16,26 +13,20 @@ const getters = {
 
   homepageFilteredProducts(state) {
     var featuredProducts = featuredProduct.state.featuredProducts;
+
+    // sort by plays
+    featuredProducts
+      .sort(function (a, b) {
+        return a.plays - b.plays;
+      })
+      .reverse();
+
+    // filter beats by related_artist
     return featuredProducts.filter((product) => {
       return product.related_artist
         .toLowerCase()
         .includes(
           state.homepageSelectedArtists.map((artist) => artist.toLowerCase())
-        );
-    });
-  },
-
-  // Beats page
-  beatspageArtists: (state) => state.beatspageArtists,
-  beatspageSelectedArtists: (state) => state.beatspageSelectedArtists,
-
-  beatspageFilteredProducts(state) {
-    var featuredProducts = featuredProduct.state.featuredProducts;
-    return featuredProducts.filter((product) => {
-      return product.related_artist
-        .toLowerCase()
-        .includes(
-          state.beatspageSelectedArtists.map((artist) => artist.toLowerCase())
         );
     });
   },
@@ -64,35 +55,16 @@ const mutations = {
   },
 
   selectArtist: (state, { artistName, page }) => {
-    if (page == 'beatspage') {
-      state.beatspageSelectedArtists.push(artistName);
-      state.beatspageArtists.splice(
-        state.beatspageArtists.indexOf(artistName),
-        1
-      );
-    } else if (page == 'homepage') {
-      state.homepageSelectedArtists.push(artistName);
-      state.homepageArtists.splice(
-        state.homepageArtists.indexOf(artistName),
-        1
-      );
-    }
+    state.homepageSelectedArtists.push(artistName);
+    state.homepageArtists.splice(state.homepageArtists.indexOf(artistName), 1);
   },
 
   deleteArtist(state, { artistName, page }) {
-    if (page == 'beatspage') {
-      state.beatspageSelectedArtists.splice(
-        state.beatspageSelectedArtists.indexOf(artistName),
-        1
-      );
-      state.beatspageArtists.push(artistName);
-    } else if (page == 'homepage') {
-      state.homepageSelectedArtists.splice(
-        state.homepageSelectedArtists.indexOf(artistName),
-        1
-      );
-      state.homepageArtists.push(artistName);
-    }
+    state.homepageSelectedArtists.splice(
+      state.homepageSelectedArtists.indexOf(artistName),
+      1
+    );
+    state.homepageArtists.push(artistName);
   },
 };
 

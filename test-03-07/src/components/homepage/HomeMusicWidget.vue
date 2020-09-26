@@ -8,20 +8,20 @@
         <router-link
           class="productLink"
           :to="{ name: 'beatDetails', params: { name: product.name } }"
-          >{{ product.name }}</router-link
-        >
+        >{{ product.name }}</router-link>
       </div>
       <div class="beatGenre">{{ product.genre }}</div>
-      <div class="beatArtist">{{ product.producer }}</div>
+      <router-link
+        class="beatArtist"
+        :to="{ name: 'producerDetails', params: { name: product.producer } }"
+      >{{ product.producer }}</router-link>
 
       <!--TODO: change id to class on line 11-->
       <div
         id="w-node-8a1d5bef07c2-edd6561d"
         @click="addProductToCart(product)"
         class="beatPrice"
-      >
-        ${{ product.pricing }}
-      </div>
+      >${{ product.pricing }}</div>
 
       <div class="controls">
         <div
@@ -238,9 +238,7 @@ export default {
 .beatGenre {
   display: none;
 }
-.beatArtist {
-  display: none;
-}
+
 .beatPrice {
   left: 15%;
   margin-top: 10px;

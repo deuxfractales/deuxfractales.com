@@ -1,13 +1,13 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import NewHome from '../views/NewHome';
-import Beats from '../views/Beats';
+import Home from '../views/Home';
 import Upload from '../views/Upload';
 import HomepageMobile from '../views/HomepageMobile';
 import ShoppingCart from '../views/ShoppingCart';
 import Checkout from '../views/Checkout';
 import Confirmation from '../views/Confirmation';
-import BeatDetails from '../views/ProductDetail';
+import BeatDetails from '../views/BeatDetail';
+import ProducerDetails from '../views/ProducerDetail';
 
 Vue.use(VueRouter);
 
@@ -15,12 +15,7 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: NewHome,
-  },
-  {
-    path: '/beats',
-    name: 'Beats',
-    component: Beats,
+    component: Home,
   },
   {
     path: '/about',
@@ -37,9 +32,15 @@ const routes = [
     component: Upload,
   },
   {
-    path: '/:name/',
+    path: 'beats/:name/',
     name: 'beatDetails',
     component: BeatDetails,
+    props: true,
+  },
+  {
+    path: 'producers/:name/',
+    name: 'producerDetails',
+    component: ProducerDetails,
     props: true,
   },
   {

@@ -6,29 +6,6 @@
     <ProductGrid>
       <HomeMusicWidget
         v-for="product in filteredProducts"
-        v-if="product.featuredSlot1 === 1"
-        :key="product.id"
-        :ref="product.id"
-        :id="product.id"
-        :k="product.k"
-        :d="product.d"
-        :product="product"
-        class="beat"
-      />
-      <HomeMusicWidget
-        v-for="product in filteredProducts"
-        v-if="product.featuredSlot1 === 2"
-        :key="product.id"
-        :ref="product.id"
-        :id="product.id"
-        :k="product.k"
-        :d="product.d"
-        :product="product"
-        class="beat"
-      />
-      <HomeMusicWidget
-        v-for="product in filteredProducts"
-        v-if="product.featuredSlot1 === 3"
         :key="product.id"
         :ref="product.id"
         :id="product.id"
