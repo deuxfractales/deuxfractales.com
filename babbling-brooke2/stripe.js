@@ -5,7 +5,7 @@ async function stripe (fastify, options){
 
 
 
-	fastify.get('/stripe', async (request, reply) => {
+	fastify.get('/stripe/onboard', async (request, reply) => {
 		const account = await stripe.accounts.create({
 			type: 'express',
 		});
@@ -20,6 +20,18 @@ async function stripe (fastify, options){
 		});
 		reply.send(accountLinks.url)
 	});
+	fastify.get('/stripe/balance/:id', async (request, reply) => {
+		let accountNumber = request.params.id
+		const balance = await stripe.balance.retrieve({
+			stripeAccount: accountNumber
+		})
+		const accountInformation = {
+			availableBalance: `${balance.available[0].amount}`,
+			pendingBalances: `${balance.pending[0].amount}`
+		}
+		console.log(`balance info for account:${accountNumber} sent successfully `)
+		reply.send(accountInformation)
+	} )
 
 }
 
