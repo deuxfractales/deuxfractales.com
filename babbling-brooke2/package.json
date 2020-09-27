@@ -23,7 +23,8 @@
     "fastify-static": "^2.7.0",
     "path": "^0.12.7",
     "pump": "^3.0.0",
-    "request": "^2.88.2"
+    "request": "^2.88.2",
+    "stripe": "^8.95.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.4"
